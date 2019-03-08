@@ -19,6 +19,11 @@ public class User {
 //        this.password = password;
 //    }
 
+
+    public String getUsername() {
+        return username;
+    }
+
     private void setAuthToken(String authToken) {
         this.authToken = authToken;
     }
