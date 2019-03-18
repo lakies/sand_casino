@@ -1,6 +1,4 @@
-package Server;
-
-import Client.User;
+package main.java.Server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -16,7 +14,7 @@ public class ClientTask implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Client connected");
+        System.out.println("main.java.Client connected");
 
         try (DataInputStream in = new DataInputStream(clientSocket.getInputStream());
              DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream())) {
@@ -24,7 +22,7 @@ public class ClientTask implements Runnable {
             // Maybe types 0-10 don't require authentication, but all above that do
 
             /*
-            Server response protocol:
+            main.java.Server response protocol:
             0 - int, 1 if the command was successfully fulfilled, -1 if the command was of unknown type and -2 if the authentication was wrong
             1 - Any data returned by the command
              */

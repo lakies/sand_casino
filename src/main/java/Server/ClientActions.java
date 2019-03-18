@@ -1,6 +1,4 @@
-package Server;
-
-import Client.User;
+package main.java.Server;
 
 import java.io.DataInputStream;
 import java.io.IOException;
