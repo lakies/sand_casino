@@ -3,7 +3,7 @@ package Games;
 import Server.ClientData;
 
 
-public class CoinFlip {
+public class CoinFlip extends GameInstance {
     public static void main(String[] args) {
 
     }
