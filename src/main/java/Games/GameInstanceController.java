@@ -39,6 +39,7 @@ public class GameInstanceController implements Runnable {
     }
 
     private void addPlayer(ClientData player) {
+        // TODO: implement an internal timer for game instances to allow more than minimum amount of players to connect. Then should add check for maxPlayers as well
         if (newGame == null) {
             newGame = gameInstanceCreator();
             newGame.addPlayer(player);
@@ -46,6 +47,7 @@ public class GameInstanceController implements Runnable {
             if (newGame.getMinPlayers() > newGame.getPlayers().size()) {
                 newGame.addPlayer(player);
             } else {
+                runningGames.add(newGame);
                 newGame = gameInstanceCreator();
                 newGame.addPlayer(player);
             }
@@ -54,7 +56,18 @@ public class GameInstanceController implements Runnable {
 
     @Override
     public void run() {
-        // TODO: take players from queuedPlayers and assign them to games, then run game main logic
-        System.out.println("hi");
+        while (true) {
+            for (GameInstance runningGame : runningGames) {
+                if (runningGame.ifFinished()) {
+                    runningGame.cleanup();
+                    runningGames.remove(runningGame);
+                }
+            }
+
+            for (GameInstance runningGame : runningGames) {
+                runningGame.runGameLogic();
+            }
+        }
+
     }
 }

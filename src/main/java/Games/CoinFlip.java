@@ -5,12 +5,22 @@ import Server.ClientData;
 
 public class CoinFlip extends GameInstance {
     @Override
-    public void runGame() {
+    public void runGameLogic() {
 
     }
 
     public CoinFlip() {
         super(1, 1);
+    }
+
+    @Override
+    public boolean ifFinished() {
+        return false;
+    }
+
+    @Override
+    public void cleanup() {
+
     }
 
     public static void main(String[] args) {

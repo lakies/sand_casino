@@ -19,7 +19,11 @@ public abstract class GameInstance {
         this.players = new ArrayList<>();
     }
 
-    public abstract void runGame();
+    public abstract void runGameLogic();
+
+    public abstract void cleanup();
+
+    public abstract boolean ifFinished();
 
     public boolean addPlayer(ClientData client) {
         if (players.size() == maxPlayers) {
@@ -40,4 +44,5 @@ public abstract class GameInstance {
     public int getMinPlayers() {
         return minPlayers;
     }
+
 }
