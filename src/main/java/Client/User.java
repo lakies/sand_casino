@@ -5,24 +5,14 @@ import java.util.Arrays;
 public class User {
     private final String username;
     private final String password;
-    private final ServerCommunicator comms;
+    private final ServerCommunicator serverCommunicator;
     private byte[] authToken;
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.comms = new ServerCommunicator();
+        this.serverCommunicator = new ServerCommunicator(this);
     }
-
-    //
-//    public void setUsername(String username) {
-//        this.username = username;
-//    }
-//
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
-
 
     public String getUsername() {
         return username;
@@ -34,7 +24,7 @@ public class User {
 
     public boolean authenticate(){
         // TODO: authenticate with server. Return false if authentication failed
-        byte[] token = comms.sendAuthentication(username, password);
+        byte[] token = serverCommunicator.sendAuthentication(username, password);
         if (token == null) {
             return false;
         } else {

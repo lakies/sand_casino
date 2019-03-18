@@ -1,12 +1,21 @@
 package Server;
 
+import Games.GameInstanceController;
+import Games.GameTypes;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ClientHandler implements Runnable {
+    private Map<GameTypes, GameInstanceController> gameControllers;
+
+    public ClientHandler(Map<GameTypes, GameInstanceController> gameControllers) {
+        this.gameControllers = gameControllers;
+    }
 
     @Override
     public void run() {
@@ -18,7 +27,7 @@ public class ClientHandler implements Runnable {
 
             while (true) {
                 Socket s = serverSocket.accept();
-                clientPool.submit(new ClientTask(s));
+                clientPool.submit(new ClientTask(s, gameControllers));
             }
         } catch (IOException e) {
             System.out.println(e);

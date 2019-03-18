@@ -38,7 +38,7 @@ public class GameInstanceController implements Runnable {
         return null;
     }
 
-    private void addPlayer(ClientData player) {
+    public void addPlayer(ClientData player) {
         // TODO: implement an internal timer for game instances to allow more than minimum amount of players to connect. Then should add check for maxPlayers as well
         if (newGame == null) {
             newGame = gameInstanceCreator();

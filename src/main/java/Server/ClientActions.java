@@ -11,12 +11,13 @@ public class ClientActions {
         return false;
     }
 
-    public static boolean registerUser(ClientData client) {
+    public static byte[] registerUser(String username, String password) {
         // TODO: write user data to file
-        return !checkUsernameExists(client.getUsername());
+        checkUsernameExists(username);
+        return authenticateUser(username, password);
     }
 
-    public static byte[] authenticateUser(ClientData client) {
+    public static byte[] authenticateUser(String username, String password) {
         // TODO: check password, generate new auth token, save it and return it. If auth fails return null
 
         byte[] authToken = new byte[20];
@@ -26,11 +27,21 @@ public class ClientActions {
         return authToken;
     }
 
-    public static boolean checkAuthentication(DataInputStream in) throws IOException {
-        byte[] authToken = new byte[20];
-        in.readNBytes(authToken, 0, 20);
+    public static boolean checkAuthentication(byte[] token) {
+
 
         // TODO: read the auth tokens file and check if the one that the client sends exists and has not expired
         return true;
+    }
+
+    public static byte[] readAuthentication(DataInputStream in) throws IOException{
+        byte[] authToken = new byte[20];
+        in.readNBytes(authToken, 0, 20);
+        return authToken;
+    }
+
+    public static ClientData getClientByAuthToken(byte[] authToken) {
+        // TODO: read auth tokens file and create a new clientData instance
+        return new ClientData("", authToken);
     }
 }

@@ -2,18 +2,18 @@ package Server;
 
 public class ClientData {
     private final String username;
-    private final String password;
+    private final byte[] authToken;
 
-    public ClientData(String username, String password) {
+    public ClientData(String username, byte[] authToken) {
         this.username = username;
-        this.password = password;
+        this.authToken = authToken;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public String getPassword() {
-        return password;
+    public byte[] getAuthToken() {
+        return authToken;
     }
 }

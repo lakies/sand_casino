@@ -1,16 +1,24 @@
 package Server;
 
+import Games.GameInstanceController;
+import Games.GameTypes;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Map;
 
 public class ClientTask implements Runnable {
     private final Socket clientSocket;
+    private final Map<GameTypes, GameInstanceController> gameControllers;
+    private ClientData client;
 
-    public ClientTask(Socket clientSocket) {
+    public ClientTask(Socket clientSocket, Map<GameTypes, GameInstanceController> gameControllers) {
         this.clientSocket = clientSocket;
+        this.gameControllers = gameControllers;
     }
+
 
     @Override
     public void run() {
@@ -29,9 +37,17 @@ public class ClientTask implements Runnable {
             int requestType = in.readInt();
 
             if (requestType > 10) {
-                if (!ClientActions.checkAuthentication(in)) {
-                    out.writeInt(-2);
+                if (client == null){
+                    byte[] token = ClientActions.readAuthentication(in);
+                    if (ClientActions.checkAuthentication(token)) {
+                        client = ClientActions.getClientByAuthToken(token);
+                    } else {
+                        out.writeInt(-2);
+                        // TODO: continue here when in while loop
+                        return;
+                    }
                 }
+
             }
 
             switch (requestType) {
@@ -46,29 +62,34 @@ public class ClientTask implements Runnable {
                     // Register new user
                     String username = in.readUTF();
                     String password = in.readUTF();
-                    ClientData newUser = new ClientData(username, password);
-                    boolean registerResult = ClientActions.registerUser(newUser);
+                    byte[] authToken = ClientActions.registerUser(username, password);
                     out.writeInt(1);
-                    out.writeBoolean(registerResult);
+                    out.writeBoolean(authToken != null);
                     break;
                 }
                 case 2: {
                     // Authenticate
                     String username = in.readUTF();
                     String password = in.readUTF();
-                    ClientData user = new ClientData(username, password);
-                    byte[] authToken = ClientActions.authenticateUser(user);
+                    byte[] authToken = ClientActions.authenticateUser(username, password);
+
 
                     out.writeInt(1);
 
                     if (authToken == null) {
                         out.writeBoolean(false);
                     } else {
+                        client = ClientActions.getClientByAuthToken(authToken);
                         out.writeBoolean(true);
                         out.write(authToken);
                         System.out.println("Token sent");
                     }
 
+                    break;
+                }
+
+                case 10: {
+                    gameControllers.get(GameTypes.COINFLIP).addPlayer(client);
                     break;
                 }
 
@@ -78,6 +99,7 @@ public class ClientTask implements Runnable {
             }
         } catch (IOException e) {
             System.out.println("Streams could not be opened: " + e);
+            throw new RuntimeException(e);
         }
     }
 }
