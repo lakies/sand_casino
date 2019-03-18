@@ -17,7 +17,7 @@ public class Server {
 
             while (true) {
                 Socket s = serverSocket.accept();
-                clientPool.submit(new ClientTask(s));
+                clientPool.submit(new main.java.Server.ClientTask(s));
             }
         } catch (IOException e) {
             System.out.println(e);
