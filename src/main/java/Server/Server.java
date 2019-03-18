@@ -1,4 +1,4 @@
-package main.java.Server;
+package Server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -17,7 +17,7 @@ public class Server {
 
             while (true) {
                 Socket s = serverSocket.accept();
-                clientPool.submit(new ClientTask(s));
+                clientPool.submit(new main.java.Server.ClientTask(s));
             }
         } catch (IOException e) {
             System.out.println(e);
