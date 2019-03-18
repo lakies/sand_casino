@@ -2,6 +2,7 @@ package Games;
 
 import Server.ClientData;
 
+import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -11,33 +12,49 @@ public class GameInstanceController implements Runnable {
 
 
     private BlockingQueue<ClientData> queuedPlayers;
-    private Games gameType;
+    private ArrayList<GameInstance> runningGames;
+    private GameInstance newGame;
+    private GameTypes gameType;
 
-    public GameInstanceController(Games gameType) {
+    public GameInstanceController(GameTypes gameType) {
         this.queuedPlayers = new ArrayBlockingQueue<>(10); // is 10 enough?
         this.gameType = gameType;
+        newGame = null;
     }
 
-    private GameInstance gameInstanceCreator(Games type) { // TODO: add data for each game
-        switch (type) {
+    private GameInstance gameInstanceCreator() { // TODO: add data for each game
+        switch (gameType) {
 
             case COINFLIP:
                 return new CoinFlip();
-            break;
             case WHEEL:
-                return null;
-            break;
+                break;
             case LOTTERY:
-                return null;
-            break;
+                break;
         }
 
-        // Shouldn't ever reach here
+        // If reaches here then need to add new game to above switch
+        assert false;
         return null;
+    }
+
+    private void addPlayer(ClientData player) {
+        if (newGame == null) {
+            newGame = gameInstanceCreator();
+            newGame.addPlayer(player);
+        } else {
+            if (newGame.getMinPlayers() > newGame.getPlayers().size()) {
+                newGame.addPlayer(player);
+            } else {
+                newGame = gameInstanceCreator();
+                newGame.addPlayer(player);
+            }
+        }
     }
 
     @Override
     public void run() {
         // TODO: take players from queuedPlayers and assign them to games, then run game main logic
+        System.out.println("hi");
     }
 }

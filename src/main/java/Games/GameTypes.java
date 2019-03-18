@@ -1,5 +1,5 @@
 package Games;
 
-public enum Games {
+public enum GameTypes {
     COINFLIP, WHEEL, LOTTERY;
 }
