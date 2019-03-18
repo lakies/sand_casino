@@ -1,4 +1,4 @@
-package main.java.Server;
+package Server;
 
 public class ClientData {
     private final String username;
