@@ -1,5 +1,7 @@
 package Client;
 
+import Games.GameTypes;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -27,6 +29,17 @@ public class ServerCommunicator {
         }
     }
 
+    private void reconnect(User user) {
+        System.out.println("Connection lost. Reconnecting.");
+        serverSocket = null;
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            // do nothing, just continue
+        }
+        sendToken(user.getAuthToken());
+    }
+
     public byte[] sendAuthentication(String username, String password) {
         try {
             out.writeInt(2);
@@ -48,7 +61,44 @@ public class ServerCommunicator {
         }
     }
 
-    public void connectToGame(){
 
+    public boolean sendToken(byte[] token) {
+        // Connection was lost and reconnection with token is needed
+        connect();
+
+        try {
+            out.writeInt(3);
+            out.write(token);
+            in.readInt();
+            return in.readBoolean();
+        } catch (IOException e) {
+            // TODO: Maybe call sendToken recursively until it connects
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void connectToGame(User user, GameTypes gameType) {
+        try {
+
+            switch (gameType) {
+
+                case COINFLIP:
+                    out.writeInt(10);
+                    if (in.readInt() == -2) {
+                        // TODO: handle the token expiration somehow
+                    }
+
+                    System.out.println("Connected to coinflip");
+                    break;
+                case WHEEL:
+                    break;
+                case LOTTERY:
+                    break;
+            }
+        } catch (IOException e) {
+            reconnect(user);
+            connectToGame(user, gameType);
+            // recursively connect again?
+        }
     }
 }

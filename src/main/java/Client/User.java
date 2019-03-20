@@ -1,5 +1,7 @@
 package Client;
 
+import Games.GameTypes;
+
 import java.util.Arrays;
 
 public class User {
@@ -20,6 +22,10 @@ public class User {
 
     private void setAuthToken(byte[] authToken) {
         this.authToken = authToken;
+    }
+
+    public byte[] getAuthToken() {
+        return authToken;
     }
 
     public boolean authenticate(){
@@ -44,5 +50,9 @@ public class User {
         return "User{" +
                 "username='" + username + '\'' +
                 '}';
+    }
+
+    public void playGame(GameTypes gameType) {
+        serverCommunicator.connectToGame(this, gameType);
     }
 }

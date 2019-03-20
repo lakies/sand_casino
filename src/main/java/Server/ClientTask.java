@@ -22,83 +22,94 @@ public class ClientTask implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("main.java.Client connected");
+        System.out.println("Client connected");
 
         try (DataInputStream in = new DataInputStream(clientSocket.getInputStream());
-             DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream())) {
-            // TODO: put this in a loop so that multiple commands can be sent without opening a new conenction every time
-            // Maybe types 0-10 don't require authentication, but all above that do
+             DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
+             clientSocket) {
+            // TODO: put this in a loop so that multiple commands can be sent without opening a new connection every time
+            while (true) {
 
-            /*
-            main.java.Server response protocol:
-            0 - int, 1 if the command was successfully fulfilled, -1 if the command was of unknown type and -2 if the authentication was wrong
-            1 - Any data returned by the command
-             */
-            int requestType = in.readInt();
 
-            if (requestType > 10) {
-                if (client == null){
-                    byte[] token = ClientActions.readAuthentication(in);
-                    if (ClientActions.checkAuthentication(token)) {
-                        client = ClientActions.getClientByAuthToken(token);
-                    } else {
-                        out.writeInt(-2);
-                        // TODO: continue here when in while loop
-                        return;
+                // Maybe types 0-10 don't require authentication, but all above that do
+
+                /*
+                main.java.Server response protocol:
+                0 - int, 1 if the command was successfully fulfilled, -1 if the command was of unknown type and -2 if the authentication was wrong
+                1 - Any data returned by the command
+                 */
+                int requestType = in.readInt();
+
+                if (requestType > 10 && client == null) {
+                    out.writeInt(-2);
+                    // TODO: continue here when in while loop
+                    return;
+                }
+
+                switch (requestType) {
+                    case 0: {
+                        // Check if username exists
+                        String username = in.readUTF();
+                        out.writeInt(1);
+                        out.writeBoolean(ClientActions.checkUsernameExists(username));
+                        break;
                     }
-                }
-
-            }
-
-            switch (requestType) {
-                case 0: {
-                    // Check if username exists
-                    String username = in.readUTF();
-                    out.writeInt(1);
-                    out.writeBoolean(ClientActions.checkUsernameExists(username));
-                    break;
-                }
-                case 1: {
-                    // Register new user
-                    String username = in.readUTF();
-                    String password = in.readUTF();
-                    byte[] authToken = ClientActions.registerUser(username, password);
-                    out.writeInt(1);
-                    out.writeBoolean(authToken != null);
-                    break;
-                }
-                case 2: {
-                    // Authenticate
-                    String username = in.readUTF();
-                    String password = in.readUTF();
-                    byte[] authToken = ClientActions.authenticateUser(username, password);
+                    case 1: {
+                        // Register new user
+                        String username = in.readUTF();
+                        String password = in.readUTF();
+                        byte[] authToken = ClientActions.registerUser(username, password);
+                        out.writeInt(1);
+                        out.writeBoolean(authToken != null);
+                        break;
+                    }
+                    case 2: {
+                        // Authenticate
+                        String username = in.readUTF();
+                        String password = in.readUTF();
+                        byte[] authToken = ClientActions.authenticateUser(username, password);
 
 
-                    out.writeInt(1);
+                        out.writeInt(1);
 
-                    if (authToken == null) {
-                        out.writeBoolean(false);
-                    } else {
-                        client = ClientActions.getClientByAuthToken(authToken);
-                        out.writeBoolean(true);
-                        out.write(authToken);
-                        System.out.println("Token sent");
+                        if (authToken == null) {
+                            out.writeBoolean(false);
+                        } else {
+                            client = ClientActions.getClientByAuthToken(authToken);
+                            out.writeBoolean(true);
+                            out.write(authToken);
+                            System.out.println("Token sent");
+                        }
+
+                        break;
+                    }
+                    case 3: {
+                        // Reconnect with auth token
+                        byte[] token = ClientActions.readAuthentication(in);
+                        out.writeInt(1);
+                        if (ClientActions.checkAuthentication(token)) {
+                            client = ClientActions.getClientByAuthToken(token);
+                            out.writeBoolean(true);
+                        } else {
+                            out.writeBoolean(false);
+                        }
                     }
 
-                    break;
-                }
+                    case 10: {
+                        System.out.println("Client started playing coinflip");
+                        out.writeInt(1);
 
-                case 10: {
-                    gameControllers.get(GameTypes.COINFLIP).addPlayer(client);
-                    break;
-                }
+                        gameControllers.get(GameTypes.COINFLIP).addPlayer(client);
+                        break;
+                    }
 
-                default: {
-                    out.writeInt(-1);
+                    default: {
+                        out.writeInt(-1);
+                    }
                 }
             }
         } catch (IOException e) {
-            System.out.println("Streams could not be opened: " + e);
+            System.out.println("Client closed the connection");
             throw new RuntimeException(e);
         }
     }

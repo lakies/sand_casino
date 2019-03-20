@@ -1,5 +1,7 @@
 package Client;
 
+import Games.GameTypes;
+
 public class Client {
     public static void main(String[] args) {
         // TODO: Terminal ui
@@ -15,6 +17,6 @@ public class Client {
         System.out.println(user);
         System.out.println(user.isAuthenticated());
 
-
+        user.playGame(GameTypes.COINFLIP);
     }
 }
