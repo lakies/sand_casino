@@ -41,6 +41,7 @@ public class CoinFlip extends GameInstance {
     public void coinflip(ClientData client){
         if (this.enoughFunds(client)){
             double i = Math.random();
+            //Siia saaks kliendile luua valiku illusiooni?
             if (i < 0.5) {
                 client.setCoins(client.getCoins() + 100); //victory condition
             } else {
