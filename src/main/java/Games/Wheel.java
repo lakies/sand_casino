@@ -4,6 +4,10 @@ public class Wheel extends GameInstance {
     @Override
     public void runGameLogic() {
 
+
+    }
+    public Wheel(){
+        super(1, 1);
     }
 
     @Override

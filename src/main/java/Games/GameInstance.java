@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GameInstance {
+
+    public abstract boolean enoughFunds(ClientData client);
+
+
     private final int maxPlayers;
 
     // GameInstanceController ensures that at least minPlayers amount of players are connected to the game

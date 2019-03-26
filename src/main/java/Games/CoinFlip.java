@@ -4,6 +4,17 @@ import Server.ClientData;
 
 
 public class CoinFlip extends GameInstance {
+
+    @Override
+    public boolean enoughFunds(ClientData client) {
+        if (client.getCoins() >= 50) {
+            client.setCoins(client.getCoins() - 50);
+            return true;
+        }
+        System.out.println("Insufficient funds");
+        return false;
+    }
+
     @Override
     public void runGameLogic() {
 
@@ -28,13 +39,15 @@ public class CoinFlip extends GameInstance {
 
     }
     public void coinflip(ClientData client){
-
-        double i = Math.random();
-        if (i < 0.5){
-            //heads
-        } else {
-            //tails
+        if (this.enoughFunds(client)){
+            double i = Math.random();
+            if (i < 0.5) {
+                client.setCoins(client.getCoins() + 100); //victory condition
+            } else {
+                System.out.println("You lost");
+            }
         }
+
     }
 }
 
