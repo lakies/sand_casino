@@ -3,6 +3,7 @@
  * ### Coin flip
  * ### Lottery
  * ### Wheel of fortune
+ * ### Poker
  * ### And many more coming
  
  ## Come lose your coins today!
