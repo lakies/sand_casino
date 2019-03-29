@@ -2,11 +2,10 @@ package Games;
 
 import Server.ClientData;
 
-public class Lottery extends GameInstance {
-
-    public Lottery(){
-        super(50000, 1);
-
+public class Poker extends GameInstance {
+    private double buyIn = 25;
+    public Poker() {
+    super(5, 2);
     }
     @Override
     public boolean enoughFunds(ClientData client) {
