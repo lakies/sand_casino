@@ -42,7 +42,7 @@ public class CoinFlip extends GameInstance {
         if (this.enoughFunds(client)){
             double i = Math.random();
             //Siia saaks kliendile luua valiku illusiooni?
-            if (i < 0.5) {
+            if (i < 0.49) { //Kasiino võiks kasumlik olla xd
                 client.setCoins(client.getCoins() + 100); //victory condition
             } else {
                 System.out.println("You lost");

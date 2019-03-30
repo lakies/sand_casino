@@ -32,14 +32,12 @@ public class Wheel extends GameInstance {
 
 
     }
-    public void wheel(ClientData clientData){
-        if (enoughFunds(clientData)){
+    public void Game(ClientData clientData){
             Random generator = new Random();
             int randomIndex = generator.nextInt(winRates.length);
             System.out.println("Your ratio was: " + winRates[randomIndex]);
             clientData.setCoins(clientData.getCoins()+userCoins*winRates[randomIndex]);
 
-        }
     }
 
     @Override

@@ -7,7 +7,6 @@ import java.util.List;
 
 public abstract class GameInstance {
 
-    public abstract boolean enoughFunds(ClientData client);
 
 
     private final int maxPlayers;
@@ -25,6 +24,8 @@ public abstract class GameInstance {
 
     public abstract void runGameLogic();
 
+    public abstract boolean enoughFunds(ClientData clientData);
+
     public abstract void cleanup();
 
     public abstract boolean ifFinished();
@@ -33,8 +34,11 @@ public abstract class GameInstance {
         if (players.size() == maxPlayers) {
             return false;
         }
-        players.add(client);
-        return true;
+        if (enoughFunds(client)) {
+            players.add(client);
+            return true;
+        }
+        return false;
     }
 
     public List<ClientData> getPlayers() {
