@@ -1,6 +1,6 @@
-package Games;
+package games;
 
-import Server.ClientData;
+import server.ClientData;
 
 import java.util.Random;
 

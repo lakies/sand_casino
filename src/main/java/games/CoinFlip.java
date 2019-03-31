@@ -1,6 +1,6 @@
-package Games;
+package games;
 
-import Server.ClientData;
+import server.ClientData;
 
 
 public class CoinFlip extends GameInstance {

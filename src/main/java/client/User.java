@@ -1,6 +1,6 @@
-package Client;
+package client;
 
-import Games.GameTypes;
+import games.GameTypes;
 
 import java.util.Arrays;
 

@@ -1,7 +1,7 @@
-package Server;
+package server;
 
-import Games.GameInstanceController;
-import Games.GameTypes;
+import games.GameInstanceController;
+import games.GameTypes;
 
 import java.io.IOException;
 import java.net.ServerSocket;

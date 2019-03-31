@@ -1,8 +1,8 @@
-package Client.ui;
+package client.ui;
 
-import Client.LoginHandler;
-import Client.User;
-import Client.UserHolder;
+import client.LoginHandler;
+import client.User;
+import client.UserHolder;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
