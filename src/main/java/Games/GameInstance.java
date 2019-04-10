@@ -8,18 +8,25 @@ import java.util.List;
 public abstract class GameInstance {
 
 
-
     private final int maxPlayers;
 
     // GameInstanceController ensures that at least minPlayers amount of players are connected to the game
     private final int minPlayers;
-
     private final List<ClientData> players;
+    private double buyIn; // Pileti sissemüük
 
     public GameInstance(int maxPlayers, int minPlayers) {
         this.maxPlayers = maxPlayers;
         this.minPlayers = minPlayers;
         this.players = new ArrayList<>();
+    }
+
+    public double getBuyIn() {
+        return buyIn;
+    }
+
+    public void setBuyIn(double buyIn) {
+        this.buyIn = buyIn;
     }
 
     public abstract void runGameLogic();
