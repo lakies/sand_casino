@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane style="-fx-background-color: linear-gradient(to bottom right, #230c33, #a787bc);" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ui.SignUpController">
+<AnchorPane style="-fx-background-color: linear-gradient(to bottom right, #230c33, #a787bc);" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ui.SignUpController">
     <children>
           <VBox alignment="CENTER" cacheShape="false" fillWidth="false" layoutX="331.0" layoutY="60.0" prefHeight="500.0" prefWidth="400.0" scaleShape="false" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="350.0" AnchorPane.topAnchor="50.0">
               <children>

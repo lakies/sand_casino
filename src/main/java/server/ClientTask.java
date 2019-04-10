@@ -1,7 +1,7 @@
-package Server;
+package server;
 
-import Games.GameInstanceController;
-import Games.GameTypes;
+import games.GameInstanceController;
+import games.GameTypes;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -22,7 +22,7 @@ public class ClientTask implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Client connected");
+        System.out.println("client connected");
 
         try (DataInputStream in = new DataInputStream(clientSocket.getInputStream());
              DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
@@ -34,7 +34,7 @@ public class ClientTask implements Runnable {
                 // Maybe types 0-10 don't require authentication, but all above that do
 
                 /*
-                main.java.Server response protocol:
+                main.java.server response protocol:
                 0 - int, 1 if the command was successfully fulfilled, -1 if the command was of unknown type and -2 if the authentication was wrong
                 1 - Any data returned by the command
                  */
@@ -96,7 +96,7 @@ public class ClientTask implements Runnable {
                     }
 
                     case 10: {
-                        System.out.println("Client started playing coinflip");
+                        System.out.println("client started playing coinflip");
                         out.writeInt(1);
 
                         gameControllers.get(GameTypes.COINFLIP).addPlayer(client);
@@ -109,7 +109,7 @@ public class ClientTask implements Runnable {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Client closed the connection");
+            System.out.println("client closed the connection");
             throw new RuntimeException(e);
         }
     }

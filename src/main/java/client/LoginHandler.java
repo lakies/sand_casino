@@ -1,4 +1,4 @@
-package Client;
+package client;
 
 public class LoginHandler {
     public static User login(String username, String password) {

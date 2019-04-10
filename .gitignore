@@ -2,3 +2,5 @@
 workspace.xml
 tasks.xml
 target/
+.idea/
+*.iml
