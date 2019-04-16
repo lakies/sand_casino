@@ -2,7 +2,7 @@ package games;
 
 import server.ClientData;
 
-public class Poker extends GameInstance {
+public class Poker extends games.GameInstance {
     private String[] Cards = {};
 
     public Poker() {
