@@ -7,7 +7,7 @@ import java.util.Arrays;
 public class User {
     private final String username;
     private final String password;
-    private final client.ServerCommunicator serverCommunicator;
+    private final ServerCommunicator serverCommunicator;
     private byte[] authToken;
 
     public User(String username, String password) {
