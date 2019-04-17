@@ -23,9 +23,7 @@ public class CoinflipUi extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        BorderPane border = new BorderPane();
-
-        Button emptybutton = new Button("Play Coinflip?");
+        Label playcoinflip = new Label("Play Coinflip?");
         // küsimuse ja kahe nupu loomine
         Label label = new Label("Heads or Tails?");
         Button heads = new Button("Heads");
@@ -45,20 +43,20 @@ public class CoinflipUi extends Application {
 
         // nuppude grupeerimine
         FlowPane pane = new FlowPane(10, 10);
-        pane.setAlignment(Pos.CENTER);
+        pane.setAlignment(Pos.CENTER_LEFT);
         pane.getChildren().addAll(heads, tails);
 
         // küsimuse ja nuppude gruppi paigutamine
         VBox vBox = new VBox(10);
-        vBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().addAll(label, pane);
+        vBox.setAlignment(Pos.CENTER_LEFT);
+        vBox.getChildren().addAll(playcoinflip, label, pane);
 
 
 
 
         FlowPane flow = new FlowPane();
-        flow.getChildren().addAll(border, vBox);
-        Scene stseen1 = new Scene(flow, 300, 150, Color.SNOW);
+        flow.getChildren().addAll(vBox);
+        Scene stseen1 = new Scene(flow, 200, 150, Color.SNOW);
         stage.setTitle("COINFLIP");
         stage.setResizable(false);
         stage.setScene(stseen1);
