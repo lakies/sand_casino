@@ -3,7 +3,7 @@ package games;
 import server.ClientData;
 
 
-public class CoinFlip extends GameInstance {
+public class CoinFlip extends games.GameInstance {
 
     @Override
     public boolean enoughFunds(ClientData client) {
