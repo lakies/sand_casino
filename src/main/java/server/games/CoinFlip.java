@@ -1,9 +1,9 @@
-package games;
+package server.games;
 
 import server.ClientData;
 
 
-public class CoinFlip extends games.GameInstance {
+public class CoinFlip extends server.games.GameInstance {
 
     @Override
     public boolean enoughFunds(ClientData client) {

@@ -1,4 +1,4 @@
-package games;
+package server.games;
 
 import server.ClientData;
 
@@ -7,7 +7,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 public class GameInstanceController implements Runnable {
-    // for each game type one of this object is created. this handles the players and spins up games for each of them
+    // for each game type one of this object is created. this handles the players and spins up server.games for each of them
     // each game's controller lives in a thread
 
 

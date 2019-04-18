@@ -1,7 +1,6 @@
-package games;
+package server.games;
 
 import server.ClientData;
-import games.GameInstance;
 
 public class Poker extends GameInstance {
     private String[] Cards = {};

@@ -32,14 +32,14 @@ public class CoinflipUi extends Application {
         // sündmuse lisamine nupule heads
         heads.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-               // games.CoinFlip = new coinflip(client);
+               // server.games.CoinFlip = new coinflip(client);
             }
         });
 
         // sündmuse lisamine nupule tails
         tails.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                // games.CoinFlip = new coinflip(client);
+                // server.games.CoinFlip = new coinflip(client);
             }
         });
 

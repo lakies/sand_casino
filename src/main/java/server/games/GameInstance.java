@@ -1,4 +1,4 @@
-package games;
+package server.games;
 
 import server.ClientData;
 

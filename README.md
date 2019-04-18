@@ -1,5 +1,5 @@
 # Sand Casino™
-## Has the best games you could think of:
+## Has the best server.games you could think of:
  * ### Coin flip
  * ### Lottery
  * ### Wheel of fortune
