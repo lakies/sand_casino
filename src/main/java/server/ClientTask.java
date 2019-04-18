@@ -1,7 +1,12 @@
 package server;
 
+import protocol.ClassConverter;
+import protocol.MessageBody;
+import protocol.Response;
+import protocol.requests.StartGameRequest;
+import protocol.requests.UserDataRequest;
 import server.games.GameInstanceController;
-import server.games.GameTypes;
+import server.games.GameType;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -11,10 +16,9 @@ import java.util.Map;
 
 public class ClientTask implements Runnable {
     private final Socket clientSocket;
-    private final Map<GameTypes, GameInstanceController> gameControllers;
-    private ClientData client;
+    private final Map<GameType, GameInstanceController> gameControllers;
 
-    public ClientTask(Socket clientSocket, Map<GameTypes, GameInstanceController> gameControllers) {
+    public ClientTask(Socket clientSocket, Map<GameType, GameInstanceController> gameControllers) {
         this.clientSocket = clientSocket;
         this.gameControllers = gameControllers;
     }
@@ -29,84 +33,62 @@ public class ClientTask implements Runnable {
              clientSocket) {
             // TODO: put this in a loop so that multiple commands can be sent without opening a new connection every time
             while (true) {
+                String requestString = in.readUTF();
+                System.out.println(requestString);
+                MessageBody request = ClassConverter.decode(requestString);;
+                Response response = new Response();
 
 
-                // Maybe types 0-10 don't require authentication, but all above that do
+                switch (request.getType()){
 
-                /*
-                main.java.server response protocol:
-                0 - int, 1 if the command was successfully fulfilled, -1 if the command was of unknown type and -2 if the authentication was wrong
-                1 - Any data returned by the command
-                 */
-                int requestType = in.readInt();
-
-                if (requestType > 10 && client == null) {
-                    out.writeInt(-2);
-                    // TODO: continue here when in while loop
-                    return;
-                }
-
-                switch (requestType) {
-                    case 0: {
-                        // Check if username exists
-                        String username = in.readUTF();
-                        out.writeInt(1);
-                        out.writeBoolean(ClientActions.checkUsernameExists(username));
-                        break;
-                    }
-                    case 1: {
-                        // Register new user
-                        String username = in.readUTF();
-                        String password = in.readUTF();
-                        byte[] authToken = ClientActions.registerUser(username, password);
-                        out.writeInt(1);
-                        out.writeBoolean(authToken != null);
-                        break;
-                    }
-                    case 2: {
-                        // Authenticate
-                        String username = in.readUTF();
-                        String password = in.readUTF();
-                        byte[] authToken = ClientActions.authenticateUser(username, password);
-
-
-                        out.writeInt(1);
-
+                    case LOGIN:{
+                        UserDataRequest loginRequest = (UserDataRequest) request;
+                        byte[] authToken = ClientActions.authenticateUser(loginRequest.getUsername(), loginRequest.getPassword());
                         if (authToken == null) {
-                            out.writeBoolean(false);
+                            response.setStatusCode(Response.statusCodes.ERR_INVALID_CREDENTIALS);
                         } else {
-                            client = ClientActions.getClientByAuthToken(authToken);
-                            out.writeBoolean(true);
-                            out.write(authToken);
                             System.out.println("Token sent");
+                            response.setAuthToken(authToken);
                         }
-
                         break;
                     }
-                    case 3: {
-                        // Reconnect with auth token
-                        byte[] token = ClientActions.readAuthentication(in);
-                        out.writeInt(1);
-                        if (ClientActions.checkAuthentication(token)) {
-                            client = ClientActions.getClientByAuthToken(token);
-                            out.writeBoolean(true);
+                    case CREATE_ACCOUNT: {
+                        UserDataRequest createAccountRequest = (UserDataRequest) request;
+                        byte[] authToken = ClientActions.createAccount(createAccountRequest.getUsername(), createAccountRequest.getPassword());
+                        if(authToken == null){
+                            response.setStatusCode(Response.statusCodes.ERR_ACCOUNT_EXISTS);
                         } else {
-                            out.writeBoolean(false);
+                            System.out.println("Account succesfully created");
+                            response.setAuthToken(authToken);
                         }
-                    }
-
-                    case 10: {
-                        System.out.println("client started playing coinflip");
-                        out.writeInt(1);
-
-                        gameControllers.get(GameTypes.COINFLIP).addPlayer(client);
                         break;
                     }
+                    case START_GAME:{
+                        StartGameRequest startGameRequest = (StartGameRequest) request;
 
-                    default: {
-                        out.writeInt(-1);
+                        if (startGameRequest.getAuthToken() == null || !ClientActions.checkAuthentication(startGameRequest.getAuthToken())){
+                            response.setStatusCode(Response.statusCodes.ERR_INVALID_CREDENTIALS);
+                            break;
+                        }
+
+                        ClientData client = ClientActions.getClientByAuthToken(startGameRequest.getAuthToken());
+
+                        switch (startGameRequest.getGameType()){
+                            case COINFLIP:
+                                System.out.println("client started playing coinflip");
+                                gameControllers.get(GameType.COINFLIP).addPlayer(client);
+                                break;
+                            case WHEEL:
+                                break;
+                            case LOTTERY:
+                                break;
+                        }
+                        break;
                     }
                 }
+
+                out.writeUTF(ClassConverter.encode(response));
+                out.flush();
             }
         } catch (IOException e) {
             System.out.println("client closed the connection");

@@ -25,6 +25,7 @@ public class LogInController {
         String enteredUsername = username.getText();
         String enteredPassword = password.getText();
         User user = LoginHandler.login(enteredUsername, enteredPassword);
+        // TODO: kui .login() throwib IOExceptioni siis ei saanud serveriga ühendust. Visata mingi punane tekst et a la connection to server failed.
         if (user == null) {
             loginFailed.setVisible(true);
         } else {

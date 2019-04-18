@@ -1,9 +1,10 @@
 package client;
 
+import java.io.IOException;
+
 public class LoginHandler {
-    public static User login(String username, String password) {
+    public static User login(String username, String password) throws IOException {
         User user = new User(username, password);
-        // TODO: check if credentials are already saved on disk.
 
         if (user.authenticate()) {
             // Return the authenticated user
@@ -18,19 +19,6 @@ public class LoginHandler {
 
         // TODO: maybe test password security
 
-        saveCredentials(username, password);
-
         return new User(username, password);
-    }
-
-    public static void saveCredentials(String usernname, String password) {
-        // TODO: write data to disk
-
-        // TODO: send credential data to server
-    }
-
-    public static User readCredentials() {
-        // TODO: read credentials from disk
-        return null;
     }
 }

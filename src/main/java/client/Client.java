@@ -10,7 +10,6 @@ public class Client extends Application {
 
 
     public static void main(String[] args) {
-        // TODO: Terminal ui
         launch(args);
     }
 

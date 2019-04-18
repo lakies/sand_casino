@@ -1,7 +1,10 @@
 package client;
 
-import server.games.GameTypes;
+import protocol.MessageType;
+import protocol.Response;
+import protocol.requests.UserDataRequest;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class User {
@@ -13,7 +16,7 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.serverCommunicator = new ServerCommunicator(this);
+        this.serverCommunicator = new ServerCommunicator();
     }
 
     public String getUsername() {
@@ -28,13 +31,13 @@ public class User {
         return authToken;
     }
 
-    public boolean authenticate(){
-        // TODO: authenticate with server. Return false if authentication failed
-        byte[] token = serverCommunicator.sendAuthentication(username, password);
-        if (token == null) {
+    public boolean authenticate() throws IOException {
+        Response response = serverCommunicator.sendRequest(new UserDataRequest(MessageType.LOGIN, username, password));
+
+        if (response.getAuthToken() == null) {
             return false;
         } else {
-            setAuthToken(token);
+            setAuthToken(response.getAuthToken());
             return true;
         }
     }
@@ -52,7 +55,7 @@ public class User {
                 '}';
     }
 
-    public void playGame(GameTypes gameType) {
-        serverCommunicator.connectToGame(this, gameType);
-    }
+//    public void playGame(GameType gameType) {
+//        serverCommunicator.connectToGame(this, gameType);
+//    }
 }

@@ -11,8 +11,8 @@ public class ClientActions {
         return false;
     }
 
-    public static byte[] registerUser(String username, String password) {
-        // TODO: write user data to file
+    public static byte[] createAccount(String username, String password) {
+        // TODO: return null if account with same name already exists
         checkUsernameExists(username);
         return authenticateUser(username, password);
     }
@@ -41,7 +41,7 @@ public class ClientActions {
     }
 
     public static ClientData getClientByAuthToken(byte[] authToken) {
-        // TODO: read auth tokens file and create a new clientData instance
+        // TODO: read logged in users and return the matching user
         return new ClientData("", authToken);
     }
 }

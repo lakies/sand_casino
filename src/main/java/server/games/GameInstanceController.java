@@ -14,9 +14,9 @@ public class GameInstanceController implements Runnable {
     private BlockingQueue<ClientData> queuedPlayers;
     private ArrayList<GameInstance> runningGames;
     private GameInstance newGame;
-    private GameTypes gameType;
+    private GameType gameType;
 
-    public GameInstanceController(GameTypes gameType) {
+    public GameInstanceController(GameType gameType) {
         this.queuedPlayers = new ArrayBlockingQueue<>(10); // is 10 enough?
         this.gameType = gameType;
         newGame = null;

@@ -1,6 +1,8 @@
 package protocol;
 
 public enum MessageType {
-    REQUEST,
+    LOGIN,
+    CREATE_ACCOUNT,
+    START_GAME,
     RESPONSE
 }
