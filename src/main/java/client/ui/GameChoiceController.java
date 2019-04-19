@@ -1,7 +1,11 @@
 package client.ui;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -12,7 +16,17 @@ public class GameChoiceController {
     public Button poker;
     public Button wheel;
 
-    public void handleButtonAction (ActionEvent event) throws IOException {
+        public void handleButtonActionLottery (ActionEvent event) throws IOException {
+        }
 
+        public void handleButtonActionWheelOfFortune (ActionEvent event) throws IOException {
+        }
+        public void handleButtonAction (ActionEvent event) throws IOException {
+        }
+        public void handleButtonActionCoin (ActionEvent event) throws IOException {
+        Stage stage = (Stage) coin.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("/CoinflipUI.fxml"));
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 }
