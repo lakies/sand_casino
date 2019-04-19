@@ -1,8 +1,7 @@
-package Client.ui;
+package client.ui;
 
 import client.LoginHandler;
 import client.UserHolder;
-import client.ui.UIController;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;

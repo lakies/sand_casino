@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane style="-fx-background-color: linear-gradient(to bottom right, #230c33, #a787bc);" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ui.WheelUIController">
+<AnchorPane style="-fx-background-color: linear-gradient(to bottom right, #230c33, #a787bc);" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ui.WheelUIController">
     <children>
         <VBox alignment="BOTTOM_CENTER" cacheShape="false" fillWidth="false" layoutX="265.0" layoutY="52.0" prefHeight="484.0" prefWidth="526.0" scaleShape="false" spacing="30.0" AnchorPane.bottomAnchor="64.0" AnchorPane.leftAnchor="265.0" AnchorPane.rightAnchor="335.0" AnchorPane.topAnchor="52.0">
             <children>

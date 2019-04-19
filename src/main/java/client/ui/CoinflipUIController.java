@@ -1,6 +1,5 @@
 package client.ui;
 
-import client.ui.UIController;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 
