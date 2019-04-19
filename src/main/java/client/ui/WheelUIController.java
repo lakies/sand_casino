@@ -27,6 +27,6 @@ public class WheelUIController extends UIController {
         }
     }
     public void goBack (ActionEvent event) throws IOException {
-        sceneTransition("/gameChoiceScreen.fxml", back);
+        sceneTransition("/gameChoiceScreen.fxml", back, getServerCommunicator());
     }
 }

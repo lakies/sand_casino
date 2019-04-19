@@ -34,7 +34,6 @@ public class UIController {
         Parent root = fxmlLoader.load(getClass().getResource(resourceName).openStream());
         UIController controller = fxmlLoader.getController();
         controller.setServerCommunicator(communicator);
-        System.out.println("transition");
         stage.setScene(new Scene(root));
         stage.show();
     }

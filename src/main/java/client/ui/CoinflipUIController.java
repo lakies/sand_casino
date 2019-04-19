@@ -15,6 +15,6 @@ public class CoinflipUIController extends UIController {
         //TODO: Server communication so player plays.
     }
     public void goBack (ActionEvent event) throws IOException {
-        sceneTransition("/gameChoiceScreen.fxml", back);
+        sceneTransition("/gameChoiceScreen.fxml", back, getServerCommunicator());
     }
 }

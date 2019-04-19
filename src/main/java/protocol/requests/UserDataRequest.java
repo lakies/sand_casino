@@ -15,7 +15,7 @@ public class UserDataRequest extends Request {
         super(type);
 
         if (type != MessageType.LOGIN && type != MessageType.CREATE_ACCOUNT) {
-            throw new RuntimeException("invalid message type for user message request");
+            throw new RuntimeException("invalid message type for user data request");
         }
 
         this.username = username;

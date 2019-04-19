@@ -22,7 +22,7 @@ public class GameInstanceController implements Runnable {
         newGame = null;
     }
 
-    private GameInstance gameInstanceCreator() { // TODO: add message for each game
+    private GameInstance gameInstanceCreator() { // TODO: add data for each game
         switch (gameType) {
 
             case COINFLIP:
