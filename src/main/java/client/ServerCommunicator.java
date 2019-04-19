@@ -14,8 +14,10 @@ public class ServerCommunicator {
     private Socket serverSocket;
     private DataInputStream in;
     private DataOutputStream out;
+    private final User user;
 
-    public ServerCommunicator() {
+    public ServerCommunicator(User user) {
+        this.user = user;
         connect();
     }
 
@@ -30,6 +32,7 @@ public class ServerCommunicator {
     }
 
     public Response sendRequest (Request request) throws IOException{
+        request.setAuthToken(user.getAuthToken());
         String requestAsString = ClassConverter.encode(request);
 
         if (out == null || in == null){

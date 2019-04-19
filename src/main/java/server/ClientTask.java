@@ -4,6 +4,7 @@ import protocol.ClassConverter;
 import protocol.MessageBody;
 import protocol.Response;
 import protocol.requests.StartGameRequest;
+import protocol.requests.TestRequest;
 import protocol.requests.UserDataRequest;
 import server.games.GameInstanceController;
 import server.games.GameType;
@@ -61,6 +62,11 @@ public class ClientTask implements Runnable {
                             System.out.println("Account succesfully created");
                             response.setAuthToken(authToken);
                         }
+                        break;
+                    }
+                    case TEST:{
+                        TestRequest testRequest = (TestRequest) request;
+                        response.message = "test string";
                         break;
                     }
                     case START_GAME:{

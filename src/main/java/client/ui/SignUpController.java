@@ -1,6 +1,7 @@
 package client.ui;
 
 import client.LoginHandler;
+import client.User;
 import client.UserHolder;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -27,8 +28,8 @@ public class SignUpController extends UIController {
         } else if (!enteredPw1.equals(enteredPw2)) {
             invalidInput.setText("Entered passwords do not match.");
         } else {
-            UserHolder.authenticatedUser = LoginHandler.createAccount(enteredUsername, enteredPw1);
-            sceneTransition("/gameChoiceScreen.fxml", signUp);
+            User user = LoginHandler.createAccount(enteredUsername, enteredPw1);
+            sceneTransition("/gameChoiceScreen.fxml", signUp, user.getServerCommunicator());
         }
     }
 

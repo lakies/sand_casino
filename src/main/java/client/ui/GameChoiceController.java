@@ -16,13 +16,13 @@ public class GameChoiceController extends UIController{
     }
 
     public void handleButtonActionWheelOfFortune (ActionEvent event) throws IOException {
-        sceneTransition("/WheelUI.fxml", wheel);
+        sceneTransition("/WheelUI.fxml", wheel, getServerCommunicator());
     }
 
     public void handleButtonAction (ActionEvent event) throws IOException {
     }
 
     public void handleButtonActionCoin (ActionEvent event) throws IOException {
-        sceneTransition("/CoinflipUI.fxml", coin);
+        sceneTransition("/CoinflipUI.fxml", coin, getServerCommunicator());
     }
 }

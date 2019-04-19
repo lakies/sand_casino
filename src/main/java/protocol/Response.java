@@ -29,4 +29,6 @@ public class Response extends MessageBody{
     public void setAuthToken(byte[] authToken) {
         this.authToken = authToken;
     }
+
+    public String message;
 }

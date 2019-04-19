@@ -16,7 +16,7 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.serverCommunicator = new ServerCommunicator();
+        this.serverCommunicator = new ServerCommunicator(this);
     }
 
     public String getUsername() {
@@ -29,6 +29,10 @@ public class User {
 
     public byte[] getAuthToken() {
         return authToken;
+    }
+
+    public ServerCommunicator getServerCommunicator() {
+        return serverCommunicator;
     }
 
     public boolean authenticate() throws IOException {

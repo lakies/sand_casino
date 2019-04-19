@@ -26,7 +26,7 @@ public class LogInController extends UIController {
             loginFailed.setVisible(true);
         } else {
             UserHolder.authenticatedUser = user;
-            sceneTransition("/gameChoiceScreen.fxml", logIn);
+            sceneTransition("/gameChoiceScreen.fxml", logIn, user.getServerCommunicator());
         }
     }
 
