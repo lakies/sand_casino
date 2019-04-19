@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class GameChoiceController {
+public class GameChoiceController extends UIController{
 
     public Button coin;
     public Button lottery;
@@ -25,12 +25,11 @@ public class GameChoiceController {
             stage.setScene(new Scene(root));
             stage.show();
         }
+
         public void handleButtonAction (ActionEvent event) throws IOException {
         }
+
         public void handleButtonActionCoin (ActionEvent event) throws IOException {
-        Stage stage = (Stage) coin.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/CoinflipUI.fxml"));
-        stage.setScene(new Scene(root));
-        stage.show();
-    }
+            sceneTransition("/CoinflipUI.fxml", coin);
+        }
 }

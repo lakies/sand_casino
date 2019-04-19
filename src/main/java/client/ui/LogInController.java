@@ -1,19 +1,16 @@
-package client.ui;
+package Client.ui;
 
 import client.LoginHandler;
 import client.User;
 import client.UserHolder;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import client.ui.UIController;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class LogInController {
+public class LogInController extends UIController {
 
     public TextField username;
     public TextField password;
@@ -30,18 +27,12 @@ public class LogInController {
             loginFailed.setVisible(true);
         } else {
             UserHolder.authenticatedUser = user;
-            Stage stage = (Stage) logIn.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("/gameChoiceScreen.fxml"));
-            stage.setScene(new Scene(root));
-            stage.show();
+            sceneTransition("/gameChoiceScreen.fxml", logIn);
         }
     }
 
     public void signUpButtonClicked() throws IOException {
-        Stage stage = (Stage) signUp.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/signUpScreen.fxml"));
-        stage.setScene(new Scene(root));
-        stage.show();
+        sceneTransition("/signUpScreen.fxml", signUp);
     }
 
 }

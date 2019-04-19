@@ -1,5 +1,5 @@
 package server.games;
 
 public enum GameType {
-    COINFLIP, WHEEL, LOTTERY;
+    COINFLIP, WHEEL, LOTTERY
 }

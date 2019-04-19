@@ -1,4 +1,6 @@
 package client.ui;
 
-public class LotteryUI {
+import client.ui.UIController;
+
+public class LotteryUI extends UIController {
 }
