@@ -20,6 +20,10 @@ public class GameChoiceController {
         }
 
         public void handleButtonActionWheelOfFortune (ActionEvent event) throws IOException {
+            Stage stage = (Stage) wheel.getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("/WheelUI.fxml"));
+            stage.setScene(new Scene(root));
+            stage.show();
         }
         public void handleButtonAction (ActionEvent event) throws IOException {
         }
