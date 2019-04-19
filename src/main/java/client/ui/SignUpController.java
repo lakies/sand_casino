@@ -1,18 +1,15 @@
-package client.ui;
+package Client.ui;
 
 import client.LoginHandler;
 import client.UserHolder;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import client.ui.UIController;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SignUpController {
+public class SignUpController extends UIController {
 
     public TextField username;
     public TextField password1;
@@ -32,17 +29,11 @@ public class SignUpController {
             invalidInput.setText("Entered passwords do not match.");
         } else {
             UserHolder.authenticatedUser = LoginHandler.createAccount(enteredUsername, enteredPw1);
-            Stage stage = (Stage) signUp.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("/gameChoiceScreen.fxml"));
-            stage.setScene(new Scene(root));
-            stage.show();
+            sceneTransition("/gameChoiceScreen.fxml", signUp);
         }
     }
 
     public void loginClicked() throws IOException {
-        Stage stage = (Stage) login.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/logInScreen.fxml"));
-        stage.setScene(new Scene(root));
-        stage.show();
+        sceneTransition("/logInScreen.fxml", login);
     }
 }

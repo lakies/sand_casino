@@ -35,7 +35,7 @@ public class ClientTask implements Runnable {
             while (true) {
                 String requestString = in.readUTF();
                 System.out.println(requestString);
-                MessageBody request = ClassConverter.decode(requestString);;
+                MessageBody request = ClassConverter.decode(requestString);
                 Response response = new Response();
 
 
