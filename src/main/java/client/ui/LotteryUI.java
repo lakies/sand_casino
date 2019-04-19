@@ -1,4 +1,4 @@
-package Client.ui;
+package client.ui;
 
 public class LotteryUI {
 }

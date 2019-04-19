@@ -32,17 +32,17 @@ public class ServerCommunicator {
     public Response sendRequest (Request request) throws IOException{
         String requestAsString = ClassConverter.encode(request);
 
-        try{
-            System.out.println("Sending request " + requestAsString);
-            out.writeUTF(requestAsString);
-            out.flush();
-            String response = in.readUTF();
-
-            return ClassConverter.decode(response);
-
-        } catch (NullPointerException e){
-            // Kui tekib out või in on null, siis ei saanud serveriga ühendust. Mõistlik visata IOException vist.
-            throw new IOException(e);
+        if (out == null || in == null){
+            throw new IOException("connection with server not established");
         }
+
+
+        System.out.println("Sending request " + requestAsString);
+        out.writeUTF(requestAsString);
+        out.flush();
+        String response = in.readUTF();
+
+        return ClassConverter.decode(response);
+
     }
 }

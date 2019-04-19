@@ -1,4 +1,4 @@
-package Client.ui;
+package client.ui;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
