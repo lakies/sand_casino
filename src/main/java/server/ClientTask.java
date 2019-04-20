@@ -37,8 +37,16 @@ public class ClientTask implements Runnable {
             while (true) {
                 String requestString = in.readUTF();
                 System.out.println(requestString);
-                MessageBody request = ClassConverter.decode(requestString);
                 Response response = new Response();
+                MessageBody request;
+                try {
+                    request = ClassConverter.decode(requestString);
+                } catch (ClassNotFoundException e){
+                    response.setStatusCode(Response.StatusCodes.ERR_INVALID_REQUEST);
+                    out.writeUTF(ClassConverter.encode(response));
+                    out.flush();
+                    continue;
+                }
 
                 switch (request.getType()){
 

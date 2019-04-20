@@ -4,7 +4,8 @@ public class Response extends MessageBody{
     public enum StatusCodes {
         SUCCESS,
         ERR_INVALID_CREDENTIALS,
-        ERR_ACCOUNT_EXISTS
+        ERR_ACCOUNT_EXISTS,
+        ERR_INVALID_REQUEST
     }
 
     public Response() {

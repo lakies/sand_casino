@@ -16,16 +16,14 @@ public class ClassConverter {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends MessageBody> T decode(String rawJson) {
+    public static <T extends MessageBody> T decode(String rawJson) throws ClassNotFoundException {
         LinkedTreeMap<?,?> asMap = gsonEngine.fromJson(rawJson, LinkedTreeMap.class);
         String className = asMap.get("type").toString();
-        Class<? extends MessageBody> messageClass;
-        try {
-            messageClass = (Class<? extends MessageBody>) Class.forName(className);
-        } catch (ClassNotFoundException e){
-            // Should not be possible to enter here
-            throw new RuntimeException(e);
+        if (!className.startsWith("protocol.")){
+            throw new ClassNotFoundException("Illegal class");
         }
+        Class<? extends MessageBody> messageClass;
+        messageClass = (Class<? extends MessageBody>) Class.forName(className);
         JsonObject jsonObject = gsonEngine.toJsonTree(asMap.get("data")).getAsJsonObject();
         return (T) gsonEngine.fromJson(jsonObject, messageClass);
     }

@@ -43,9 +43,12 @@ public class ServerCommunicator {
         System.out.println("Sending request " + requestAsString);
         out.writeUTF(requestAsString);
         out.flush();
-        String response = in.readUTF();
 
-        return ClassConverter.decode(response);
+        try {
+            return ClassConverter.decode(in.readUTF());
+        } catch (ClassNotFoundException e){
+            throw new RuntimeException("Server sent illegal response");
+        }
 
     }
 }

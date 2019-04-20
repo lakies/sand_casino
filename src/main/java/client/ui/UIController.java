@@ -30,8 +30,8 @@ public class UIController {
 
     public void sceneTransition(String resourceName, Node targetNode, ServerCommunicator communicator) throws IOException {
         Stage stage = (Stage) targetNode.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        Parent root = fxmlLoader.load(getClass().getResource(resourceName).openStream());
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resourceName));
+        Parent root = fxmlLoader.load();
         UIController controller = fxmlLoader.getController();
         controller.setServerCommunicator(communicator);
         stage.setScene(new Scene(root));
