@@ -11,7 +11,7 @@ public class User {
     private final String username;
     private final String password;
     private final ServerCommunicator serverCommunicator;
-    private byte[] authToken;
+    private String authToken;
 
     public User(String username, String password) {
         this.username = username;
@@ -19,15 +19,11 @@ public class User {
         this.serverCommunicator = new ServerCommunicator(this);
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setAuthToken(byte[] authToken) {
+    public void setAuthToken(String authToken) {
         this.authToken = authToken;
     }
 
-    public byte[] getAuthToken() {
+    public String getAuthToken() {
         return authToken;
     }
 
@@ -46,20 +42,10 @@ public class User {
         }
     }
 
-    public boolean isAuthenticated(){
-        // TODO: check with server that the auth token has not expired
-        System.out.println(Arrays.toString(authToken));
-        return authToken != null;
-    }
-
     @Override
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
                 '}';
     }
-
-//    public void playGame(GameType gameType) {
-//        serverCommunicator.connectToGame(this, gameType);
-//    }
 }

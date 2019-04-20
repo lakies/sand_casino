@@ -6,15 +6,15 @@ import server.games.GameType;
 
 public class StartGameRequest extends Request {
     private GameType gameType;
-    private byte[] authToken;
+    private String authToken;
 
-    public StartGameRequest(GameType gameType, byte[] authToken) {
+    public StartGameRequest(GameType gameType, String authToken) {
         super(MessageType.START_GAME);
         this.gameType = gameType;
         this.authToken = authToken;
     }
 
-    public byte[] getAuthToken() {
+    public String getAuthToken() {
         return authToken;
     }
 

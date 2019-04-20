@@ -34,7 +34,6 @@ public class ClientTask implements Runnable {
         try (DataInputStream in = new DataInputStream(clientSocket.getInputStream());
              DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
              clientSocket) {
-            // TODO: put this in a loop so that multiple commands can be sent without opening a new connection every time
             while (true) {
                 String requestString = in.readUTF();
                 System.out.println(requestString);
@@ -45,7 +44,7 @@ public class ClientTask implements Runnable {
 
                     case LOGIN:{
                         UserDataRequest loginRequest = (UserDataRequest) request;
-                        byte[] authToken = clientActions.authenticateUser(loginRequest.getUsername(), loginRequest.getPassword());
+                        String authToken = clientActions.authenticateUser(loginRequest.getUsername(), loginRequest.getPassword());
                         if (authToken == null) {
                             response.setStatusCode(Response.StatusCodes.ERR_INVALID_CREDENTIALS);
                         } else {
@@ -56,11 +55,11 @@ public class ClientTask implements Runnable {
                     }
                     case CREATE_ACCOUNT: {
                         UserDataRequest createAccountRequest = (UserDataRequest) request;
-                        byte[] authToken = clientActions.createAccount(createAccountRequest.getUsername(), createAccountRequest.getPassword());
+                        String authToken = clientActions.createAccount(createAccountRequest.getUsername(), createAccountRequest.getPassword());
                         if(authToken == null){
                             response.setStatusCode(Response.StatusCodes.ERR_ACCOUNT_EXISTS);
                         } else {
-                            System.out.println("Account succesfully created");
+                            System.out.println("Account successfully created");
                             response.setAuthToken(authToken);
                         }
                         break;

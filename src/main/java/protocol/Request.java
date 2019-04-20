@@ -1,13 +1,13 @@
 package protocol;
 
 public abstract class Request extends MessageBody {
-    private byte[] authToken;
+    private String authToken;
 
-    public byte[] getAuthToken() {
+    public String getAuthToken() {
         return authToken;
     }
 
-    public void setAuthToken(byte[] authToken) {
+    public void setAuthToken(String authToken) {
         this.authToken = authToken;
     }
 

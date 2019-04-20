@@ -1,4 +1,4 @@
-/**
+/*
  * Holds username and password for account creation and login
  */
 

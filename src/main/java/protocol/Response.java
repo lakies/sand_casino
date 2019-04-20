@@ -11,7 +11,7 @@ public class Response extends MessageBody{
         super(MessageType.RESPONSE);
     }
 
-    private byte[] authToken;
+    private String authToken;
     private StatusCodes statusCode = StatusCodes.SUCCESS;
 
     public StatusCodes getStatusCode() {
@@ -22,11 +22,11 @@ public class Response extends MessageBody{
         this.statusCode = statusCode;
     }
 
-    public byte[] getAuthToken() {
+    public String getAuthToken() {
         return authToken;
     }
 
-    public void setAuthToken(byte[] authToken) {
+    public void setAuthToken(String authToken) {
         this.authToken = authToken;
     }
 
