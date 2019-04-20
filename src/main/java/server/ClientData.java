@@ -2,27 +2,21 @@ package server;
 
 public class ClientData {
     private final String username;
-    private final byte[] authToken;
-    private double coins;
+    private int coins;
 
-    public ClientData(String username, byte[] authToken) {
+    public ClientData(String username) {
         this.username = username;
-        this.authToken = authToken;
     }
 
-    public double getCoins() {
+    public int getCoins() {
         return coins;
     }
 
-    public void setCoins(double coins) {
+    public void setCoins(int coins) {
         this.coins = coins;
     }
 
     public String getUsername() {
         return username;
-    }
-
-    public byte[] getAuthToken() {
-        return authToken;
     }
 }

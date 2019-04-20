@@ -10,6 +10,8 @@ import java.util.concurrent.Executors;
 
 public class Server {
     public static void main(String[] args) {
+        DatabaseHandler dbHandler = new DatabaseHandler();
+        dbHandler.setupDatabase();
         Map<GameType, GameInstanceController> gameControllers = new HashMap<>();
         ExecutorService gameControllerExecutor = Executors.newFixedThreadPool(GameType.values().length);
         for (GameType gameType : GameType.values()) {
@@ -18,7 +20,7 @@ public class Server {
             gameControllers.put(gameType, gameInstanceController);
         }
 
-        Thread clientHandler = new Thread(new ClientHandler(gameControllers));
+        Thread clientHandler = new Thread(new ClientHandler(gameControllers, dbHandler));
         clientHandler.start();
 
 

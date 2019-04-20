@@ -23,7 +23,7 @@ public class User {
         return username;
     }
 
-    private void setAuthToken(byte[] authToken) {
+    public void setAuthToken(byte[] authToken) {
         this.authToken = authToken;
     }
 

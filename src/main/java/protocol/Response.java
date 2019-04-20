@@ -1,7 +1,7 @@
 package protocol;
 
 public class Response extends MessageBody{
-    public enum statusCodes {
+    public enum StatusCodes {
         SUCCESS,
         ERR_INVALID_CREDENTIALS,
         ERR_ACCOUNT_EXISTS
@@ -12,13 +12,13 @@ public class Response extends MessageBody{
     }
 
     private byte[] authToken;
-    private statusCodes statusCode = statusCodes.SUCCESS;
+    private StatusCodes statusCode = StatusCodes.SUCCESS;
 
-    public statusCodes getStatusCode() {
+    public StatusCodes getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(statusCodes statusCode) {
+    public void setStatusCode(StatusCodes statusCode) {
         this.statusCode = statusCode;
     }
 

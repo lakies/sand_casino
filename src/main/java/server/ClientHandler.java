@@ -13,9 +13,11 @@ import java.util.concurrent.Future;
 
 public class ClientHandler implements Runnable {
     private Map<GameType, GameInstanceController> gameControllers;
+    private DatabaseHandler dbHandler;
 
-    public ClientHandler(Map<GameType, GameInstanceController> gameControllers) {
+    public ClientHandler(Map<GameType, GameInstanceController> gameControllers, DatabaseHandler dbHandler) {
         this.gameControllers = gameControllers;
+        this.dbHandler = dbHandler;
     }
 
     @Override
@@ -29,7 +31,7 @@ public class ClientHandler implements Runnable {
             while (true) {
                 Socket s = serverSocket.accept();
                 // TODO: somehow handle exceptions with the future
-                Future<?> future = clientPool.submit(new ClientTask(s, gameControllers));
+                Future<?> future = clientPool.submit(new ClientTask(s, gameControllers, new ClientActions(dbHandler)));
             }
         } catch (IOException e) {
             System.out.println(e);
