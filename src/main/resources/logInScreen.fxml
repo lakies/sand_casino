@@ -50,7 +50,7 @@
                      </VBox.margin>
                   </Label>
                   <PasswordField fx:id="password" opacity="0.65" prefHeight="40.0" prefWidth="330.0" />
-                  <Label fx:id="loginFailed" prefHeight="60.0" prefWidth="330.0" text="Username and password combination is incorrect." textFill="WHITE" visible="false" wrapText="true">
+                  <Label fx:id="loginFailed" prefHeight="60.0" prefWidth="330.0" text="Incorrect username or password" textFill="WHITE" visible="false" wrapText="true">
                      <font>
                         <Font name="Segoe UI Semibold" size="18.0" />
                      </font>

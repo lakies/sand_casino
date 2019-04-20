@@ -85,8 +85,11 @@ public class DatabaseHandler {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
-            String hash = resultSet.getString("password");
-            return argon2.verify(hash, password);
+            if (resultSet.next()){
+                String hash = resultSet.getString("password");
+                return argon2.verify(hash, password);
+            }
+            return false;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
