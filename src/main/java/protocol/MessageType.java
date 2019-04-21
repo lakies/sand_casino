@@ -5,5 +5,6 @@ public enum MessageType {
     CREATE_ACCOUNT,
     START_GAME,
     TEST,
+    GAME_DATA,
     RESPONSE
 }

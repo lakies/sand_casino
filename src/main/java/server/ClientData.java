@@ -2,10 +2,12 @@ package server;
 
 public class ClientData {
     private final String username;
-    private int coins;
+    private final String authToken;
+    private int coins = 400;
 
-    public ClientData(String username) {
+    public ClientData(String username, String authToken) {
         this.username = username;
+        this.authToken = authToken;
     }
 
     public int getCoins() {
@@ -18,5 +20,9 @@ public class ClientData {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getAuthToken() {
+        return authToken;
     }
 }

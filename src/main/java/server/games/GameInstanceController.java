@@ -1,8 +1,11 @@
 package server.games;
 
+import protocol.Request;
+import protocol.Response;
 import server.ClientData;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -12,7 +15,7 @@ public class GameInstanceController implements Runnable {
 
 
     private BlockingQueue<ClientData> queuedPlayers;
-    private ArrayList<GameInstance> runningGames;
+    private List<GameInstance> runningGames = new ArrayList<>();
     private GameInstance newGame;
     private GameType gameType;
 
@@ -38,18 +41,27 @@ public class GameInstanceController implements Runnable {
         return null;
     }
 
-    public void addPlayer(ClientData player) {
+    public synchronized void passRequest(Request request, Response response){
+        for (GameInstance game : runningGames) {
+            game.handleRequest(request, response);
+        }
+    }
+
+    public synchronized void addPlayer(ClientData player) {
         // TODO: implement an internal timer for game instances to allow more than minimum amount of players to connect. Then should add check for maxPlayers as well
         if (newGame == null) {
             newGame = gameInstanceCreator();
             newGame.addPlayer(player);
+            if (newGame.getMinPlayers() == 1) {
+                runningGames.add(newGame);
+            }
         } else {
             if (newGame.getMinPlayers() > newGame.getPlayers().size()) {
                 newGame.addPlayer(player);
             } else {
-                runningGames.add(newGame);
                 newGame = gameInstanceCreator();
                 newGame.addPlayer(player);
+                runningGames.add(newGame);
             }
         }
     }
@@ -58,7 +70,7 @@ public class GameInstanceController implements Runnable {
     public void run() {
         while (true) {
             for (GameInstance runningGame : runningGames) {
-                if (runningGame.ifFinished()) {
+                if (runningGame.isFinished()) {
                     runningGame.cleanup();
                     runningGames.remove(runningGame);
                 }

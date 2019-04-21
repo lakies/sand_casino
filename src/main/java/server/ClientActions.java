@@ -33,7 +33,7 @@ public class ClientActions {
         String authToken = new String(authTokenBytes);
 
         System.out.println("User was successfully authenticated. Token: " + authToken);
-        authTokens.put(authToken, new ClientData(username));
+        authTokens.put(authToken, new ClientData(username, authToken));
         return authToken;
     }
 

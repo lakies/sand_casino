@@ -14,6 +14,7 @@ public class Server {
         dbHandler.setupDatabase();
         Map<GameType, GameInstanceController> gameControllers = new HashMap<>();
         ExecutorService gameControllerExecutor = Executors.newFixedThreadPool(GameType.values().length);
+
         for (GameType gameType : GameType.values()) {
             GameInstanceController gameInstanceController = new GameInstanceController(gameType);
             gameControllerExecutor.submit(gameInstanceController);

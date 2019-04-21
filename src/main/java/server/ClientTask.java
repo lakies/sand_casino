@@ -2,6 +2,7 @@ package server;
 
 import protocol.ClassConverter;
 import protocol.MessageBody;
+import protocol.Request;
 import protocol.Response;
 import protocol.requests.StartGameRequest;
 import protocol.requests.TestRequest;
@@ -38,7 +39,7 @@ public class ClientTask implements Runnable {
                 String requestString = in.readUTF();
                 System.out.println(requestString);
                 Response response = new Response();
-                MessageBody request;
+                Request request;
                 try {
                     request = ClassConverter.decode(requestString);
                 } catch (ClassNotFoundException e){
@@ -98,6 +99,12 @@ public class ClientTask implements Runnable {
                         }
                         break;
                     }
+
+                    case GAME_DATA: {
+                        for (GameInstanceController gameInstanceController : gameControllers.values()) {
+                            gameInstanceController.passRequest(request, response);
+                        }
+                    }
                 }
 
                 out.writeUTF(ClassConverter.encode(response));
@@ -106,6 +113,9 @@ public class ClientTask implements Runnable {
         } catch (IOException e) {
             System.out.println("client closed the connection");
             throw new RuntimeException(e);
+        } catch (RuntimeException e){
+            e.printStackTrace();
+            throw e;
         }
     }
 }

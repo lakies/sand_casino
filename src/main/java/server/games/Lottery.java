@@ -1,5 +1,7 @@
 package server.games;
 
+import protocol.Request;
+import protocol.Response;
 import server.ClientData;
 
 import java.util.Random;
@@ -31,13 +33,18 @@ public class Lottery extends GameInstance {
     }
 
     @Override
+    public void handleRequest(Request request, Response response) {
+
+    }
+
+    @Override
     public void cleanup() {
 
 
     }
 
     @Override
-    public boolean ifFinished() {
+    public boolean isFinished() {
 
                     //Siia peaks tegema, et automaatselt iga teatud aja tagant algab uus loterii;
         return false;

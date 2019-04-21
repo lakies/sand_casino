@@ -1,5 +1,7 @@
 package server.games;
 
+import protocol.Request;
+import protocol.Response;
 import server.ClientData;
 
 public class Poker extends GameInstance {
@@ -17,6 +19,11 @@ public class Poker extends GameInstance {
     }
 
     @Override
+    public void handleRequest(Request request, Response response) {
+
+    }
+
+    @Override
     public void runGameLogic() {
 
 
@@ -28,7 +35,7 @@ public class Poker extends GameInstance {
     }
 
     @Override
-    public boolean ifFinished() {
+    public boolean isFinished() {
         return false;
     }
 }

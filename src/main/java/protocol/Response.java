@@ -5,7 +5,8 @@ public class Response extends MessageBody{
         SUCCESS,
         ERR_INVALID_CREDENTIALS,
         ERR_ACCOUNT_EXISTS,
-        ERR_INVALID_REQUEST
+        ERR_INVALID_REQUEST,
+        ERR_NOT_ENOUGH_FUNDS
     }
 
     public Response() {
@@ -32,4 +33,6 @@ public class Response extends MessageBody{
     }
 
     public String message;
+
+    public int[] data;
 }

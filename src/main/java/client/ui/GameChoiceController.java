@@ -2,6 +2,8 @@ package client.ui;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import protocol.requests.StartGameRequest;
+import server.games.GameType;
 
 import java.io.IOException;
 
