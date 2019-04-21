@@ -64,12 +64,17 @@ public class ClientTask implements Runnable {
                     }
                     case CREATE_ACCOUNT: {
                         UserDataRequest createAccountRequest = (UserDataRequest) request;
-                        String authToken = clientActions.createAccount(createAccountRequest.getUsername(), createAccountRequest.getPassword());
-                        if(authToken == null){
-                            response.setStatusCode(Response.StatusCodes.ERR_ACCOUNT_EXISTS);
-                        } else {
-                            System.out.println("Account successfully created");
-                            response.setAuthToken(authToken);
+
+                        try {
+                            String authToken = clientActions.createAccount(createAccountRequest.getUsername(), createAccountRequest.getPassword());
+                            if (authToken == null) {
+                                response.setStatusCode(Response.StatusCodes.ERR_ACCOUNT_EXISTS);
+                            } else {
+                                System.out.println("Account successfully created");
+                                response.setAuthToken(authToken);
+                            }
+                        } catch (DatabaseException e) {
+                            response.setStatusCode(Response.StatusCodes.ERR_FAILED_USER_CREATION);
                         }
                         break;
                     }

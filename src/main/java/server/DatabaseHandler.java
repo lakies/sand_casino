@@ -26,7 +26,7 @@ public class DatabaseHandler {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new DatabaseException();
         }
     }
 
@@ -40,7 +40,7 @@ public class DatabaseHandler {
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(sql);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new DatabaseException();
         }
     }
 
@@ -56,8 +56,7 @@ public class DatabaseHandler {
             preparedStatement.setString(2, hash);
             preparedStatement.execute();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            throw new DatabaseException();
         }
     }
 
@@ -71,9 +70,7 @@ public class DatabaseHandler {
             ResultSet resultSet = preparedStatement.executeQuery();
             return resultSet.getInt(1) > 0;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new DatabaseException();
         }
     }
 
@@ -91,8 +88,7 @@ public class DatabaseHandler {
             }
             return false;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            throw new RuntimeException(e);
+            throw new DatabaseException();
         }
     }
 }

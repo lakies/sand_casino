@@ -25,6 +25,8 @@ public class LoginHandler {
         Response response = serverCommunicator.sendRequest(userDataRequest);
         if (response.getStatusCode() == Response.StatusCodes.ERR_ACCOUNT_EXISTS) {
             return null;
+        } else if (response.getStatusCode() == Response.StatusCodes.ERR_FAILED_USER_CREATION) {
+            throw new RuntimeException();
         }
         // TODO: maybe test password security
         user.setAuthToken(response.getAuthToken());

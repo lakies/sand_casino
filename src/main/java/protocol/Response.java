@@ -5,6 +5,7 @@ public class Response extends MessageBody{
         SUCCESS,
         ERR_INVALID_CREDENTIALS,
         ERR_ACCOUNT_EXISTS,
+        ERR_FAILED_USER_CREATION,
         ERR_INVALID_REQUEST,
         ERR_NOT_ENOUGH_FUNDS
     }
