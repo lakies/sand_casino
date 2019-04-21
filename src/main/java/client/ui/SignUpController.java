@@ -27,9 +27,16 @@ public class SignUpController extends UIController {
         } else if (!enteredPw1.equals(enteredPw2)) {
             invalidInput.setText("Entered passwords do not match.");
         } else {
-            User user = LoginHandler.createAccount(enteredUsername, enteredPw1);
-            // TODO: Handle case where account creation failed
-            sceneTransition("/gameChoiceScreen.fxml", signUp, user.getServerCommunicator());
+            try {
+                User user = LoginHandler.createAccount(enteredUsername, enteredPw1);
+                if (user == null) {
+                    invalidInput.setText("Entered username already exists.");
+                } else {
+                    sceneTransition("/gameChoiceScreen.fxml", signUp, user.getServerCommunicator());
+                }
+            } catch (RuntimeException e) {
+                invalidInput.setText("Account creation failed.");
+            }
         }
     }
 
