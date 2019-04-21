@@ -9,7 +9,7 @@ import java.sql.*;
 public class DatabaseHandler {
 
     private Connection connection;
-    final Argon2 argon2 = Argon2Factory.create();
+    private final Argon2 argon2 = Argon2Factory.create();
     // Optimal number of iterations on this machine
     private final int iterations = Argon2Helper.findIterations(argon2, 1000, 65536, 1);
 

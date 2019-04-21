@@ -16,15 +16,21 @@ public class LogInController extends UIController {
     public Button signUp;
     public Label loginFailed;
 
-    public void logInButtonClicked() throws IOException {
+    public void logInButtonClicked() {
         String enteredUsername = username.getText();
         String enteredPassword = password.getText();
-        User user = LoginHandler.login(enteredUsername, enteredPassword);
-        // TODO: kui .login() throwib IOExceptioni siis ei saanud serveriga ühendust. Visata mingi punane tekst et a la connection to server failed.
-        if (user == null) {
+
+        try {
+            User user = LoginHandler.login(enteredUsername, enteredPassword);
+            if (user == null) {
+                loginFailed.setText("Incorrect username or password.");
+                loginFailed.setVisible(true);
+            } else {
+                sceneTransition("/gameChoiceScreen.fxml", logIn, user.getServerCommunicator());
+            }
+        } catch (IOException e) {
+            loginFailed.setText("Could not connect to server.");
             loginFailed.setVisible(true);
-        } else {
-            sceneTransition("/gameChoiceScreen.fxml", logIn, user.getServerCommunicator());
         }
     }
 
