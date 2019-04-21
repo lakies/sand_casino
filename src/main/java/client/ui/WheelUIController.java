@@ -14,6 +14,7 @@ public class WheelUIController extends UIController {
     public Label errorlabel;
     public Button back;
     public TextField txtfield;
+    public Button play;
     public void handleButtonAction (ActionEvent event) throws IOException {
         try {
             Float sum = Float.parseFloat(txtfield.getCharacters().toString());
@@ -21,6 +22,7 @@ public class WheelUIController extends UIController {
             TestRequest testRequest = new TestRequest(MessageType.TEST);
             Response response = getServerCommunicator().sendRequest(testRequest);
             System.out.println(response.message);
+            //sceneTransition("/gameChoiceScreen.fxml", back, getServerCommunicator());
         }
         catch (NumberFormatException e ){
             errorlabel.setVisible(true);

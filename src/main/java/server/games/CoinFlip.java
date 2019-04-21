@@ -57,6 +57,7 @@ public class CoinFlip extends GameInstance {
 
     @Override
     public void handleRequest(Request request, Response response) {
+        int won = 0;
         // All game logic happens when request comes in
 
         GameRequest gameRequest = (GameRequest) request;
@@ -80,9 +81,10 @@ public class CoinFlip extends GameInstance {
 
         if (side.getValue() == chosenSide) {
             client.setCoins(client.getCoins() + 100);
+            won = 1;
         }
 
-        response.data = new int[]{side.getValue(), client.getCoins()};
+        response.data = new int[]{won, client.getCoins()};
         finished = true;
     }
 
