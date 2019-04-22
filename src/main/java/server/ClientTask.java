@@ -4,6 +4,7 @@ import protocol.ClassConverter;
 import protocol.MessageBody;
 import protocol.Request;
 import protocol.Response;
+import protocol.requests.GameRequest;
 import protocol.requests.StartGameRequest;
 import protocol.requests.TestRequest;
 import protocol.requests.UserDataRequest;
@@ -36,84 +37,84 @@ public class ClientTask implements Runnable {
              DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
              clientSocket) {
             while (true) {
-                String requestString = in.readUTF();
-                System.out.println(requestString);
-                Response response = new Response();
-                Request request;
                 try {
-                    request = ClassConverter.decode(requestString);
-                } catch (ClassNotFoundException e){
-                    response.setStatusCode(Response.StatusCodes.ERR_INVALID_REQUEST);
-                    out.writeUTF(ClassConverter.encode(response));
-                    out.flush();
-                    continue;
-                }
+                    String requestString = in.readUTF();
+                    System.out.println(requestString);
+                    Response response = new Response();
+                    Request request = ClassConverter.decode(requestString, Request.class);
 
-                switch (request.getType()){
-
-                    case LOGIN:{
-                        UserDataRequest loginRequest = (UserDataRequest) request;
-                        String authToken = clientActions.authenticateUser(loginRequest.getUsername(), loginRequest.getPassword());
-                        if (authToken == null) {
-                            response.setStatusCode(Response.StatusCodes.ERR_INVALID_CREDENTIALS);
-                        } else {
-                            System.out.println("Token sent");
-                            response.setAuthToken(authToken);
-                        }
-                        break;
-                    }
-                    case CREATE_ACCOUNT: {
-                        UserDataRequest createAccountRequest = (UserDataRequest) request;
-
-                        try {
-                            String authToken = clientActions.createAccount(createAccountRequest.getUsername(), createAccountRequest.getPassword());
+                    switch (request.getType()){
+                        case LOGIN: {
+                            UserDataRequest loginRequest = ClassConverter.decode(requestString, UserDataRequest.class);
+                            String authToken = clientActions.authenticateUser(loginRequest.getUsername(), loginRequest.getPassword());
                             if (authToken == null) {
-                                response.setStatusCode(Response.StatusCodes.ERR_ACCOUNT_EXISTS);
+                                response.setStatusCode(Response.StatusCodes.ERR_INVALID_CREDENTIALS);
                             } else {
-                                System.out.println("Account successfully created");
+                                System.out.println("Token sent");
                                 response.setAuthToken(authToken);
                             }
-                        } catch (DatabaseException e) {
-                            response.setStatusCode(Response.StatusCodes.ERR_FAILED_USER_CREATION);
+                            break;
                         }
-                        break;
-                    }
-                    case TEST:{
-                        TestRequest testRequest = (TestRequest) request;
-                        response.message = "test string";
-                        break;
-                    }
-                    case START_GAME:{
-                        StartGameRequest startGameRequest = (StartGameRequest) request;
-                        ClientData client = clientActions.getClientByAuthToken(startGameRequest.getAuthToken());
+                        case CREATE_ACCOUNT: {
+                            UserDataRequest createAccountRequest = ClassConverter.decode(requestString, UserDataRequest.class);
 
-                        if (client == null) {
-                            response.setStatusCode(Response.StatusCodes.ERR_INVALID_CREDENTIALS);
+                            try {
+                                String authToken = clientActions.createAccount(createAccountRequest.getUsername(), createAccountRequest.getPassword());
+                                if (authToken == null) {
+                                    response.setStatusCode(Response.StatusCodes.ERR_ACCOUNT_EXISTS);
+                                } else {
+                                    System.out.println("Account successfully created");
+                                    response.setAuthToken(authToken);
+                                }
+                            } catch (DatabaseException e) {
+                                response.setStatusCode(Response.StatusCodes.ERR_FAILED_USER_CREATION);
+                            }
+                            break;
+                        }
+                        case TEST:{
+                            TestRequest testRequest = (TestRequest) request;
+                            response.message = "test string";
+                            break;
+                        }
+                        case START_GAME:{
+                            StartGameRequest startGameRequest = ClassConverter.decode(requestString, StartGameRequest.class);
+                            ClientData client = clientActions.getClientByAuthToken(startGameRequest.getAuthToken());
+
+                            if (client == null) {
+                                response.setStatusCode(Response.StatusCodes.ERR_INVALID_CREDENTIALS);
+                                break;
+                            }
+
+                            switch (startGameRequest.getGameType()){
+                                case COINFLIP:
+                                    System.out.println("client started playing coinflip");
+                                    gameControllers.get(GameType.COINFLIP).addPlayer(client);
+                                    break;
+                                case WHEEL:
+                                    break;
+                                case LOTTERY:
+                                    break;
+                            }
                             break;
                         }
 
-                        switch (startGameRequest.getGameType()){
-                            case COINFLIP:
-                                System.out.println("client started playing coinflip");
-                                gameControllers.get(GameType.COINFLIP).addPlayer(client);
-                                break;
-                            case WHEEL:
-                                break;
-                            case LOTTERY:
-                                break;
+                        case GAME_DATA: {
+                            GameRequest gameRequest = ClassConverter.decode(requestString, GameRequest.class);
+                            for (GameInstanceController gameInstanceController : gameControllers.values()) {
+                                gameInstanceController.passRequest(gameRequest, response);
+                            }
                         }
-                        break;
                     }
 
-                    case GAME_DATA: {
-                        for (GameInstanceController gameInstanceController : gameControllers.values()) {
-                            gameInstanceController.passRequest(request, response);
-                        }
-                    }
+                    out.writeUTF(ClassConverter.encode(response));
+                    out.flush();
+                } catch (ClassNotFoundException e){
+                    Response response = new Response();
+                    response.setStatusCode(Response.StatusCodes.ERR_INVALID_REQUEST);
+                    out.writeUTF(ClassConverter.encode(response));
+                    out.flush();
                 }
 
-                out.writeUTF(ClassConverter.encode(response));
-                out.flush();
             }
         } catch (IOException e) {
             System.out.println("client closed the connection");

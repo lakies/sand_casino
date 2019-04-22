@@ -1,6 +1,5 @@
 package server.games;
 
-import protocol.Request;
 import protocol.Response;
 import protocol.requests.GameRequest;
 import server.ClientData;
@@ -25,8 +24,6 @@ public class CoinFlip extends GameInstance {
         }
     }
 
-    private int chosenSide;
-
     @Override
     public boolean enoughFunds(ClientData client) {
         if (client.getCoins() >= 50) {
@@ -38,7 +35,7 @@ public class CoinFlip extends GameInstance {
 
     @Override
     public void runGameLogic() {
-
+        System.out.println("Running game");
     }
 
     public CoinFlip() {
@@ -56,13 +53,12 @@ public class CoinFlip extends GameInstance {
     }
 
     @Override
-    public void handleRequest(Request request, Response response) {
+    public void handleRequest(GameRequest request, Response response) {
         int won = 0;
         // All game logic happens when request comes in
 
-        GameRequest gameRequest = (GameRequest) request;
         ClientData client = getPlayers().get(0);
-        if (!client.getAuthToken().equals(gameRequest.getAuthToken())){
+        if (!client.getAuthToken().equals(request.getAuthToken())){
             return;
         }
 
@@ -77,7 +73,7 @@ public class CoinFlip extends GameInstance {
         double i = Math.random();
 
         Sides side = i < 0.49 ? Sides.HEADS : Sides.TAILS;
-        chosenSide = gameRequest.getPayload()[0];
+        int chosenSide = request.getPayload()[0];
 
         if (side.getValue() == chosenSide) {
             client.setCoins(client.getCoins() + 100);

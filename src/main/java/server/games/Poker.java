@@ -1,7 +1,7 @@
 package server.games;
 
-import protocol.Request;
 import protocol.Response;
+import protocol.requests.GameRequest;
 import server.ClientData;
 
 public class Poker extends GameInstance {
@@ -19,7 +19,7 @@ public class Poker extends GameInstance {
     }
 
     @Override
-    public void handleRequest(Request request, Response response) {
+    public void handleRequest(GameRequest request, Response response) {
 
     }
 

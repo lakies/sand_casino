@@ -16,10 +16,10 @@ public class ClassConverter {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends MessageBody> T decode(String rawJson) throws ClassNotFoundException {
+    public static <T extends MessageBody> T decode(String rawJson, Class<T> expectedType) throws ClassNotFoundException {
         LinkedTreeMap<?,?> asMap = gsonEngine.fromJson(rawJson, LinkedTreeMap.class);
         String className = asMap.get("type").toString();
-        if (!className.startsWith("protocol.")){
+        if (!expectedType.isAssignableFrom(Class.forName(className))){
             throw new ClassNotFoundException("Illegal class");
         }
         Class<? extends MessageBody> messageClass;

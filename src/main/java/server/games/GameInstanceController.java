@@ -2,6 +2,7 @@ package server.games;
 
 import protocol.Request;
 import protocol.Response;
+import protocol.requests.GameRequest;
 import server.ClientData;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class GameInstanceController implements Runnable {
         return null;
     }
 
-    public synchronized void passRequest(Request request, Response response){
+    public synchronized void passRequest(GameRequest request, Response response){
         for (GameInstance game : runningGames) {
             game.handleRequest(request, response);
         }

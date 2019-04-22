@@ -2,6 +2,7 @@ package server.games;
 
 import protocol.Request;
 import protocol.Response;
+import protocol.requests.GameRequest;
 import server.ClientData;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public abstract class GameInstance {
 
     public abstract boolean isFinished();
 
-    public abstract void handleRequest(Request request, Response response);
+    public abstract void handleRequest(GameRequest request, Response response);
 
     public boolean addPlayer(ClientData client) {
         if (players.size() == maxPlayers) {
