@@ -42,8 +42,7 @@ public class Lottery extends GameInstance {
         cd.setCoins(cd.getCoins() + prizemoney);
 
 
-
-        response.data = new int[]{cd.getAuthToken(), prizemoney};
+       // response.data = new int[]{cd.getAuthToken(), prizemoney};
         setFinished(true);
     }
 
