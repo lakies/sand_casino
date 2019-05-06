@@ -27,10 +27,16 @@ public class ClientActions {
         if (!dbHandler.checkPassword(username, password)) {
             return null;
         }
-        byte[] authTokenBytes = new byte[20];
-        Random r = new Random();
-        r.nextBytes(authTokenBytes);
-        String authToken = new String(authTokenBytes);
+        String authToken = "";
+        while (true) {
+            byte[] authTokenBytes = new byte[20];
+            Random r = new Random();
+            r.nextBytes(authTokenBytes);
+            authToken = new String(authTokenBytes);
+            if (getClientByAuthToken(authToken).equals(null)){
+                break;
+            }
+        }
 
         System.out.println("User was successfully authenticated. Token: " + authToken);
         authTokens.put(authToken, new ClientData(username, authToken));
@@ -39,6 +45,9 @@ public class ClientActions {
 
 
     public ClientData getClientByAuthToken(String authToken) {
+        if (!authTokens.containsKey(authToken)){
+            return null;
+        }
         return authTokens.get(authToken);
     }
 }

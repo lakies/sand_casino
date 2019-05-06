@@ -1,13 +1,17 @@
 package server.games;
 
+
+import client.Client;
 import protocol.Response;
 import protocol.requests.GameRequest;
 import server.ClientData;
 
+import java.util.List;
 import java.util.Random;
 
 
 public class Lottery extends GameInstance {
+
 
 
     public Lottery(){ //Iga nädal luuakse automaatselt see, mis peaks teoorias serveris jooksma nädal aeag
@@ -24,17 +28,23 @@ public class Lottery extends GameInstance {
 
     @Override
     public void runGameLogic() {
-        Random generator = new Random();
-        int randomIndex = generator.nextInt(getPlayers().size());
-        System.out.println("Winner is: " + getPlayers().get(randomIndex));
-        System.out.println("The prize was: " + getPlayers().size()*49); //Mängu tasu 50, võitja saab 49 korda sisseostjad tagasi
-        getPlayers().get(randomIndex).setCoins(getPlayers().get(randomIndex).getCoins() + getPlayers().size()*49);
-        //
+
     }
 
     @Override
     public void handleRequest(GameRequest request, Response response) {
+        Random generator = new Random();
+        int randomIndex = generator.nextInt(getPlayers().size());
+        ClientData cd = getPlayers().get(randomIndex);
+        int prizemoney = getPlayers().size();
 
+
+        cd.setCoins(cd.getCoins() + prizemoney);
+
+
+
+        response.data = new int[]{cd.getAuthToken(), prizemoney};
+        setFinished(true);
     }
 
     @Override
@@ -46,7 +56,6 @@ public class Lottery extends GameInstance {
     @Override
     public boolean isFinished() {
 
-                    //Siia peaks tegema, et automaatselt iga teatud aja tagant algab uus loterii;
         return false;
     }
 }

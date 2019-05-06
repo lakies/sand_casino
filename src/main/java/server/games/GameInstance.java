@@ -10,6 +10,20 @@ import java.util.List;
 
 public abstract class GameInstance {
 
+    private boolean gameStarted = false;
+    private boolean finished = false;
+
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
 
     private final int maxPlayers;
 

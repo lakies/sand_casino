@@ -7,8 +7,6 @@ import server.ClientData;
 
 
 public class CoinFlip extends GameInstance {
-    private boolean gameStarted = false;
-    private boolean finished = false;
 
     public enum Sides {
         HEADS(0), TAILS(1);
@@ -44,7 +42,7 @@ public class CoinFlip extends GameInstance {
 
     @Override
     public boolean isFinished() {
-        return finished;
+        return isFinished();
     }
 
     @Override
@@ -64,7 +62,7 @@ public class CoinFlip extends GameInstance {
 
         if (!enoughFunds(client)){
             response.setStatusCode(Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS);
-            finished = true;
+            setFinished(true);
             return;
         }
 
@@ -81,7 +79,7 @@ public class CoinFlip extends GameInstance {
         }
 
         response.data = new int[]{won, client.getCoins()};
-        finished = true;
+        setFinished(true);
     }
 
 
