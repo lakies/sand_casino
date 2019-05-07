@@ -1,5 +1,6 @@
 package server;
 
+import java.security.SecureRandom;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,10 +31,10 @@ public class ClientActions {
         String authToken = "";
         while (true) {
             byte[] authTokenBytes = new byte[20];
-            Random r = new Random();
+            SecureRandom r = new SecureRandom();
             r.nextBytes(authTokenBytes);
             authToken = new String(authTokenBytes);
-            if (getClientByAuthToken(authToken).equals(null)){
+            if (getClientByAuthToken(authToken) == null){
                 break;
             }
         }

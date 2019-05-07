@@ -42,7 +42,7 @@ public class CoinFlip extends GameInstance {
 
     @Override
     public boolean isFinished() {
-        return isFinished();
+        return getFinished();
     }
 
     @Override

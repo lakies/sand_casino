@@ -24,6 +24,9 @@ public abstract class GameInstance {
     public void setFinished(boolean finished) {
         this.finished = finished;
     }
+    public boolean getFinished(){
+        return finished;
+    }
 
     private final int maxPlayers;
 
