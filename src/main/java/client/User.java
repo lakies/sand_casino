@@ -13,7 +13,7 @@ public class User {
     private final ServerCommunicator serverCommunicator;
     private String authToken;
 
-    public User(String username, String password) {
+    public User(String username, String password) throws IOException{
         this.username = username;
         this.password = password;
         this.serverCommunicator = new ServerCommunicator(this);

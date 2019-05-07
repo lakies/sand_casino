@@ -16,18 +16,19 @@ public class ServerCommunicator {
     private DataOutputStream out;
     private final User user;
 
-    public ServerCommunicator(User user) {
+    public ServerCommunicator(User user) throws IOException{
         this.user = user;
         connect();
     }
 
-    private void connect() {
+    private void connect() throws IOException{
         try {
             serverSocket = new Socket(serverIP, 9999);
             in = new DataInputStream(serverSocket.getInputStream());
             out = new DataOutputStream(serverSocket.getOutputStream());
         } catch (IOException e) {
             System.out.println("Could not connect to server: " + e);
+            throw e;
         }
     }
 

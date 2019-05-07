@@ -20,9 +20,8 @@ public class LoginHandler {
 
     public static User createAccount(String username, String password) throws IOException {
         User user = new User(username, password);
-        ServerCommunicator serverCommunicator = new ServerCommunicator(user);
         UserDataRequest userDataRequest = new UserDataRequest(MessageType.CREATE_ACCOUNT, username, password);
-        Response response = serverCommunicator.sendRequest(userDataRequest);
+        Response response = user.getServerCommunicator().sendRequest(userDataRequest);
         if (response.getStatusCode() == Response.StatusCodes.ERR_ACCOUNT_EXISTS) {
             return null;
         } else if (response.getStatusCode() == Response.StatusCodes.ERR_FAILED_USER_CREATION) {

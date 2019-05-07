@@ -34,7 +34,9 @@ public class SignUpController extends UIController {
                 } else {
                     sceneTransition("/gameChoiceScreen.fxml", signUp, user.getServerCommunicator());
                 }
-            } catch (RuntimeException e) {
+            } catch (IOException e){
+                invalidInput.setText("Error: could not connect to server");
+            }catch (RuntimeException e) {
                 invalidInput.setText("Account creation failed.");
             }
         }
