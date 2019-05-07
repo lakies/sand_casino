@@ -6,11 +6,13 @@ import protocol.Response;
 import protocol.requests.GameRequest;
 import server.ClientData;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
 
 public class Lottery extends GameInstance {
+    LocalDateTime localDateTime = LocalDateTime.now();
 
 
 
@@ -20,10 +22,7 @@ public class Lottery extends GameInstance {
     }
     @Override
     public boolean enoughFunds(ClientData client) {
-        if (client.getCoins() >= 50){
-            client.setCoins(client.getCoins()-50);
-            return true;}
-        return false;
+        return true;
     }
 
     @Override
@@ -41,8 +40,10 @@ public class Lottery extends GameInstance {
 
         cd.setCoins(cd.getCoins() + prizemoney);
 
+        byte[] array = cd.getAuthToken().getBytes();
+        //int winner = Integer. (array);
 
-       // response.data = new int[]{cd.getAuthToken(), prizemoney};
+       //response.data = new int[]{cd.getAuthToken(), prizemoney};
         setFinished(true);
     }
 
@@ -55,6 +56,6 @@ public class Lottery extends GameInstance {
     @Override
     public boolean isFinished() {
 
-        return false;
+        return getFinished();
     }
 }

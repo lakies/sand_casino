@@ -6,9 +6,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import protocol.MessageType;
 import protocol.Response;
+import protocol.requests.GameRequest;
+import protocol.requests.StartGameRequest;
 import protocol.requests.TestRequest;
+import server.games.GameType;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class WheelUIController extends UIController {
     public Label errorlabel;
@@ -17,11 +21,14 @@ public class WheelUIController extends UIController {
     public Button play;
     public void handleButtonAction (ActionEvent event) throws IOException {
         try {
-            Float sum = Float.parseFloat(txtfield.getCharacters().toString());
+            int sum = Integer.parseInt(txtfield.getCharacters().toString());
             //TODO: Server communication so player plays.
-            TestRequest testRequest = new TestRequest(MessageType.TEST);
-            Response response = getServerCommunicator().sendRequest(testRequest);
-            System.out.println(response.message);
+            StartGameRequest startGameRequest = new StartGameRequest(GameType.WHEEL);
+            getServerCommunicator().sendRequest(startGameRequest);
+            GameRequest gameRequest = new GameRequest(new int[]{sum});
+
+            Response response = getServerCommunicator().sendRequest(gameRequest);
+            System.out.println(Arrays.toString(response.data));
             //sceneTransition("/gameChoiceScreen.fxml", back, getServerCommunicator());
         }
         catch (NumberFormatException e ){
