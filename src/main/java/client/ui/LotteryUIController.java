@@ -29,12 +29,9 @@ public class LotteryUIController extends UIController implements Initializable {
             UserDataRequest coinRequest = new UserDataRequest(MessageType.COIN_AMOUNT);
             System.out.println("Requesting coins");
             try {
-                synchronized (this){
-                    if (getServerCommunicator() == null)
-                        wait();
-                    Response response = getServerCommunicator().sendRequest(coinRequest);
-                    coins.setText(Integer.toString(response.data[0]));
-                }
+                getServerReady().await();
+                Response response = getServerCommunicator().sendRequest(coinRequest);
+                coins.setText(Integer.toString(response.data[0]));
             } catch (IOException e){
                 // TODO: handle connection loss when already logged in.
                 System.out.println("Server connection failed");

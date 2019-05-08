@@ -8,8 +8,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 
 public class UIController {
+    private CountDownLatch serverReady = new CountDownLatch(1);
     private ServerCommunicator serverCommunicator;
 
     public ServerCommunicator getServerCommunicator() {
@@ -18,9 +20,11 @@ public class UIController {
 
     public void setServerCommunicator(ServerCommunicator serverCommunicator) {
         this.serverCommunicator = serverCommunicator;
-        synchronized (this){
-            this.notifyAll();
-        }
+        serverReady.countDown();
+    }
+
+    public CountDownLatch getServerReady() {
+        return serverReady;
     }
 
     public void sceneTransition(String resourceName, Node targetNode) throws IOException {
