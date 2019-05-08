@@ -50,11 +50,12 @@ public class Wheel extends GameInstance {
 
         Random generator = new Random();
         int randomIndex = generator.nextInt(winRates.length);
-        int winnedCoins = (int) (client.getCoins() + (userCoins * winRates[randomIndex]));
+        int win = (int) ( userCoins*winRates[randomIndex]);
+        int winnedCoins =  (client.getCoins() + (win));
         client.setCoins(winnedCoins);
 
 
-        response.data = new int[]{winnedCoins};
+        response.data = new int[]{win};
         setFinished(true);
 
     }
