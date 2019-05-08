@@ -18,6 +18,9 @@ public class UIController {
 
     public void setServerCommunicator(ServerCommunicator serverCommunicator) {
         this.serverCommunicator = serverCommunicator;
+        synchronized (this){
+            this.notifyAll();
+        }
     }
 
     public void sceneTransition(String resourceName, Node targetNode) throws IOException {

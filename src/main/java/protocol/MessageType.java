@@ -6,5 +6,6 @@ public enum MessageType {
     START_GAME,
     TEST,
     GAME_DATA,
-    RESPONSE
+    RESPONSE,
+    COIN_AMOUNT
 }

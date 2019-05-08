@@ -80,6 +80,13 @@ public class GameInstanceController implements Runnable {
             for (GameInstance runningGame : runningGames) {
                 runningGame.runGameLogic();
             }
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e){
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            }
         }
 
     }

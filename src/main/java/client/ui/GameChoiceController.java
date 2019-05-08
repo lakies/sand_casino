@@ -15,6 +15,7 @@ public class GameChoiceController extends UIController{
     public Button wheel;
 
     public void handleButtonActionLottery (ActionEvent event) throws IOException {
+        sceneTransition("/LotteryUI.fxml", wheel, getServerCommunicator());
     }
 
     public void handleButtonActionWheelOfFortune (ActionEvent event) throws IOException {

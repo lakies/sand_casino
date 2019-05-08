@@ -76,6 +76,19 @@ public class ClientTask implements Runnable {
                             response.message = "test string";
                             break;
                         }
+                        case COIN_AMOUNT:{
+                            UserDataRequest coinRequest = ClassConverter.decode(requestString, UserDataRequest.class);
+                            ClientData client = clientActions.getClientByAuthToken(coinRequest.getAuthToken());
+
+                            if (client == null) {
+                                response.setStatusCode(Response.StatusCodes.ERR_INVALID_CREDENTIALS);
+                                break;
+                            }
+
+                            response.data = new int[]{client.getCoins()};
+
+                            break;
+                        }
                         case START_GAME:{
                             StartGameRequest startGameRequest = ClassConverter.decode(requestString, StartGameRequest.class);
                             ClientData client = clientActions.getClientByAuthToken(startGameRequest.getAuthToken());

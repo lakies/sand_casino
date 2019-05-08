@@ -14,12 +14,12 @@ public class UserDataRequest extends Request {
     public UserDataRequest(MessageType type, String username, String password) {
         super(type);
 
-        if (type != MessageType.LOGIN && type != MessageType.CREATE_ACCOUNT) {
-            throw new RuntimeException("invalid message type for user data request");
-        }
-
         this.username = username;
         this.password = password;
+    }
+
+    public UserDataRequest(MessageType type){
+        super(type);
     }
 
     public String getUsername() {
