@@ -91,7 +91,7 @@ public class ClientTask implements Runnable {
                                     gameControllers.get(GameType.COINFLIP).addPlayer(client);
                                     break;
                                 case WHEEL:
-                                    System.out.println("client started playing coinflip");
+                                    System.out.println("client started playing wheel of fortune");
                                     gameControllers.get(GameType.WHEEL).addPlayer(client);
                                     break;
                                 case LOTTERY:

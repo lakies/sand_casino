@@ -34,7 +34,7 @@ public class GameInstanceController implements Runnable {
             case WHEEL:
                 return new Wheel();
             case LOTTERY:
-                break;
+                return new Lottery();
         }
 
         // If reaches here then need to add new game to above switch
