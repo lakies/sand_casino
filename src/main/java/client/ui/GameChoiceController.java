@@ -24,23 +24,7 @@ public class GameChoiceController extends UIController implements Initializable 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        new Thread(() -> {
-            UserDataRequest coinRequest = new UserDataRequest(MessageType.COIN_AMOUNT);
-            System.out.println("Requesting coins");
-            try {
-                getServerReady().await();
-                Response response = getServerCommunicator().sendRequest(coinRequest);
-                coins.setText(Integer.toString(response.data[0]));
-            } catch (IOException e){
-                // TODO: handle connection loss when already logged in.
-                System.out.println("Server connection failed");
-                throw new RuntimeException(e);
-            } catch (InterruptedException e){
-                Thread.currentThread().interrupt();
-                throw new RuntimeException(e);
-            }
-        }).start();
+        displayCoins(coins);
     }
 
     public void handleButtonActionLottery (ActionEvent event) throws IOException {

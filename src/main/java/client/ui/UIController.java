@@ -5,7 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import protocol.MessageType;
+import protocol.Response;
+import protocol.requests.UserDataRequest;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -25,6 +29,25 @@ public class UIController {
 
     public CountDownLatch getServerReady() {
         return serverReady;
+    }
+
+    public void displayCoins(Label target){
+        new Thread(() -> {
+            UserDataRequest coinRequest = new UserDataRequest(MessageType.COIN_AMOUNT);
+            System.out.println("Requesting coins");
+            try {
+                getServerReady().await();
+                Response response = getServerCommunicator().sendRequest(coinRequest);
+                target.setText(Integer.toString(response.data[0]));
+            } catch (IOException e){
+                // TODO: handle connection loss when already logged in.
+                System.out.println("Server connection failed");
+                throw new RuntimeException(e);
+            } catch (InterruptedException e){
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            }
+        }).start();
     }
 
     public void sceneTransition(String resourceName, Node targetNode) throws IOException {

@@ -26,22 +26,7 @@ public class LotteryUIController extends UIController implements Initializable {
         submit.setOnMouseEntered(e -> submit.setStyle(HOVERED_BUTTON_STYLE));
         submit.setOnMouseExited(e -> submit.setStyle(IDLE_BUTTON_STYLE));
 
-        new Thread(() -> {
-            UserDataRequest coinRequest = new UserDataRequest(MessageType.COIN_AMOUNT);
-            System.out.println("Requesting coins");
-            try {
-                getServerReady().await();
-                Response response = getServerCommunicator().sendRequest(coinRequest);
-                coins.setText(Integer.toString(response.data[0]));
-            } catch (IOException e){
-                // TODO: handle connection loss when already logged in.
-                System.out.println("Server connection failed");
-                throw new RuntimeException(e);
-            } catch (InterruptedException e){
-                Thread.currentThread().interrupt();
-                throw new RuntimeException(e);
-            }
-        }).start();
+        displayCoins(coins);
     }
     public void goBack(ActionEvent event) throws IOException {
         sceneTransition("/gameChoiceScreen.fxml", back, getServerCommunicator());
