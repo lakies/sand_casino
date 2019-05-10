@@ -56,9 +56,11 @@ public class UIController {
                     target.setText(Integer.toString(response.data[0]));
                 });
             } catch (IOException e){
-                // TODO: handle connection loss when already logged in.
-                System.out.println("Server connection failed");
-                throw new RuntimeException(e);
+                try {
+                    sceneTransition("/logInScreen.fxml", target);
+                } catch (IOException e1) {
+                    throw new RuntimeException(e1);
+                }
             } catch (InterruptedException e){
                 Thread.currentThread().interrupt();
                 throw new RuntimeException(e);

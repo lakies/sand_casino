@@ -58,6 +58,8 @@ public class WheelUIController extends UIController implements Initializable {
         }
         catch (NumberFormatException e ){
             errorlabel.setVisible(true);
+        } catch (IOException e){
+            sceneTransition("/logInScreen.fxml", back);
         }
     }
     public void handleResults(ActionEvent event) throws IOException{

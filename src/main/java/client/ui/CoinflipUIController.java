@@ -29,23 +29,25 @@ public class CoinflipUIController extends UIController implements Initializable 
         displayCoins(coins);
     }
 
-    public void handleButtonAction (ActionEvent event) throws IOException {
+    public void handleButtonAction (ActionEvent event) throws IOException{
 
         StartGameRequest startGameRequest = new StartGameRequest(GameType.COINFLIP);
-        getServerCommunicator().sendRequest(startGameRequest);
-        //TODO: Server communication so player plays.
-        int side = ((Button) event.getTarget()).getId().equals("heads") ? CoinFlip.Sides.HEADS.getValue() : CoinFlip.Sides.TAILS.getValue();
+        try {
+            getServerCommunicator().sendRequest(startGameRequest);
+            int side = ((Button) event.getTarget()).getId().equals("heads") ? CoinFlip.Sides.HEADS.getValue() : CoinFlip.Sides.TAILS.getValue();
 
-        GameRequest gameRequest = new GameRequest(new int[]{side});
-        Response response = getServerCommunicator().sendRequest(gameRequest);
-        System.out.println("Chosen side: " + side + " received data: " + Arrays.toString(response.data));
+            GameRequest gameRequest = new GameRequest(new int[]{side});
+            Response response = getServerCommunicator().sendRequest(gameRequest);
+            System.out.println("Chosen side: " + side + " received data: " + Arrays.toString(response.data));
 
-        if (response.data[0] == 0){
-            setVisibleTimeout(loss);
-        } else {
-            setVisibleTimeout(victory);
+            if (response.data[0] == 0){
+                setVisibleTimeout(loss);
+            } else {
+                setVisibleTimeout(victory);
+            }
+        } catch (IOException e) {
+            sceneTransition("/logInScreen.fxml", back);
         }
-
     }
 
     public void goBack (ActionEvent event) throws IOException {

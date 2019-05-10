@@ -88,7 +88,13 @@ public class LotteryUIController extends UIController implements Initializable {
                 Thread.currentThread().interrupt();
             } catch (IOException e){
                 // TODO: handle server loss
-                throw new RuntimeException(e);
+                Platform.runLater(() -> {
+                    try {
+                        sceneTransition("/logInScreen.fxml", back);
+                    } catch (IOException e1) {
+                        throw new RuntimeException(e1);
+                    }
+                });
             }
         }).start();
     }

@@ -13,7 +13,7 @@ import java.util.Random;
 
 
 public class Lottery extends GameInstance {
-    public static int gameLength = 2;
+    public static int gameLength = 0;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Map<String, Integer> playerBets = new HashMap<>();
@@ -32,6 +32,7 @@ public class Lottery extends GameInstance {
 
     @Override
     public void runGameLogic() {
+        System.out.println("Called");
         if (LocalDateTime.now().compareTo(endTime) > 0){
             int bets = 0;
             for (String authToken : playerBets.keySet()) {
@@ -55,7 +56,7 @@ public class Lottery extends GameInstance {
     public void handleRequest(GameRequest request, Response response) {
         ClientData client = getPlayer(request);
 
-        if (client == null) return;
+        if (client == null || request.getRequestType() == null) return;
 
         switch (request.getRequestType()){
             case LOTTERY_PROGRESS_QUERY:{
