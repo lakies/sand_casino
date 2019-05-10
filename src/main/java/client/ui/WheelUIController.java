@@ -1,17 +1,13 @@
 package client.ui;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import protocol.MessageType;
 import protocol.Response;
 import protocol.requests.GameRequest;
 import protocol.requests.StartGameRequest;
-import protocol.requests.TestRequest;
 import server.games.GameType;
 
 import java.io.IOException;
