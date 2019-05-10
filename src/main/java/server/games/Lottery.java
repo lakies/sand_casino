@@ -16,7 +16,7 @@ public class Lottery extends GameInstance {
 
 
 
-    public Lottery(){ //Iga nädal luuakse automaatselt see, mis peaks teoorias serveris jooksma nädal aeag
+    public Lottery(){
         super(50000, 1); //teoorias võib ka max piletihulgata teha
 
     }

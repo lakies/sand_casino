@@ -23,9 +23,6 @@ public class CoinflipUIController extends UIController {
 
 
     public void handleButtonAction (ActionEvent event) throws IOException {
-        //heads.setVisible(false);
-        //tails.setVisible(false);
-        //back.setVisible(false);
 
         StartGameRequest startGameRequest = new StartGameRequest(GameType.COINFLIP);
         getServerCommunicator().sendRequest(startGameRequest);
