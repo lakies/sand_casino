@@ -1,6 +1,7 @@
 package client.ui;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import protocol.Response;
@@ -10,17 +11,23 @@ import server.games.CoinFlip;
 import server.games.GameType;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
+import java.util.ResourceBundle;
 
-public class CoinflipUIController extends UIController {
+public class CoinflipUIController extends UIController implements Initializable {
     public Button back;
     public Button heads;
     public Button tails;
     public Label victory;
     public Label loss;
-    public Button res;
-    private int vic;
+    public Label coins;
 
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        displayCoins(coins);
+    }
 
     public void handleButtonAction (ActionEvent event) throws IOException {
 
@@ -32,22 +39,12 @@ public class CoinflipUIController extends UIController {
         GameRequest gameRequest = new GameRequest(new int[]{side});
         Response response = getServerCommunicator().sendRequest(gameRequest);
         System.out.println("Chosen side: " + side + " received data: " + Arrays.toString(response.data));
-        vic = response.data[0];
-        back.setVisible(false);
-        heads.setVisible(false);
-        tails.setVisible(false);
-        res.setVisible(true);
 
-
-    }
-    public void results(ActionEvent event){
-        res.setVisible(false);
-        if (vic == 1){
-            victory.setVisible(true);
-        } else{
-            loss.setVisible(true);
+        if (response.data[0] == 0){
+            setVisibleTimeout(loss);
+        } else {
+            setVisibleTimeout(victory);
         }
-        back.setVisible(true);
 
     }
 

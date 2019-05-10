@@ -50,6 +50,20 @@ public class UIController {
         }).start();
     }
 
+    public void setVisibleTimeout(Node targetNode){
+        new Thread(() -> {
+            targetNode.setVisible(true);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            }
+
+            targetNode.setVisible(false);
+        }).start();
+    }
+
     public void sceneTransition(String resourceName, Node targetNode) throws IOException {
         Stage stage = (Stage) targetNode.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource(resourceName));

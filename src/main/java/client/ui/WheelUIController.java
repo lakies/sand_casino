@@ -1,6 +1,7 @@
 package client.ui;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -12,9 +13,11 @@ import protocol.requests.TestRequest;
 import server.games.GameType;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
+import java.util.ResourceBundle;
 
-public class WheelUIController extends UIController {
+public class WheelUIController extends UIController implements Initializable {
     public Label lab1;
     public Label errorlabel;
     public Button back;
@@ -22,11 +25,15 @@ public class WheelUIController extends UIController {
     public Button play;
     public Button results;
     public Label amount;
-    public Button back1;
+    public Label coins;
 
-    private String coins ="";
+    private String coinAmount;
 
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        displayCoins(coins);
+    }
 
     public void handleButtonAction (ActionEvent event) throws IOException {
         try {
@@ -42,7 +49,7 @@ public class WheelUIController extends UIController {
             results.setVisible(true);
             play.setVisible(false);
             txtfield.setVisible(false);
-            coins = response.data[0] + "";
+            coinAmount = Integer.toString(response.data[0]);
             System.out.println(coins);
 
 
@@ -59,7 +66,7 @@ public class WheelUIController extends UIController {
         lab1.setVisible(true);
         back.setVisible(true);
 
-        amount.setText(coins);
+        amount.setText(coinAmount);
         amount.setVisible(true);
 
     }

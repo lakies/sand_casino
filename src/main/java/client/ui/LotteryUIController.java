@@ -4,10 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import protocol.MessageType;
-import protocol.Response;
-import protocol.requests.UserDataRequest;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
