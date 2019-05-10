@@ -29,14 +29,6 @@
                 <RowConstraints maxHeight="1.7976931348623157E308" />
               </rowConstraints>
                <children>
-                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #4eb5f1;" text="Back">
-                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </GridPane.margin>
-                      <font>
-                          <Font name="MS Reference Sans Serif" size="14.0" />
-                      </font>
-                  </Button>
                   <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="71.0" prefWidth="981.0" text="Levitatin' Lottery" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <font>
                         <Font name="MS Reference Sans Serif" size="34.0" />
@@ -66,6 +58,14 @@
                         </Label>
                      </children>
                   </HBox>
+                  <Button fx:id="back" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goBack" style="-fx-background-color: #4eb5f1;" text="Back">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                      <font>
+                          <Font name="MS Reference Sans Serif" size="14.0" />
+                      </font>
+                  </Button>
                </children>
             </GridPane>
              <VBox alignment="BOTTOM_CENTER" cacheShape="false" prefHeight="471.0" prefWidth="1100.0" scaleShape="false" spacing="20.0">

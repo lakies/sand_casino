@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
 public class LotteryUIController extends UIController implements Initializable {
     public Button submit;
     public Label coins;
+    public Button back;
     private static final String IDLE_BUTTON_STYLE = "-fx-background-color: #4eb5f1;";
     private static final String HOVERED_BUTTON_STYLE = "-fx-background-color: #4eb5f1; -fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);";
 
@@ -41,6 +42,9 @@ public class LotteryUIController extends UIController implements Initializable {
                 throw new RuntimeException(e);
             }
         }).start();
+    }
+    public void goBack(ActionEvent event) throws IOException {
+        sceneTransition("/gameChoiceScreen.fxml", back, getServerCommunicator());
     }
 
     public void handleSubmit(ActionEvent event){
