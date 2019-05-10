@@ -38,11 +38,16 @@ public class LotteryUIController extends UIController implements Initializable {
         submit.setOnMouseEntered(e -> submit.setStyle(HOVERED_BUTTON_STYLE));
         submit.setOnMouseExited(e -> submit.setStyle(IDLE_BUTTON_STYLE));
 
+        System.out.println("Init called");
         ensureNumericOnly(betAmount);
 
         displayCoins(coins);
 
         startQuery();
+    }
+
+    public LotteryUIController() {
+
     }
 
     private void startQuery(){
@@ -51,13 +56,24 @@ public class LotteryUIController extends UIController implements Initializable {
                 getServerReady().await();
                 StartGameRequest startGameRequest = new StartGameRequest(GameType.LOTTERY);
                 getServerCommunicator().sendRequest(startGameRequest);
+
+                GameRequest gameRequest = new GameRequest(new int[]{0});
+                gameRequest.setRequestType(GameRequest.GameRequestType.LOTTERY_ADD_BET);
+                getServerCommunicator().sendRequest(gameRequest);
+
                 while (true){
                     if (isWindowClosed()){
                         break;
                     }
-                    GameRequest gameRequest = new GameRequest(new int[]{});
+                    gameRequest = new GameRequest(new int[]{});
                     gameRequest.setRequestType(GameRequest.GameRequestType.LOTTERY_PROGRESS_QUERY);
                     Response response = getServerCommunicator().sendRequest(gameRequest);
+
+                    if (response.data == null){
+                        // TODO: show game over message
+                        System.out.println("Ended");
+                        break;
+                    }
 
                     displayCoins(coins);
 
@@ -66,8 +82,10 @@ public class LotteryUIController extends UIController implements Initializable {
                     if (data[0] == 1){
                         if (data[1] == 1){
                             // TODO: show win message
+                            System.out.println("Win");
                         } else {
                             // TODO: show lose message
+                            System.out.println("Lose");
                         }
                         break;
                     }
@@ -76,10 +94,10 @@ public class LotteryUIController extends UIController implements Initializable {
                         playerBetAmount.setText(Integer.toString(data[2]));
                         totalBetAmount.setText(Integer.toString(data[3]));
 
-                        Duration remaining = Duration.between(LocalDateTime.now(), response.time.plusMinutes(Lottery.gameLength));
-                        timeLeft.setText(remaining.getSeconds() / 60 + ":" + remaining.getSeconds() % 60);
+                        Duration remaining = Duration.between(LocalDateTime.now(), response.time.plusSeconds(Lottery.gameLength));
+                        timeLeft.setText(remaining.getSeconds() / 60 + ":" + (remaining.getSeconds() % 60 + 1));
 
-                        gameProgress.setProgress((Lottery.gameLength * 60.0 - remaining.getSeconds()) / (Lottery.gameLength * 60.0));
+                        gameProgress.setProgress((Lottery.gameLength - remaining.getSeconds() - 1) / (Lottery.gameLength * 1.0));
                     });
 
                     Thread.sleep(1000);

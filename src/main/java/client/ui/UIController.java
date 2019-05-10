@@ -2,7 +2,6 @@ package client.ui;
 
 import client.ServerCommunicator;
 import javafx.application.Platform;
-import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -28,7 +27,6 @@ public class UIController {
     }
 
     public void setWindowClosed(WindowEvent event) {
-        System.out.println("closed");
         windowClosed = true;
     }
 

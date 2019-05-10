@@ -13,17 +13,17 @@ import java.util.Random;
 
 
 public class Lottery extends GameInstance {
-    public static int gameLength = 0;
+    public static int gameLength = 10;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Map<String, Integer> playerBets = new HashMap<>();
     private int betSum = 0;
-    private ClientData winningClient = null;
+    private String winningClient = null;
 
     public Lottery(DatabaseHandler dbHandler){
         super(50000, 1, dbHandler); //teoorias võib ka max piletihulgata teha
         startTime = LocalDateTime.now();
-        endTime = LocalDateTime.now().plusMinutes(gameLength);
+        endTime = LocalDateTime.now().plusSeconds(gameLength);
     }
     @Override
     public boolean enoughFunds(ClientData client) {
@@ -32,11 +32,15 @@ public class Lottery extends GameInstance {
 
     @Override
     public void runGameLogic() {
-        System.out.println("Called");
         if (LocalDateTime.now().compareTo(endTime) > 0){
             int bets = 0;
             for (String authToken : playerBets.keySet()) {
                 bets += playerBets.get(authToken);
+            }
+
+            if (bets == 0){
+                setFinished(true);
+                return;
             }
 
             int winningNumber = new Random().nextInt(bets);
@@ -45,6 +49,7 @@ public class Lottery extends GameInstance {
                 int clientBet = playerBets.get(authToken);
                 if (clientBet >= winningNumber){
                     // Client won
+                    winningClient = authToken;
                     break;
                 }
                 winningNumber -= clientBet;
@@ -64,7 +69,7 @@ public class Lottery extends GameInstance {
                 int[] data = new int[4];
                 if (winningClient != null) {
                     data[0] = 1;
-                    if (winningClient.getAuthToken().equals(client.getAuthToken())){
+                    if (winningClient.equals(client.getAuthToken())){
                         data[1] = 1;
                     }
 
@@ -98,6 +103,6 @@ public class Lottery extends GameInstance {
 
     @Override
     public boolean isFinished() {
-        return winningClient != null && playerBets.keySet().size() == 0;
+        return getFinished() || winningClient != null && playerBets.keySet().size() == 0;
     }
 }

@@ -58,7 +58,7 @@ public class GameInstanceController implements Runnable {
             newGame.addPlayer(player);
             runningGames.add(newGame);
         } else {
-            if (newGame.getPlayers().size() < newGame.getMaxPlayers()) {
+            if (newGame.getPlayers().size() < newGame.getMaxPlayers() && !newGame.isFinished()) {
                 newGame.addPlayer(player);
             } else {
                 newGame = gameInstanceCreator();
@@ -79,11 +79,9 @@ public class GameInstanceController implements Runnable {
                 if (runningGame.isFinished()) {
                     runningGame.cleanup();
                     iterator.remove();
+                } else {
+                    runningGame.runGameLogic();
                 }
-            }
-
-            for (GameInstance runningGame : runningGames) {
-                runningGame.runGameLogic();
             }
 
             try {

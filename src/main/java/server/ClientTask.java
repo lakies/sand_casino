@@ -38,7 +38,6 @@ public class ClientTask implements Runnable {
             while (true) {
                 try {
                     String requestString = in.readUTF();
-                    System.out.println(requestString);
                     Response response = new Response();
                     Request request = ClassConverter.decode(requestString, Request.class);
 
@@ -49,7 +48,6 @@ public class ClientTask implements Runnable {
                             if (authToken == null) {
                                 response.setStatusCode(Response.StatusCodes.ERR_INVALID_CREDENTIALS);
                             } else {
-                                System.out.println("Token sent");
                                 response.setAuthToken(authToken);
                             }
                             break;
