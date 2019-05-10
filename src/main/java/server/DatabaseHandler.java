@@ -49,7 +49,7 @@ public class DatabaseHandler {
         String sql = "INSERT INTO users\n"
                 + " (username, password, coins)\n"
                 + " VALUES\n"
-                + " (?,?,0);";
+                + " (?,?,400);";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, username);
@@ -87,6 +87,34 @@ public class DatabaseHandler {
                 return argon2.verify(hash, password);
             }
             return false;
+        } catch (SQLException e) {
+            throw new DatabaseException();
+        }
+    }
+
+    public void saveCoins(String username, int coins) {
+        String sql = "UPDATE users"
+            + " SET coins = ?"
+            + " WHERE username = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, coins);
+            preparedStatement.setString(2, username);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new DatabaseException();
+        }
+    }
+
+    public int getCoins(String username) {
+        String sql = "SELECT coins"
+            + " FROM users"
+            + " WHERE username = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.getInt(1);
         } catch (SQLException e) {
             throw new DatabaseException();
         }

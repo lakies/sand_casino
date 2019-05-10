@@ -16,7 +16,7 @@ public class Server {
         ExecutorService gameControllerExecutor = Executors.newFixedThreadPool(GameType.values().length);
 
         for (GameType gameType : GameType.values()) {
-            GameInstanceController gameInstanceController = new GameInstanceController(gameType);
+            GameInstanceController gameInstanceController = new GameInstanceController(gameType, dbHandler);
             gameControllerExecutor.submit(gameInstanceController);
             gameControllers.put(gameType, gameInstanceController);
         }

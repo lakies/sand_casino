@@ -4,13 +4,16 @@ import protocol.Request;
 import protocol.Response;
 import protocol.requests.GameRequest;
 import server.ClientData;
+import server.DatabaseHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GameInstance {
+
     private boolean gameStarted = false;
     private boolean finished = false;
+    private DatabaseHandler dbHandler;
 
     public boolean isGameStarted() {
         return gameStarted;
@@ -35,10 +38,11 @@ public abstract class GameInstance {
     private final List<ClientData> players;
     private double buyIn; // Pileti sissemüük
 
-    public GameInstance(int maxPlayers, int minPlayers) {
+    public GameInstance(int maxPlayers, int minPlayers, DatabaseHandler dbHandler) {
         this.maxPlayers = maxPlayers;
         this.minPlayers = minPlayers;
         this.players = new ArrayList<>();
+        this.dbHandler = dbHandler;
     }
 
     public double getBuyIn() {
@@ -80,6 +84,11 @@ public abstract class GameInstance {
 
     public int getMinPlayers() {
         return minPlayers;
+    }
+
+    protected void updateCoins(ClientData clientData, int coins) {
+        clientData.setCoins(coins);
+        dbHandler.saveCoins(clientData.getUsername(), coins);
     }
 
     public ClientData getPlayer(Request request){

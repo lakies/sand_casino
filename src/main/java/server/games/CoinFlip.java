@@ -3,7 +3,7 @@ package server.games;
 import protocol.Response;
 import protocol.requests.GameRequest;
 import server.ClientData;
-
+import server.DatabaseHandler;
 
 
 public class CoinFlip extends GameInstance {
@@ -36,8 +36,8 @@ public class CoinFlip extends GameInstance {
         System.out.println("Running game");
     }
 
-    public CoinFlip() {
-        super(1, 1);
+    public CoinFlip(DatabaseHandler dbHandler) {
+        super(1, 1, dbHandler);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class CoinFlip extends GameInstance {
             return;
         }
 
-        client.setCoins(client.getCoins() - 50);
+        updateCoins(client, client.getCoins() - 50);
 
         double i = Math.random();
 
@@ -72,12 +72,13 @@ public class CoinFlip extends GameInstance {
         int chosenSide = request.getPayload()[0];
 
         if (side.getValue() == chosenSide) {
-            client.setCoins(client.getCoins() + 100);
+            updateCoins(client, client.getCoins() + 100);
             won = 1;
         }
 
         response.data = new int[]{won, client.getCoins()};
         setFinished(true);
+
     }
 
 

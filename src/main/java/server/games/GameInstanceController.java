@@ -3,6 +3,7 @@ package server.games;
 import protocol.Response;
 import protocol.requests.GameRequest;
 import server.ClientData;
+import server.DatabaseHandler;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,22 +21,24 @@ public class GameInstanceController implements Runnable {
     private List<GameInstance> runningGames = Collections.synchronizedList(new ArrayList<>());
     private GameInstance newGame;
     private GameType gameType;
+    private DatabaseHandler dbHandler;
 
-    public GameInstanceController(GameType gameType) {
+    public GameInstanceController(GameType gameType, DatabaseHandler dbHandler) {
         this.queuedPlayers = new ArrayBlockingQueue<>(10); // is 10 enough?
         this.gameType = gameType;
         newGame = null;
+        this.dbHandler = dbHandler;
     }
 
     private GameInstance gameInstanceCreator() { // TODO: add data for each game
         switch (gameType) {
 
             case COINFLIP:
-                return new CoinFlip();
+                return new CoinFlip(dbHandler);
             case WHEEL:
-                return new Wheel();
+                return new Wheel(dbHandler);
             case LOTTERY:
-                return new Lottery();
+                return new Lottery(dbHandler);
         }
 
         // If reaches here then need to add new game to above switch

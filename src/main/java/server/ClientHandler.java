@@ -12,12 +12,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class ClientHandler implements Runnable {
-    private Map<GameType, GameInstanceController> gameControllers;
-    private DatabaseHandler dbHandler;
+    private final Map<GameType, GameInstanceController> gameControllers;
+    private final ClientActions clientActions;
 
     public ClientHandler(Map<GameType, GameInstanceController> gameControllers, DatabaseHandler dbHandler) {
         this.gameControllers = gameControllers;
-        this.dbHandler = dbHandler;
+        this.clientActions = new ClientActions(dbHandler);
     }
 
     @Override
@@ -31,10 +31,10 @@ public class ClientHandler implements Runnable {
             while (true) {
                 Socket s = serverSocket.accept();
                 // TODO: somehow handle exceptions with the future
-                Future<?> future = clientPool.submit(new ClientTask(s, gameControllers, new ClientActions(dbHandler)));
+                Future<?> future = clientPool.submit(new ClientTask(s, gameControllers, clientActions));
             }
         } catch (IOException e) {
-            System.out.println(e);
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

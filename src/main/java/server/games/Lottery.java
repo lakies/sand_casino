@@ -4,6 +4,7 @@ package server.games;
 import protocol.Response;
 import protocol.requests.GameRequest;
 import server.ClientData;
+import server.DatabaseHandler;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -17,8 +18,8 @@ public class Lottery extends GameInstance {
     private Map<ClientData, Integer> playerBets = new HashMap<>();
     private ClientData winningClient = null;
 
-    public Lottery(){
-        super(50000, 1); //teoorias võib ka max piletihulgata teha
+    public Lottery(DatabaseHandler dbHandler){
+        super(50000, 1, dbHandler); //teoorias võib ka max piletihulgata teha
         startTime = LocalDateTime.now();
         endTime = LocalDateTime.now().plusMinutes(1);
     }

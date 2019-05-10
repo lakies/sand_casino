@@ -3,11 +3,12 @@ package server;
 public class ClientData {
     private final String username;
     private final String authToken;
-    private int coins = 400;
+    private int coins;
 
-    public ClientData(String username, String authToken) {
+    public ClientData(String username, String authToken, int coins) {
         this.username = username;
         this.authToken = authToken;
+        this.coins = coins;
     }
 
     public int getCoins() {

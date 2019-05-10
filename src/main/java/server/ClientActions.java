@@ -39,7 +39,7 @@ public class ClientActions {
         }
 
         System.out.println("User was successfully authenticated. Token: " + authToken);
-        authTokens.put(authToken, new ClientData(username, authToken));
+        authTokens.put(authToken, new ClientData(username, authToken, dbHandler.getCoins(username)));
         return authToken;
     }
 
