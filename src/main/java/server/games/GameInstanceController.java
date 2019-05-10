@@ -1,11 +1,12 @@
 package server.games;
 
-import protocol.Request;
 import protocol.Response;
 import protocol.requests.GameRequest;
 import server.ClientData;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -16,7 +17,7 @@ public class GameInstanceController implements Runnable {
 
 
     private BlockingQueue<ClientData> queuedPlayers;
-    private List<GameInstance> runningGames = new ArrayList<>();
+    private List<GameInstance> runningGames = Collections.synchronizedList(new ArrayList<>());
     private GameInstance newGame;
     private GameType gameType;
 
@@ -69,11 +70,15 @@ public class GameInstanceController implements Runnable {
 
     @Override
     public void run() {
+
         while (true) {
-            for (GameInstance runningGame : runningGames) {
+            Iterator<GameInstance> iterator = runningGames.iterator();
+
+            while (iterator.hasNext()) {
+                GameInstance runningGame = iterator.next();
                 if (runningGame.isFinished()) {
                     runningGame.cleanup();
-                    runningGames.remove(runningGame);
+                    iterator.remove();
                 }
             }
 
@@ -88,6 +93,5 @@ public class GameInstanceController implements Runnable {
                 throw new RuntimeException(e);
             }
         }
-
     }
 }
