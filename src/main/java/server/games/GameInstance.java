@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GameInstance {
-
     private boolean gameStarted = false;
     private boolean finished = false;
 
@@ -24,6 +23,7 @@ public abstract class GameInstance {
     public void setFinished(boolean finished) {
         this.finished = finished;
     }
+
     public boolean getFinished(){
         return finished;
     }
@@ -80,6 +80,16 @@ public abstract class GameInstance {
 
     public int getMinPlayers() {
         return minPlayers;
+    }
+
+    public ClientData getPlayer(Request request){
+        for (ClientData player : players) {
+            if (request.getAuthToken().equals(player.getAuthToken())){
+                return player;
+            }
+        }
+
+        return null;
     }
 
 }

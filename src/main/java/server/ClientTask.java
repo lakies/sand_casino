@@ -1,7 +1,6 @@
 package server;
 
 import protocol.ClassConverter;
-import protocol.MessageBody;
 import protocol.Request;
 import protocol.Response;
 import protocol.requests.GameRequest;

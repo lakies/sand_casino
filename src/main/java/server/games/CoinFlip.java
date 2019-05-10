@@ -52,13 +52,11 @@ public class CoinFlip extends GameInstance {
 
     @Override
     public void handleRequest(GameRequest request, Response response) {
-        int won = 0;
-        // All game logic happens when request comes in
+        ClientData client = getPlayer(request);
 
-        ClientData client = getPlayers().get(0);
-        if (!client.getAuthToken().equals(request.getAuthToken())){
-            return;
-        }
+        if (client == null) return;
+
+        int won = 0;
 
         if (!enoughFunds(client)){
             response.setStatusCode(Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS);
