@@ -16,6 +16,11 @@ public class CoinflipUIController extends UIController {
     public Button back;
     public Button heads;
     public Button tails;
+    public Label victory;
+    public Label loss;
+    public Button res;
+    private int vic;
+
 
     public void handleButtonAction (ActionEvent event) throws IOException {
         //heads.setVisible(false);
@@ -30,22 +35,22 @@ public class CoinflipUIController extends UIController {
         GameRequest gameRequest = new GameRequest(new int[]{side});
         Response response = getServerCommunicator().sendRequest(gameRequest);
         System.out.println("Chosen side: " + side + " received data: " + Arrays.toString(response.data));
-//        if (side == 0) {
-//            if (response.data == null){
-//                sceneTransition("/gameChoiceScreen.fxml", heads );
-//            } else if (response.data[0] == 1) {
-//                sceneTransition("/Victory.fxml", heads, getServerCommunicator());
-//            }
-//            sceneTransition("/Loss.fxml", heads, getServerCommunicator());
-//        } else {
-//            if (response.data == null){
-//                sceneTransition("/gameChoiceScreen.fxml", tails);
-//            } else if (response.data[0] == 1) {
-//                sceneTransition("/Victory.fxml", tails, getServerCommunicator());
-//            }
-//            sceneTransition("/Loss.fxml", tails, getServerCommunicator());
-//        }
+        vic = response.data[0];
+        back.setVisible(false);
+        heads.setVisible(false);
+        tails.setVisible(false);
+        res.setVisible(true);
 
+
+    }
+    public void results(ActionEvent event){
+        res.setVisible(false);
+        if (vic == 1){
+            victory.setVisible(true);
+        } else{
+            loss.setVisible(true);
+        }
+        back.setVisible(true);
 
     }
 

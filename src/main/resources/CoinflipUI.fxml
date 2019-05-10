@@ -9,9 +9,10 @@
 
 <AnchorPane style="-fx-background-color: linear-gradient(to bottom right, #230c33, #a787bc);" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ui.CoinflipUIController">
     <children>
+      <Button fx:id="back" layoutX="45.0" layoutY="56.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="145.0" style="-fx-background-radius: 100; -fx-background-color: #ffffff;" text="BACK" AnchorPane.topAnchor="56.0" />
         <VBox alignment="BOTTOM_CENTER" cacheShape="false" fillWidth="false" layoutX="196.0" layoutY="75.0" prefHeight="375.0" prefWidth="638.0" scaleShape="false" spacing="30.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="196.0" AnchorPane.rightAnchor="266.0" AnchorPane.topAnchor="75.0">
             <children>
-                <Label contentDisplay="CENTER" prefHeight="164.0" prefWidth="520.0" text="PLAY COINFLIP " textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                <Label contentDisplay="CENTER" prefHeight="164.0" prefWidth="469.0" text="PLAY COINFLIP " textAlignment="CENTER" textFill="WHITE" wrapText="true">
                     <font>
                         <Font name="Segoe UI Black" size="60.0" />
                     </font>
@@ -31,6 +32,20 @@
                 </Button>
             </children>
         </VBox>
-      <Button fx:id="back" layoutX="45.0" layoutY="56.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="145.0" style="-fx-background-radius: 100; -fx-background-color: #ffffff;" text="BACK" AnchorPane.topAnchor="56.0" />
+      <Label fx:id="victory" contentDisplay="CENTER" layoutX="347.0" layoutY="181.0" prefHeight="164.0" prefWidth="656.0" text="YOU WON!" textAlignment="CENTER" textFill="WHITE" visible="false" wrapText="true">
+         <font>
+            <Font name="Segoe UI Black" size="60.0" />
+         </font>
+      </Label>
+      <Label fx:id="loss" contentDisplay="CENTER" layoutX="357.0" layoutY="191.0" prefHeight="164.0" prefWidth="656.0" text="YOU LOST!" textAlignment="CENTER" textFill="WHITE" visible="false" wrapText="true">
+         <font>
+            <Font name="Segoe UI Black" size="60.0" />
+         </font>
+      </Label>
+      <Button fx:id="res" layoutX="309.0" layoutY="217.0" mnemonicParsing="false" onAction="#results" prefHeight="77.0" prefWidth="437.0" style="-fx-background-radius: 100; -fx-background-color: #ffffff;" text="Show Results!" visible="false">
+         <font>
+            <Font name="Segoe UI Black" size="36.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>
