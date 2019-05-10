@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import protocol.MessageType;
 import protocol.Response;
@@ -62,6 +63,14 @@ public class UIController {
 
             targetNode.setVisible(false);
         }).start();
+    }
+
+    public void ensureNumericOnly(TextField tf){
+        tf.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                tf.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
     }
 
     public void sceneTransition(String resourceName, Node targetNode) throws IOException {

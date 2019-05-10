@@ -1,5 +1,7 @@
 package client.ui;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -32,6 +34,7 @@ public class WheelUIController extends UIController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        ensureNumericOnly(txtfield);
         displayCoins(coins);
     }
 
