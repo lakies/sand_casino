@@ -32,7 +32,7 @@ public class ServerCommunicator {
         }
     }
 
-    public Response sendRequest (Request request) throws IOException{
+    public synchronized Response sendRequest (Request request) throws IOException{
         request.setAuthToken(user.getAuthToken());
         String requestAsString = ClassConverter.encode(request);
 
@@ -40,8 +40,6 @@ public class ServerCommunicator {
             throw new IOException("connection with server not established");
         }
 
-
-        System.out.println("Sending request " + requestAsString);
         out.writeUTF(requestAsString);
         out.flush();
 

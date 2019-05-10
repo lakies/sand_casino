@@ -107,6 +107,8 @@ public class ClientTask implements Runnable {
                                     gameControllers.get(GameType.WHEEL).addPlayer(client);
                                     break;
                                 case LOTTERY:
+                                    System.out.println("client started playing lottery");
+                                    gameControllers.get(GameType.LOTTERY).addPlayer(client);
                                     break;
                             }
                             break;

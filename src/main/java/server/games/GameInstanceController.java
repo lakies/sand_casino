@@ -53,15 +53,12 @@ public class GameInstanceController implements Runnable {
     }
 
     public synchronized void addPlayer(ClientData player) {
-        // TODO: implement an internal timer for game instances to allow more than minimum amount of players to connect. Then should add check for maxPlayers as well
         if (newGame == null) {
             newGame = gameInstanceCreator();
             newGame.addPlayer(player);
-            if (newGame.getMinPlayers() == 1) {
-                runningGames.add(newGame);
-            }
+            runningGames.add(newGame);
         } else {
-            if (newGame.getMinPlayers() > newGame.getPlayers().size()) {
+            if (newGame.getPlayers().size() < newGame.getMaxPlayers()) {
                 newGame.addPlayer(player);
             } else {
                 newGame = gameInstanceCreator();

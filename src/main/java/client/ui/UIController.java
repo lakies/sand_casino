@@ -1,6 +1,8 @@
 package client.ui;
 
 import client.ServerCommunicator;
+import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -8,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import protocol.MessageType;
 import protocol.Response;
 import protocol.requests.UserDataRequest;
@@ -18,6 +21,16 @@ import java.util.concurrent.CountDownLatch;
 public class UIController {
     private CountDownLatch serverReady = new CountDownLatch(1);
     private ServerCommunicator serverCommunicator;
+    private boolean windowClosed = false;
+
+    public boolean isWindowClosed() {
+        return windowClosed;
+    }
+
+    public void setWindowClosed(WindowEvent event) {
+        System.out.println("closed");
+        windowClosed = true;
+    }
 
     public ServerCommunicator getServerCommunicator() {
         return serverCommunicator;
@@ -35,11 +48,13 @@ public class UIController {
     public void displayCoins(Label target){
         new Thread(() -> {
             UserDataRequest coinRequest = new UserDataRequest(MessageType.COIN_AMOUNT);
-            System.out.println("Requesting coins");
             try {
                 getServerReady().await();
                 Response response = getServerCommunicator().sendRequest(coinRequest);
-                target.setText(Integer.toString(response.data[0]));
+
+                Platform.runLater(() -> {
+                    target.setText(Integer.toString(response.data[0]));
+                });
             } catch (IOException e){
                 // TODO: handle connection loss when already logged in.
                 System.out.println("Server connection failed");
@@ -53,7 +68,9 @@ public class UIController {
 
     public void setVisibleTimeout(Node targetNode){
         new Thread(() -> {
-            targetNode.setVisible(true);
+            Platform.runLater(() -> {
+                targetNode.setVisible(true);
+            });
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -61,7 +78,9 @@ public class UIController {
                 throw new RuntimeException(e);
             }
 
-            targetNode.setVisible(false);
+            Platform.runLater(() -> {
+                targetNode.setVisible(false);
+            });
         }).start();
     }
 
@@ -88,6 +107,7 @@ public class UIController {
         UIController controller = fxmlLoader.getController();
         controller.setServerCommunicator(communicator);
         stage.setScene(new Scene(root));
+        stage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, controller::setWindowClosed);
         stage.show();
     }
 }

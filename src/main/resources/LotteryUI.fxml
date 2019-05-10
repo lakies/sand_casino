@@ -134,7 +134,7 @@
                   <Insets right="10.0" />
                </padding>
             </Label>
-            <Label fx:id="totalBetAmount1" layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="71.0" text="00:00">
+            <Label fx:id="timeLeft" layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="71.0" text="00:00">
                <font>
                   <Font name="MS Reference Sans Serif" size="22.0" />
                </font>

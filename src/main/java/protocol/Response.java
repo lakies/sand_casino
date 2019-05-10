@@ -1,5 +1,7 @@
 package protocol;
 
+import java.time.LocalDateTime;
+
 public class Response extends MessageBody{
     public enum StatusCodes {
         SUCCESS,
@@ -34,6 +36,8 @@ public class Response extends MessageBody{
     }
 
     public String message;
+
+    public LocalDateTime time;
 
     public int[] data;
 

@@ -1,14 +1,22 @@
 package client.ui;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import protocol.Response;
+import protocol.requests.GameRequest;
+import protocol.requests.StartGameRequest;
+import server.games.GameType;
+import server.games.Lottery;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class LotteryUIController extends UIController implements Initializable {
@@ -17,12 +25,12 @@ public class LotteryUIController extends UIController implements Initializable {
     public Button back;
     public Label playerBetAmount;
     public Label totalBetAmount;
+    public Label timeLeft;
     public TextField betAmount;
     public ProgressBar gameProgress;
 
     private static final String IDLE_BUTTON_STYLE = "-fx-background-color: #4eb5f1;";
     private static final String HOVERED_BUTTON_STYLE = "-fx-background-color: #4eb5f1; -fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);";
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -33,12 +41,65 @@ public class LotteryUIController extends UIController implements Initializable {
         ensureNumericOnly(betAmount);
 
         displayCoins(coins);
+
+        startQuery();
+    }
+
+    private void startQuery(){
+        new Thread(() -> {
+            try {
+                getServerReady().await();
+                StartGameRequest startGameRequest = new StartGameRequest(GameType.LOTTERY);
+                getServerCommunicator().sendRequest(startGameRequest);
+                while (true){
+                    if (isWindowClosed()){
+                        break;
+                    }
+                    GameRequest gameRequest = new GameRequest(new int[]{});
+                    gameRequest.setRequestType(GameRequest.GameRequestType.LOTTERY_PROGRESS_QUERY);
+                    Response response = getServerCommunicator().sendRequest(gameRequest);
+
+                    displayCoins(coins);
+
+                    int[] data = response.data;
+
+                    if (data[0] == 1){
+                        if (data[1] == 1){
+                            // TODO: show win message
+                        } else {
+                            // TODO: show lose message
+                        }
+                        break;
+                    }
+
+                    Platform.runLater(() -> {
+                        playerBetAmount.setText(Integer.toString(data[2]));
+                        totalBetAmount.setText(Integer.toString(data[3]));
+
+                        Duration remaining = Duration.between(LocalDateTime.now(), response.time.plusMinutes(Lottery.gameLength));
+                        timeLeft.setText(remaining.getSeconds() / 60 + ":" + remaining.getSeconds() % 60);
+
+                        gameProgress.setProgress((Lottery.gameLength * 60.0 - remaining.getSeconds()) / (Lottery.gameLength * 60.0));
+                    });
+
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } catch (IOException e){
+                // TODO: handle server loss
+                throw new RuntimeException(e);
+            }
+        }).start();
     }
     public void goBack(ActionEvent event) throws IOException {
+        setWindowClosed(null);
         sceneTransition("/gameChoiceScreen.fxml", back, getServerCommunicator());
     }
 
-    public void handleSubmit(ActionEvent event){
-        System.out.println("clicked");
+    public void handleSubmit(ActionEvent event) throws IOException{
+        GameRequest gameRequest = new GameRequest(new int[]{Integer.parseInt(betAmount.getText())});
+        gameRequest.setRequestType(GameRequest.GameRequestType.LOTTERY_ADD_BET);
+        getServerCommunicator().sendRequest(gameRequest);
     }
 }
