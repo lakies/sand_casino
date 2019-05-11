@@ -5,6 +5,7 @@ import protocol.Response;
 import protocol.requests.GameRequest;
 import server.ClientData;
 import server.DatabaseHandler;
+import server.NotEnoughFundsException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,15 +64,15 @@ public abstract class GameInstance {
 
     public abstract void handleRequest(GameRequest request, Response response);
 
-    public boolean addPlayer(ClientData client) {
+    public void addPlayer(ClientData client) {
         if (players.size() == maxPlayers) {
-            return false;
+            throw new NotEnoughFundsException();
         }
         if (enoughFunds(client)) {
             players.add(client);
-            return true;
+            return;
         }
-        return false;
+        throw new NotEnoughFundsException();
     }
 
     public List<ClientData> getPlayers() {

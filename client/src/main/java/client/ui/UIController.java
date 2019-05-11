@@ -16,8 +16,6 @@ import protocol.requests.UserDataRequest;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class UIController {
     private CountDownLatch serverReady = new CountDownLatch(1);
@@ -57,7 +55,7 @@ public class UIController {
                 });
             } catch (IOException e){
                 try {
-                    sceneTransition("ConnectionLost.fxml", target);
+                    sceneTransition("/ConnectionLost.fxml", target);
                 } catch (IOException e1) {
                     throw new RuntimeException(e1);
                 }

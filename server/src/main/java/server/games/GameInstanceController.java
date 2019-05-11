@@ -5,9 +5,9 @@ import protocol.Response;
 import protocol.requests.GameRequest;
 import server.ClientData;
 import server.DatabaseHandler;
+import server.NotEnoughFundsException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -19,7 +19,7 @@ public class GameInstanceController implements Runnable {
 
 
     private BlockingQueue<ClientData> queuedPlayers;
-    private List<GameInstance> runningGames = Collections.synchronizedList(new ArrayList<>());
+    private List<GameInstance> runningGames = new ArrayList<>();
     private GameInstance newGame;
     private GameType gameType;
     private DatabaseHandler dbHandler;
@@ -53,7 +53,7 @@ public class GameInstanceController implements Runnable {
         }
     }
 
-    public synchronized void addPlayer(ClientData player) {
+    public synchronized void addPlayer(ClientData player) throws NotEnoughFundsException {
         if (newGame == null) {
             newGame = gameInstanceCreator();
             newGame.addPlayer(player);
@@ -73,15 +73,17 @@ public class GameInstanceController implements Runnable {
     public void run() {
 
         while (true) {
-            Iterator<GameInstance> iterator = runningGames.iterator();
+            synchronized (this) {
+                Iterator<GameInstance> iterator = runningGames.iterator();
 
-            while (iterator.hasNext()) {
-                GameInstance runningGame = iterator.next();
-                if (runningGame.isFinished()) {
-                    runningGame.cleanup();
-                    iterator.remove();
-                } else {
-                    runningGame.runGameLogic();
+                while (iterator.hasNext()) {
+                    GameInstance runningGame = iterator.next();
+                    if (runningGame.isFinished()) {
+                        runningGame.cleanup();
+                        iterator.remove();
+                    } else {
+                        runningGame.runGameLogic();
+                    }
                 }
             }
 

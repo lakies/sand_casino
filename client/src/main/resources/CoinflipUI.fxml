@@ -7,7 +7,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -21,23 +20,14 @@
                         <Font name="Segoe UI Black" size="60.0" />
                     </font>
                 </Label>
-            <Pane prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <Label fx:id="loss" contentDisplay="CENTER" prefHeight="164.0" prefWidth="238.0" text="YOU LOST -50 coins" textFill="WHITE" visible="false" wrapText="true">
-                     <font>
-                        <Font name="Segoe UI Black" size="44.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="victory" contentDisplay="CENTER" prefHeight="164.0" prefWidth="246.0" text="YOU WON +50 coins" textFill="WHITE" visible="false" wrapText="true">
-                     <font>
-                        <Font name="Segoe UI Black" size="44.0" />
-                     </font>
-                  </Label>
-               </children>
-               <VBox.margin>
+            <Label fx:id="result" alignment="CENTER" contentDisplay="CENTER" prefHeight="150.0" prefWidth="607.0" textAlignment="CENTER" textFill="WHITE" visible="false" wrapText="true">
+               <font>
+                  <Font name="Segoe UI Black" size="44.0" />
+               </font>
+               <opaqueInsets>
                   <Insets />
-               </VBox.margin>
-            </Pane>
+               </opaqueInsets>
+            </Label>
                 <Button fx:id="heads" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="53.0" prefWidth="334.0" style="-fx-background-radius: 100; -fx-background-color: #ffffff;" text="Heads" textFill="#653a83">
                     <font>
                         <Font name="Segoe UI Black" size="18.0" />

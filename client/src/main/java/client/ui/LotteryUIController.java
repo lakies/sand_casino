@@ -121,7 +121,7 @@ public class LotteryUIController extends UIController implements Initializable {
                 // TODO: handle server loss
                 Platform.runLater(() -> {
                     try {
-                        sceneTransition("ConnectionLost.fxml", back);
+                        sceneTransition("/ConnectionLost.fxml", back);
                     } catch (IOException e1) {
                         throw new RuntimeException(e1);
                     }
