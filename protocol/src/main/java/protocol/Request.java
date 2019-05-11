@@ -1,6 +1,6 @@
 package protocol;
 
-public abstract class Request extends MessageBody {
+public class Request extends MessageBody {
     private String authToken;
 
     public String getAuthToken() {
