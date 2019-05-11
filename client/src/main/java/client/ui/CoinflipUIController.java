@@ -45,6 +45,7 @@ public class CoinflipUIController extends UIController implements Initializable 
             } else {
                 setVisibleTimeout(victory);
             }
+            displayCoins(coins);
         } catch (IOException e) {
             sceneTransition("/logInScreen.fxml", back);
         }

@@ -69,6 +69,7 @@ public class WheelUIController extends UIController implements Initializable {
 
         amount.setText(coinAmount);
         amount.setVisible(true);
+        displayCoins(coins);
 
     }
     public void goBack (ActionEvent event) throws IOException {
