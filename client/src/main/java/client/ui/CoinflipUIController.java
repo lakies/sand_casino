@@ -47,7 +47,7 @@ public class CoinflipUIController extends UIController implements Initializable 
             }
             displayCoins(coins);
         } catch (IOException e) {
-            sceneTransition("ConnectionLost.fxml", back);
+            sceneTransition("/ConnectionLost.fxml", back);
         }
     }
 

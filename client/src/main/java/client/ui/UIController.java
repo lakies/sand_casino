@@ -57,7 +57,7 @@ public class UIController {
                 });
             } catch (IOException e){
                 try {
-                    sceneTransition("ConnectionLost.fxml", target);
+                    sceneTransition("/ConnectionLost.fxml", target);
                 } catch (IOException e1) {
                     throw new RuntimeException(e1);
                 }
