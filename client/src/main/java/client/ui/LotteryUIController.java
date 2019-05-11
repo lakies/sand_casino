@@ -78,6 +78,9 @@ public class LotteryUIController extends UIController implements Initializable {
                     if (response.data == null){
                         // TODO: show game over message
                         System.out.println("Ended");
+                        gameProgress.setVisible(false);
+                        timerBox.setVisible(false);
+                        setVisibleTimeout(gifContainer, 2000, this::displayEnd);
                         break;
                     }
 
@@ -91,10 +94,11 @@ public class LotteryUIController extends UIController implements Initializable {
                         if (data[1] == 1){
                             // TODO: show win message
                             System.out.println("Win");
-                            setVisibleTimeout(gifContainer, 3000, this::displayWin);
+                            setVisibleTimeout(gifContainer, 2000, this::displayWin);
                         } else {
                             // TODO: show lose message
                             System.out.println("Lose");
+                            setVisibleTimeout(gifContainer, 2000, this::displayEnd);
                         }
                         break;
                     }
@@ -174,6 +178,10 @@ public class LotteryUIController extends UIController implements Initializable {
         sceneTransition("/gameChoiceScreen.fxml", back, getServerCommunicator());
     }
 
+    private void displayEnd(){
+        winMessage.setText("Game has ended");
+        winMessage.setVisible(true);
+    }
     private void displayWin(){
         winMessage.setVisible(true);
         moveCoin();

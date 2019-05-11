@@ -103,7 +103,7 @@ public class UIController {
             throw new RuntimeException(e);
         }
 
-        after.run();
+        Platform.runLater(after);
     }
 
     public void ensureNumericOnly(TextField tf){

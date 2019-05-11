@@ -13,7 +13,7 @@ import java.util.Random;
 
 
 public class Lottery extends GameInstance {
-    public static int gameLength = 5;
+    public static int gameLength = 30;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Map<String, Integer> playerBets = new HashMap<>();
@@ -32,6 +32,8 @@ public class Lottery extends GameInstance {
 
     @Override
     public void runGameLogic() {
+        if (getFinished() || winningClient != null) return;
+
         if (LocalDateTime.now().compareTo(endTime) > 0){
             int bets = 0;
             for (String authToken : playerBets.keySet()) {
@@ -49,6 +51,7 @@ public class Lottery extends GameInstance {
                 int clientBet = playerBets.get(authToken);
                 if (clientBet >= winningNumber){
                     // Client won
+                    System.out.println("Client " + authToken + " won");
                     winningClient = authToken;
                     break;
                 }
@@ -68,6 +71,7 @@ public class Lottery extends GameInstance {
                 // data[0] = has the winner been selected yet, data[1] = is the current client the winner, data[2] = player bet sum, data[3] = total bet sum
                 int[] data = new int[4];
                 if (winningClient != null) {
+                    System.out.println("Client " + client.getAuthToken() + " requested game end info");
                     data[0] = 1;
                     if (winningClient.equals(client.getAuthToken())){
                         data[1] = 1;
