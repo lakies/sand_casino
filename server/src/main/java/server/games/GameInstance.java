@@ -3,6 +3,7 @@ package server.games;
 import protocol.Request;
 import protocol.Response;
 import protocol.requests.GameRequest;
+import server.ClientActions;
 import server.ClientData;
 import server.DatabaseHandler;
 import server.NotEnoughFundsException;
@@ -15,6 +16,7 @@ public abstract class GameInstance {
     private boolean gameStarted = false;
     private boolean finished = false;
     private DatabaseHandler dbHandler;
+    private ClientActions clientActions;
 
     public boolean isGameStarted() {
         return gameStarted;
@@ -39,11 +41,16 @@ public abstract class GameInstance {
     private final List<ClientData> players;
     private double buyIn; // Pileti sissemüük
 
-    public GameInstance(int maxPlayers, int minPlayers, DatabaseHandler dbHandler) {
+    public GameInstance(int maxPlayers, int minPlayers, ClientActions clientActions) {
         this.maxPlayers = maxPlayers;
         this.minPlayers = minPlayers;
         this.players = new ArrayList<>();
-        this.dbHandler = dbHandler;
+        this.dbHandler = clientActions.getDbHandler();
+        this.clientActions = clientActions;
+    }
+
+    public ClientActions getClientActions() {
+        return clientActions;
     }
 
     public double getBuyIn() {

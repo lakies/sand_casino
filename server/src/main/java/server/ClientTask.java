@@ -68,11 +68,6 @@ public class ClientTask implements Runnable {
                             }
                             break;
                         }
-                        case TEST:{
-                            TestRequest testRequest = (TestRequest) request;
-                            response.message = "test string";
-                            break;
-                        }
                         case COIN_AMOUNT:{
                             UserDataRequest coinRequest = ClassConverter.decode(requestString, UserDataRequest.class);
                             ClientData client = clientActions.getClientByAuthToken(coinRequest.getAuthToken());

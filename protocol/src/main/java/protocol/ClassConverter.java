@@ -15,17 +15,14 @@ public class ClassConverter {
         return gsonEngine.toJson(command);
     }
 
-    @SuppressWarnings("unchecked")
     public static <T extends MessageBody> T decode(String rawJson, Class<T> expectedType) throws ClassNotFoundException {
         LinkedTreeMap<?,?> asMap = gsonEngine.fromJson(rawJson, LinkedTreeMap.class);
         String className = asMap.get("type").toString();
         if (!expectedType.isAssignableFrom(Class.forName(className))){
             throw new ClassNotFoundException("Illegal class");
         }
-        Class<? extends MessageBody> messageClass;
-        messageClass = (Class<? extends MessageBody>) Class.forName(className);
         JsonObject jsonObject = gsonEngine.toJsonTree(asMap.get("data")).getAsJsonObject();
-        return (T) gsonEngine.fromJson(jsonObject, messageClass);
+        return gsonEngine.fromJson(jsonObject, expectedType);
     }
 
 }

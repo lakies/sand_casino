@@ -3,6 +3,7 @@ package server.games;
 
 import protocol.Response;
 import protocol.requests.GameRequest;
+import server.ClientActions;
 import server.ClientData;
 import server.DatabaseHandler;
 
@@ -20,10 +21,11 @@ public class Lottery extends GameInstance {
     private int betSum = 0;
     private String winningClient = null;
 
-    public Lottery(DatabaseHandler dbHandler){
-        super(50000, 1, dbHandler); //teoorias võib ka max piletihulgata teha
+    public Lottery(ClientActions clientActions){
+        super(50000, 1, clientActions); //teoorias võib ka max piletihulgata teha
         startTime = LocalDateTime.now();
         endTime = LocalDateTime.now().plusSeconds(gameLength);
+        playerBets.put("mock", 0);
     }
     @Override
     public boolean enoughFunds(ClientData client) {
@@ -33,6 +35,12 @@ public class Lottery extends GameInstance {
     @Override
     public void runGameLogic() {
         if (getFinished() || winningClient != null) return;
+
+        if (new Random().nextInt(100) > 97){
+            int fakeBet = new Random().nextInt(50);
+            betSum += fakeBet;
+            playerBets.replace("mock", playerBets.get("mock") + fakeBet);
+        }
 
         if (LocalDateTime.now().compareTo(endTime) > 0){
             int bets = 0;
@@ -50,8 +58,15 @@ public class Lottery extends GameInstance {
             for (String authToken : playerBets.keySet()) {
                 int clientBet = playerBets.get(authToken);
                 if (clientBet >= winningNumber){
+                    playerBets.remove("mock");
                     // Client won
                     System.out.println("Client " + authToken + " won");
+                    ClientData client = getClientActions().getClientByAuthToken(authToken);
+                    if (client == null){
+                        setFinished(true);
+                        break;
+                    }
+                    updateCoins(client, client.getCoins() + bets);
                     winningClient = authToken;
                     break;
                 }
@@ -91,7 +106,7 @@ public class Lottery extends GameInstance {
                     response.setStatusCode(Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS);
                     return;
                 }
-                client.setCoins(client.getCoins() - payload[0]);
+                updateCoins(client, client.getCoins() - payload[0]);
                 playerBets.put(client.getAuthToken(), payload[0] + playerBets.getOrDefault(client.getAuthToken(), 0));
                 betSum += payload[0];
                 break;
