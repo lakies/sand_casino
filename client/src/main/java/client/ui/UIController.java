@@ -16,6 +16,8 @@ import protocol.requests.UserDataRequest;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class UIController {
     private CountDownLatch serverReady = new CountDownLatch(1);
@@ -66,13 +68,14 @@ public class UIController {
         }).start();
     }
 
-    public void setVisibleTimeout(Node targetNode){
+    public CountDownLatch setVisibleTimeout(Node targetNode, int timeout){
+        CountDownLatch latch = new CountDownLatch(1);
         new Thread(() -> {
             Platform.runLater(() -> {
                 targetNode.setVisible(true);
             });
             try {
-                Thread.sleep(1000);
+                Thread.sleep(timeout);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 throw new RuntimeException(e);
@@ -81,7 +84,26 @@ public class UIController {
             Platform.runLater(() -> {
                 targetNode.setVisible(false);
             });
+
+            latch.countDown();
         }).start();
+
+        return latch;
+    }
+
+    public void setVisibleTimeout(Node targetNode){
+        setVisibleTimeout(targetNode, 1000);
+    }
+
+    public void setVisibleTimeout(Node targetNode, int timeout, Runnable after){
+        try {
+            setVisibleTimeout(targetNode, timeout).await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(e);
+        }
+
+        after.run();
     }
 
     public void ensureNumericOnly(TextField tf){

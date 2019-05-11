@@ -13,7 +13,7 @@ import java.util.Random;
 
 
 public class Lottery extends GameInstance {
-    public static int gameLength = 10;
+    public static int gameLength = 5;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Map<String, Integer> playerBets = new HashMap<>();

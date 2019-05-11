@@ -3,10 +3,14 @@ package client.ui;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import protocol.Response;
 import protocol.requests.GameRequest;
 import protocol.requests.StartGameRequest;
@@ -26,8 +30,14 @@ public class LotteryUIController extends UIController implements Initializable {
     public Label playerBetAmount;
     public Label totalBetAmount;
     public Label timeLeft;
+    public Label winMessage;
+    public HBox timerBox;
     public TextField betAmount;
     public ProgressBar gameProgress;
+    public Pane gifContainer;
+    public ImageView playerCoins;
+    public ImageView betCoins;
+    public ImageView movingCoin;
 
     private static final String IDLE_BUTTON_STYLE = "-fx-background-color: #4eb5f1;";
     private static final String HOVERED_BUTTON_STYLE = "-fx-background-color: #4eb5f1; -fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);";
@@ -44,10 +54,6 @@ public class LotteryUIController extends UIController implements Initializable {
         displayCoins(coins);
 
         startQuery();
-    }
-
-    public LotteryUIController() {
-
     }
 
     private void startQuery(){
@@ -80,9 +86,12 @@ public class LotteryUIController extends UIController implements Initializable {
                     int[] data = response.data;
 
                     if (data[0] == 1){
+                        gameProgress.setVisible(false);
+                        timerBox.setVisible(false);
                         if (data[1] == 1){
                             // TODO: show win message
                             System.out.println("Win");
+                            setVisibleTimeout(gifContainer, 3000, this::displayWin);
                         } else {
                             // TODO: show lose message
                             System.out.println("Lose");
@@ -116,9 +125,58 @@ public class LotteryUIController extends UIController implements Initializable {
             }
         }).start();
     }
+
+    private void moveCoin(){
+        movingCoin.setVisible(true);
+        int betAmount = Integer.parseInt(totalBetAmount.getText());
+        Platform.runLater(() -> {
+            totalBetAmount.setText("0");
+        });
+
+        new Thread(() -> {
+            Bounds moving = movingCoin.localToScene(movingCoin.getBoundsInLocal());
+            Bounds player = playerCoins.localToScene(playerCoins.getBoundsInLocal());
+            double x = 0;
+            double y = 0;
+
+            double dx = player.getCenterX() - moving.getCenterX();
+            double dy = player.getCenterY() - moving.getCenterY();
+
+            double diff = dy / dx;
+
+            double vx = 0;
+
+            while (!isWindowClosed() && x < dx){
+                movingCoin.setX(x);
+                movingCoin.setY(y);
+
+                vx += 0.05;
+                x += vx;
+                y += vx * diff;
+
+                try {
+                    Thread.sleep(1000/60);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(e);
+                }
+            }
+
+            Platform.runLater(() -> {
+                coins.setText(Integer.toString(Integer.parseInt(coins.getText()) + betAmount));
+                movingCoin.setVisible(false);
+            });
+        }).start();
+    }
+
     public void goBack(ActionEvent event) throws IOException {
         setWindowClosed(null);
         sceneTransition("/gameChoiceScreen.fxml", back, getServerCommunicator());
+    }
+
+    private void displayWin(){
+        winMessage.setVisible(true);
+        moveCoin();
     }
 
     public void handleSubmit(ActionEvent event) throws IOException{
