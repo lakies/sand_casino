@@ -34,8 +34,8 @@ public class DatabaseHandler {
         String sql = "CREATE TABLE IF NOT EXISTS users (\n"
                 + "	username varchar(20) NOT NULL CHECK (LENGTH(username) <= 20) UNIQUE PRIMARY KEY,\n"
                 + "	password varchar NOT NULL,\n"
-                + " coins integer NOT NULL\n"
-                + ");";
+                + " coins integer NOT NULL,\n"
+                + " last_free_spin integer NOT NULL);";
 
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(sql);
@@ -47,9 +47,9 @@ public class DatabaseHandler {
     public void addUserToDatabase(String username, String password) {
         String hash = argon2.hash(iterations, 65536, 1, password);
         String sql = "INSERT INTO users\n"
-                + " (username, password, coins)\n"
+                + " (username, password, coins, last_free_spin)\n"
                 + " VALUES\n"
-                + " (?,?,400);";
+                + " (?,?,400,0);";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, username);
@@ -96,9 +96,33 @@ public class DatabaseHandler {
         String sql = "UPDATE users"
             + " SET coins = ?"
             + " WHERE username = ?";
+        executeUpdate(username, coins, sql);
+    }
 
+    public int getCoins(String username) {
+        String sql = "SELECT coins"
+            + " FROM users"
+            + " WHERE username = ?";
+        return executePreparedQuery(username, sql);
+    }
+
+    public void saveLastFreeSpinTime(String username, int spinTime) {
+        String sql = "UPDATE users"
+            + " SET last_free_spin = ?"
+            + " WHERE username = ?";
+        executeUpdate(username, spinTime, sql);
+    }
+
+    public int getLastFreeSpinTime(String username) {
+        String sql = "SELECT last_free_spin"
+            + " FROM users"
+            + " WHERE username = ?";
+        return executePreparedQuery(username, sql);
+    }
+
+    private void executeUpdate(String username, int newValue, String sql) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, coins);
+            preparedStatement.setInt(1, newValue);
             preparedStatement.setString(2, username);
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -106,11 +130,7 @@ public class DatabaseHandler {
         }
     }
 
-    public int getCoins(String username) {
-        String sql = "SELECT coins"
-            + " FROM users"
-            + " WHERE username = ?";
-
+    private int executePreparedQuery(String username, String sql) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();

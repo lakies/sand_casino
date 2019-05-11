@@ -59,7 +59,7 @@ public class WheelUIController extends UIController implements Initializable {
         catch (NumberFormatException e ){
             errorlabel.setVisible(true);
         } catch (IOException e){
-            sceneTransition("/logInScreen.fxml", back);
+            sceneTransition("ConnectionLost.fxml", back);
         }
     }
     public void handleResults(ActionEvent event) throws IOException{
@@ -69,6 +69,7 @@ public class WheelUIController extends UIController implements Initializable {
 
         amount.setText(coinAmount);
         amount.setVisible(true);
+        displayCoins(coins);
 
     }
     public void goBack (ActionEvent event) throws IOException {
