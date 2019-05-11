@@ -25,6 +25,7 @@ public class Lottery extends GameInstance {
         super(50000, 1, clientActions); //teoorias võib ka max piletihulgata teha
         startTime = LocalDateTime.now();
         endTime = LocalDateTime.now().plusSeconds(gameLength);
+        playerBets.put("mock", 0);
     }
     @Override
     public boolean enoughFunds(ClientData client) {
@@ -34,6 +35,12 @@ public class Lottery extends GameInstance {
     @Override
     public void runGameLogic() {
         if (getFinished() || winningClient != null) return;
+
+        if (new Random().nextInt(100) > 97){
+            int fakeBet = new Random().nextInt(50);
+            betSum += fakeBet;
+            playerBets.replace("mock", playerBets.get("mock") + fakeBet);
+        }
 
         if (LocalDateTime.now().compareTo(endTime) > 0){
             int bets = 0;
@@ -51,6 +58,7 @@ public class Lottery extends GameInstance {
             for (String authToken : playerBets.keySet()) {
                 int clientBet = playerBets.get(authToken);
                 if (clientBet >= winningNumber){
+                    playerBets.remove("mock");
                     // Client won
                     System.out.println("Client " + authToken + " won");
                     ClientData client = getClientActions().getClientByAuthToken(authToken);

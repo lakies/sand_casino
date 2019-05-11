@@ -84,8 +84,6 @@ public class LotteryUIController extends UIController implements Initializable {
                         break;
                     }
 
-                    displayCoins(coins);
-
                     int[] data = response.data;
 
                     if (data[0] == 1){
@@ -102,6 +100,8 @@ public class LotteryUIController extends UIController implements Initializable {
                         }
                         break;
                     }
+
+                    displayCoins(coins);
 
                     Platform.runLater(() -> {
                         playerBetAmount.setText(Integer.toString(data[2]));
