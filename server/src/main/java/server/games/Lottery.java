@@ -3,6 +3,7 @@ package server.games;
 
 import protocol.Response;
 import protocol.requests.GameRequest;
+import server.ClientActions;
 import server.ClientData;
 import server.DatabaseHandler;
 
@@ -20,8 +21,8 @@ public class Lottery extends GameInstance {
     private int betSum = 0;
     private String winningClient = null;
 
-    public Lottery(DatabaseHandler dbHandler){
-        super(50000, 1, dbHandler); //teoorias võib ka max piletihulgata teha
+    public Lottery(ClientActions clientActions){
+        super(50000, 1, clientActions); //teoorias võib ka max piletihulgata teha
         startTime = LocalDateTime.now();
         endTime = LocalDateTime.now().plusSeconds(gameLength);
     }
@@ -52,6 +53,12 @@ public class Lottery extends GameInstance {
                 if (clientBet >= winningNumber){
                     // Client won
                     System.out.println("Client " + authToken + " won");
+                    ClientData client = getClientActions().getClientByAuthToken(authToken);
+                    if (client == null){
+                        setFinished(true);
+                        break;
+                    }
+                    updateCoins(client, client.getCoins() + bets);
                     winningClient = authToken;
                     break;
                 }
@@ -91,7 +98,7 @@ public class Lottery extends GameInstance {
                     response.setStatusCode(Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS);
                     return;
                 }
-                client.setCoins(client.getCoins() - payload[0]);
+                updateCoins(client, client.getCoins() - payload[0]);
                 playerBets.put(client.getAuthToken(), payload[0] + playerBets.getOrDefault(client.getAuthToken(), 0));
                 betSum += payload[0];
                 break;

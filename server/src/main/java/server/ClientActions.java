@@ -13,6 +13,10 @@ public class ClientActions {
         this.dbHandler = dbHandler;
     }
 
+    public DatabaseHandler getDbHandler() {
+        return dbHandler;
+    }
+
     public synchronized String createAccount(String username, String password) {
         // TODO: return null if account with same name already exists
         if (dbHandler.checkUsernameExists(username)) {

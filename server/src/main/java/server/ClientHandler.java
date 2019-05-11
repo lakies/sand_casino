@@ -15,9 +15,9 @@ public class ClientHandler implements Runnable {
     private final Map<GameType, GameInstanceController> gameControllers;
     private final ClientActions clientActions;
 
-    public ClientHandler(Map<GameType, GameInstanceController> gameControllers, DatabaseHandler dbHandler) {
+    public ClientHandler(Map<GameType, GameInstanceController> gameControllers, ClientActions clientActions) {
         this.gameControllers = gameControllers;
-        this.clientActions = new ClientActions(dbHandler);
+        this.clientActions = clientActions;
     }
 
     @Override

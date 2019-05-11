@@ -2,6 +2,7 @@ package server.games;
 
 import protocol.Response;
 import protocol.requests.GameRequest;
+import server.ClientActions;
 import server.ClientData;
 import server.DatabaseHandler;
 
@@ -11,12 +12,12 @@ public class Wheel extends GameInstance {
     private int userCoins;
     private double[] winRates = {0, 0, 0.5, 0.75, 1, 1, 1.25, 1.5, 1.5, 2};
 
-    public Wheel(DatabaseHandler dbHandler, int buyIn) {
-        super(1, 1, dbHandler);
+    public Wheel(ClientActions clientActions, int buyIn) {
+        super(1, 1, clientActions);
     }
 
-    public Wheel(DatabaseHandler dbHandler) {
-        super(1, 1, dbHandler);
+    public Wheel(ClientActions clientActions) {
+        super(1, 1, clientActions);
     }
 
     @Override

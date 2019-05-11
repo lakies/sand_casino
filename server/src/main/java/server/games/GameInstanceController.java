@@ -3,6 +3,7 @@ package server.games;
 import protocol.GameType;
 import protocol.Response;
 import protocol.requests.GameRequest;
+import server.ClientActions;
 import server.ClientData;
 import server.DatabaseHandler;
 
@@ -17,29 +18,28 @@ public class GameInstanceController implements Runnable {
     // for each game type one of this object is created. this handles the players and spins up server.games for each of them
     // each game's controller lives in a thread
 
-
-    private BlockingQueue<ClientData> queuedPlayers;
     private List<GameInstance> runningGames = Collections.synchronizedList(new ArrayList<>());
     private GameInstance newGame;
     private GameType gameType;
     private DatabaseHandler dbHandler;
+    private ClientActions clientActions;
 
-    public GameInstanceController(GameType gameType, DatabaseHandler dbHandler) {
-        this.queuedPlayers = new ArrayBlockingQueue<>(10); // is 10 enough?
+    public GameInstanceController(GameType gameType, ClientActions clientActions) {
         this.gameType = gameType;
         newGame = null;
-        this.dbHandler = dbHandler;
+        this.clientActions = clientActions;
+        this.dbHandler = clientActions.getDbHandler();
     }
 
     private GameInstance gameInstanceCreator() { // TODO: add data for each game
         switch (gameType) {
 
             case COINFLIP:
-                return new CoinFlip(dbHandler);
+                return new CoinFlip(clientActions);
             case WHEEL:
-                return new Wheel(dbHandler);
+                return new Wheel(clientActions);
             case LOTTERY:
-                return new Lottery(dbHandler);
+                return new Lottery(clientActions);
         }
 
         // If reaches here then need to add new game to above switch

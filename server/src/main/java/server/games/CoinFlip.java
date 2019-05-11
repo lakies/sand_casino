@@ -2,6 +2,7 @@ package server.games;
 
 import protocol.Response;
 import protocol.requests.GameRequest;
+import server.ClientActions;
 import server.ClientData;
 import server.DatabaseHandler;
 
@@ -36,8 +37,8 @@ public class CoinFlip extends GameInstance {
         System.out.println("Running game");
     }
 
-    public CoinFlip(DatabaseHandler dbHandler) {
-        super(1, 1, dbHandler);
+    public CoinFlip(ClientActions clientActions) {
+        super(1, 1, clientActions);
     }
 
     @Override
