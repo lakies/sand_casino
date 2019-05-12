@@ -41,7 +41,22 @@ public class WheelUIController extends UIController implements Initializable {
             GameRequest gameRequest = new GameRequest(new int[]{50});
             gameRequest.setRequestType(GameRequest.GameRequestType.WHEEL_FREE);
             Response response = getServerCommunicator().sendRequest(gameRequest);
-            //TODO: checking that 30 minutes have passed!
+            if (response.getStatusCode() == Response.StatusCodes.TIME_ERROR){
+                errorlabel.setText("30 minutes haven't passed since last free spin");
+                setVisibleTimeout(errorlabel);
+                return;
+            }
+            errorlabel.setVisible(false);
+            back.setVisible(false);
+            results.setVisible(true);
+            play.setVisible(false);
+            txtfield.setVisible(false);
+            coinAmount = Integer.toString(response.data[0]);
+            System.out.println(coins);
+
+
+            System.out.println(Arrays.toString(response.data));
+
         }catch (NumberFormatException e ){
             errorlabel.setVisible(true);
         }catch (IOException e){
@@ -72,11 +87,7 @@ public class WheelUIController extends UIController implements Initializable {
                 setVisibleTimeout(errorlabel);
                 return;
             }
-            if (response.getStatusCode() == Response.StatusCodes.TIME_ERROR){
-                errorlabel.setText("30 minutes hasn't passed since last free spin");
-                setVisibleTimeout(errorlabel);
-                return;
-            }
+
             errorlabel.setVisible(false);
             back.setVisible(false);
             results.setVisible(true);
