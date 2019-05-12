@@ -27,6 +27,7 @@ public class LotteryUIController extends UIController implements Initializable {
     public Button submit;
     public Label coins;
     public Button back;
+    public Button logout;
     public Label playerBetAmount;
     public Label totalBetAmount;
     public Label timeLeft;
@@ -191,5 +192,9 @@ public class LotteryUIController extends UIController implements Initializable {
         GameRequest gameRequest = new GameRequest(new int[]{Integer.parseInt(betAmount.getText())});
         gameRequest.setRequestType(GameRequest.GameRequestType.LOTTERY_ADD_BET);
         getServerCommunicator().sendRequest(gameRequest);
+    }
+
+    public void handleLogout(ActionEvent event) throws IOException{
+        sceneTransition("/logInScreen.fxml", logout);
     }
 }

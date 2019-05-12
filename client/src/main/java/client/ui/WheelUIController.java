@@ -22,6 +22,7 @@ public class WheelUIController extends UIController implements Initializable {
     public TextField txtfield;
     public Button play;
     public Button results;
+    public Button logout;
     public Label amount;
     public Label coins;
 
@@ -74,5 +75,9 @@ public class WheelUIController extends UIController implements Initializable {
     }
     public void goBack (ActionEvent event) throws IOException {
         sceneTransition("/gameChoiceScreen.fxml", back, getServerCommunicator());
+    }
+
+    public void handleLogout(ActionEvent event) throws IOException{
+        sceneTransition("/logInScreen.fxml", logout);
     }
 }

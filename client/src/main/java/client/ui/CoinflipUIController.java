@@ -19,6 +19,7 @@ public class CoinflipUIController extends UIController implements Initializable 
     public Button back;
     public Button heads;
     public Button tails;
+    public Button logout;
     public Label result;
     public Label coins;
 
@@ -59,6 +60,10 @@ public class CoinflipUIController extends UIController implements Initializable 
         } catch (IOException e) {
             sceneTransition("/ConnectionLost.fxml", back);
         }
+    }
+
+    public void handleLogout(ActionEvent event) throws IOException{
+        sceneTransition("/logInScreen.fxml", logout);
     }
 
     public void goBack (ActionEvent event) throws IOException {

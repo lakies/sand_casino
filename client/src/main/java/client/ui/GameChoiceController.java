@@ -13,6 +13,7 @@ public class GameChoiceController extends UIController implements Initializable 
     public Button coin;
     public Button lottery;
     public Button wheel;
+    public Button logout;
     public Label coins;
 
 
@@ -31,5 +32,9 @@ public class GameChoiceController extends UIController implements Initializable 
 
     public void handleButtonActionCoin (ActionEvent event) throws IOException {
         sceneTransition("/CoinflipUI.fxml", coin, getServerCommunicator());
+    }
+
+    public void handleLogout(ActionEvent event) throws IOException{
+        sceneTransition("/logInScreen.fxml", logout);
     }
 }
