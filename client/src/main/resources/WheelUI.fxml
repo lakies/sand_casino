@@ -19,14 +19,9 @@
             <Font name="Segoe UI Black" size="60.0" />
          </font>
       </Label>
-        <VBox alignment="TOP_CENTER" cacheShape="false" fillWidth="false" layoutX="267.0" layoutY="297.0" prefHeight="264.0" prefWidth="600.0" scaleShape="false" spacing="30.0" AnchorPane.bottomAnchor="39.0" AnchorPane.leftAnchor="267.0" AnchorPane.rightAnchor="333.0" AnchorPane.topAnchor="297.0">
+        <VBox alignment="TOP_CENTER" cacheShape="false" fillWidth="false" layoutX="273.0" layoutY="317.0" prefHeight="283.0" prefWidth="594.0" scaleShape="false" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="273.0" AnchorPane.rightAnchor="333.0" AnchorPane.topAnchor="317.0">
             <children>
             <Pane prefHeight="273.0" prefWidth="254.0" />
-            <Label fx:id="errorlabel" prefHeight="53.0" prefWidth="443.0" textAlignment="CENTER" textFill="WHITE" visible="false">
-               <font>
-                  <Font name="Segoe UI Black" size="20.0" />
-               </font>
-            </Label>
             <TextField fx:id="txtfield" alignment="CENTER" prefHeight="43.0" prefWidth="223.0">
                <font>
                   <Font name="Segoe UI Black" size="36.0" />
@@ -168,5 +163,10 @@
                   <Font name="Segoe UI Black" size="52.0" />
               </font>
           </Label>
+      <Label fx:id="errorlabel" layoutX="333.0" layoutY="400.0" prefHeight="53.0" prefWidth="507.0" textAlignment="CENTER" textFill="WHITE" visible="false">
+         <font>
+            <Font name="Segoe UI Black" size="20.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

@@ -100,21 +100,35 @@ public class DatabaseHandler {
         String sql = "SELECT coins"
             + " FROM users"
             + " WHERE username = ?";
-        return executePreparedQuery(username, sql);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
+
     }
 
-    public void saveLastFreeSpinTime(String username, int spinTime) {
+    public void saveLastFreeSpinTime(String username, long spinTime) {
         String sql = "UPDATE users"
             + " SET last_free_spin = ?"
             + " WHERE username = ?";
-        executeUpdate(username, spinTime, sql);
+        executeUpdate2(username, spinTime, sql);
     }
 
-    public int getLastFreeSpinTime(String username) {
+    public long getLastFreeSpinTime(String username) {
         String sql = "SELECT last_free_spin"
             + " FROM users"
             + " WHERE username = ?";
-        return executePreparedQuery(username, sql);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.getLong(1);
+        } catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
+
     }
 
     private void executeUpdate(String username, int newValue, String sql) {
@@ -126,14 +140,14 @@ public class DatabaseHandler {
             throw new DatabaseException(e);
         }
     }
-
-    private int executePreparedQuery(String username, String sql) {
+    private void executeUpdate2(String username, long newValue, String sql) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, username);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.getInt(1);
+            preparedStatement.setLong(1, newValue);
+            preparedStatement.setString(2, username);
+            preparedStatement.execute();
         } catch (SQLException e) {
             throw new DatabaseException(e);
         }
     }
+
 }
