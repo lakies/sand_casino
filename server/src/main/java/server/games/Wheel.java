@@ -10,7 +10,8 @@ import java.util.Random;
 
 public class Wheel extends GameInstance {
     private int userCoins;
-    private double[] winRates = {0, 0, 0.5, 0.75, 1, 1, 1.25, 1.5, 1.5, 2};
+//    private static double[] winRates = {0, 0, 0.5, 0.75, 1, 1, 1.25, 1.5, 1.5, 2, 2, 5};
+    private double[] winRates = {5, 0, 0.5, 2, 1.5, 1, 1.25, 1, 1.5, 2, 0.75, 0};
 
     public Wheel(ClientActions clientActions) {
         super(1, 1, clientActions);
@@ -38,11 +39,12 @@ public class Wheel extends GameInstance {
 
         Random generator = new Random();
         int randomIndex = generator.nextInt(winRates.length);
+        System.out.println(winRates[randomIndex]);
         int win = (int) ( userCoins*winRates[randomIndex]);
         int winnedCoins =  (client.getCoins() + (win));
         updateCoins(client, winnedCoins);
 
-        response.data = new int[]{win};
+        response.data = new int[]{win, randomIndex};
         setFinished(true);
     }
 

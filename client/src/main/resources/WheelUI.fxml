@@ -8,6 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -18,24 +19,20 @@
             <Font name="Segoe UI Black" size="60.0" />
          </font>
       </Label>
-        <VBox alignment="BOTTOM_CENTER" cacheShape="false" fillWidth="false" layoutX="267.0" layoutY="39.0" prefHeight="522.0" prefWidth="526.0" scaleShape="false" spacing="30.0" AnchorPane.bottomAnchor="39.0" AnchorPane.leftAnchor="267.0" AnchorPane.rightAnchor="333.0" AnchorPane.topAnchor="39.0">
+        <VBox alignment="TOP_CENTER" cacheShape="false" fillWidth="false" layoutX="267.0" layoutY="297.0" prefHeight="264.0" prefWidth="600.0" scaleShape="false" spacing="30.0" AnchorPane.bottomAnchor="39.0" AnchorPane.leftAnchor="267.0" AnchorPane.rightAnchor="333.0" AnchorPane.topAnchor="297.0">
             <children>
-                <Label contentDisplay="CENTER" prefHeight="224.0" prefWidth="526.0" text="PLAY WHEEL OF FORTUNE" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-                    <font>
-                        <Font name="Segoe UI Black" size="60.0" />
-                    </font>
-                </Label>
+            <Pane prefHeight="273.0" prefWidth="254.0" />
             <Label fx:id="errorlabel" prefHeight="53.0" prefWidth="443.0" textAlignment="CENTER" textFill="WHITE" visible="false">
                <font>
                   <Font name="Segoe UI Black" size="20.0" />
                </font>
             </Label>
-            <TextField fx:id="txtfield" alignment="CENTER" prefHeight="106.0" prefWidth="312.0">
+            <TextField fx:id="txtfield" alignment="CENTER" prefHeight="43.0" prefWidth="223.0">
                <font>
                   <Font name="Segoe UI Black" size="36.0" />
                </font>
             </TextField>
-                <Button fx:id="play" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="84.0" prefWidth="332.0" style="-fx-background-radius: 100; -fx-background-color: #ffffff;" text="Play" textFill="#653a83">
+                <Button fx:id="play" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="65.0" prefWidth="210.0" style="-fx-background-radius: 100; -fx-background-color: #ffffff;" text="Play" textFill="#653a83">
                     <font>
                         <Font name="Segoe UI Black" size="18.0" />
                     </font>
@@ -83,5 +80,84 @@
             <Font name="Segoe UI Black" size="18.0" />
          </font>
       </Button>
+      <Pane fx:id="wheel" layoutX="428.0" layoutY="117.0" prefHeight="283.0" prefWidth="278.0">
+         <children>
+            <ImageView fitHeight="283.0" fitWidth="311.0" layoutX="-2.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@wheel2.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="198.0" layoutY="125.0" prefHeight="5.0" prefWidth="45.0" text="x 5">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Label layoutX="188.0" layoutY="167.0" prefHeight="5.0" prefWidth="45.0" rotate="36.5" text="x 0">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Label layoutX="157.0" layoutY="197.0" prefHeight="30.0" prefWidth="56.0" rotate="49.5" text="x 0.5">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Label layoutX="120.0" layoutY="210.0" prefHeight="5.0" prefWidth="45.0" rotate="90.0" text="x 2">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Label layoutX="69.0" layoutY="201.0" prefHeight="34.0" prefWidth="61.0" rotate="127.8" text="x 1.5">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Label layoutX="53.0" layoutY="167.0" prefHeight="5.0" prefWidth="45.0" rotate="147.6" text="x 1">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Label layoutX="11.0" layoutY="125.0" prefHeight="34.0" prefWidth="73.0" rotate="-178.2" text="x 1.25">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Label layoutX="41.0" layoutY="78.0" prefHeight="5.0" prefWidth="45.0" rotate="-145.0" text="x 1">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Label layoutX="68.0" layoutY="52.0" prefHeight="39.0" prefWidth="56.0" rotate="-124.3" text="x 1.5">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Label layoutX="117.0" layoutY="40.0" prefHeight="5.0" prefWidth="45.0" rotate="-90.0" text="x 2">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Label layoutX="156.0" layoutY="40.0" prefHeight="45.0" prefWidth="61.0" rotate="-53.3" text="x 0.75">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Label layoutX="188.0" layoutY="81.0" prefHeight="5.0" prefWidth="45.0" rotate="-26.6" text="x 0">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <ImageView fitHeight="73.0" fitWidth="71.0" layoutX="650.0" layoutY="235.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+         <image>
+            <Image url="@wheel.png" />
+         </image>
+      </ImageView>
+          <Label contentDisplay="CENTER" layoutX="337.0" layoutY="42.0" prefHeight="48.0" prefWidth="526.0" text="WHEEL OF FORTUNE" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+              <font>
+                  <Font name="Segoe UI Black" size="52.0" />
+              </font>
+          </Label>
     </children>
 </AnchorPane>

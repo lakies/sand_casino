@@ -1,10 +1,12 @@
 package client.ui;
 
+import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import protocol.Response;
 import protocol.requests.GameRequest;
 import protocol.requests.StartGameRequest;
@@ -25,14 +27,46 @@ public class WheelUIController extends UIController implements Initializable {
     public Button logout;
     public Label amount;
     public Label coins;
+    public Pane wheel;
 
     private String coinAmount;
-
+    private boolean startSlowing = false;
+    private int stoppingIndex = 0;
+    private AnimationTimer wheelAnimation;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ensureNumericOnly(txtfield);
         displayCoins(coins);
+
+        wheelAnimation = new AnimationTimer() {
+            double speed = 200;
+            double rotation = 0;
+            double lastTime = 0;
+            boolean slowing = false;
+            @Override
+            public void handle(long l) {
+
+                rotation = (rotation + (speed * (l - lastTime) / 1000000000.0)) % 360;
+
+                if (startSlowing && !slowing && (int)((rotation + 15) / 30) == (12 + stoppingIndex - 1) % 12){
+                    slowing = true;
+                }
+
+                if (slowing){
+                    speed -= 5 * (l - lastTime) / 100000000.0;
+//                    System.out.println(speed);
+                }
+                wheel.setRotate(rotation);
+                lastTime = l;
+
+                if (speed < 5){
+                    stop();
+                }
+            }
+        };
+
+        wheelAnimation.start();
     }
 
     public void handleButtonAction (ActionEvent event) throws IOException {
@@ -48,16 +82,20 @@ public class WheelUIController extends UIController implements Initializable {
                 setVisibleTimeout(errorlabel);
                 return;
             }
-            errorlabel.setVisible(false);
-            back.setVisible(false);
-            results.setVisible(true);
-            play.setVisible(false);
-            txtfield.setVisible(false);
-            coinAmount = Integer.toString(response.data[0]);
-            System.out.println(coins);
 
+            stoppingIndex = response.data[1];
+            startSlowing = true;
 
-            System.out.println(Arrays.toString(response.data));
+//            errorlabel.setVisible(false);
+//            back.setVisible(false);
+//            results.setVisible(true);
+//            play.setVisible(false);
+//            txtfield.setVisible(false);
+//            coinAmount = Integer.toString(response.data[0]);
+//            System.out.println(coins);
+//
+//
+//            System.out.println(Arrays.toString(response.data));
 
             //sceneTransition("/gameChoiceScreen.fxml", back, getServerCommunicator());
         }
