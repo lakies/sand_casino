@@ -25,9 +25,9 @@
                         <Font name="Segoe UI Black" size="60.0" />
                     </font>
                 </Label>
-            <Label fx:id="errorlabel" prefHeight="53.0" prefWidth="443.0" text="Please insert numbers!" textFill="WHITE" visible="false">
+            <Label fx:id="errorlabel" prefHeight="53.0" prefWidth="443.0" textAlignment="CENTER" textFill="WHITE" visible="false">
                <font>
-                  <Font name="Segoe UI Black" size="36.0" />
+                  <Font name="Segoe UI Black" size="20.0" />
                </font>
             </Label>
             <TextField fx:id="txtfield" alignment="CENTER" prefHeight="106.0" prefWidth="312.0">

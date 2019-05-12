@@ -26,8 +26,13 @@
          </font>
       </Label>
       <ProgressBar fx:id="gameProgress" layoutX="443.0" layoutY="258.0" prefHeight="21.0" prefWidth="316.0" progress="0.0" style="-fx-background-color: #4eb5f1;" />
-       <VBox alignment="BOTTOM_CENTER" cacheShape="false" layoutX="381.0" layoutY="470.0" prefHeight="105.0" prefWidth="438.0" scaleShape="false" spacing="20.0">
+       <VBox alignment="BOTTOM_CENTER" cacheShape="false" layoutX="381.0" layoutY="415.0" prefHeight="146.0" prefWidth="438.0" scaleShape="false" spacing="20.0">
          <children>
+            <Label fx:id="errorlabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="56.0" prefWidth="438.0" text="Not enough coins" textFill="RED" visible="false">
+               <font>
+                  <Font name="MS Reference Sans Serif" size="19.0" />
+               </font>
+            </Label>
             <TextField fx:id="betAmount" maxWidth="200.0" prefHeight="40.0" prefWidth="188.0" promptText="Bet amount">
                <font>
                   <Font name="MS Reference Sans Serif" size="17.0" />

@@ -32,6 +32,7 @@ public class LotteryUIController extends UIController implements Initializable {
     public Label totalBetAmount;
     public Label timeLeft;
     public Label winMessage;
+    public Label errorlabel;
     public HBox timerBox;
     public TextField betAmount;
     public ProgressBar gameProgress;
@@ -191,7 +192,10 @@ public class LotteryUIController extends UIController implements Initializable {
     public void handleSubmit(ActionEvent event) throws IOException{
         GameRequest gameRequest = new GameRequest(new int[]{Integer.parseInt(betAmount.getText())});
         gameRequest.setRequestType(GameRequest.GameRequestType.LOTTERY_ADD_BET);
-        getServerCommunicator().sendRequest(gameRequest);
+        Response response = getServerCommunicator().sendRequest(gameRequest);
+        if (response.getStatusCode() == Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS){
+            setVisibleTimeout(errorlabel, 2000);
+        }
     }
 
     public void handleLogout(ActionEvent event) throws IOException{

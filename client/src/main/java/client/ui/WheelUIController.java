@@ -38,12 +38,16 @@ public class WheelUIController extends UIController implements Initializable {
     public void handleButtonAction (ActionEvent event) throws IOException {
         try {
             int sum = Integer.parseInt(txtfield.getCharacters().toString());
-            //TODO: Server communication so player plays.
             StartGameRequest startGameRequest = new StartGameRequest(GameType.WHEEL);
             getServerCommunicator().sendRequest(startGameRequest);
             GameRequest gameRequest = new GameRequest(new int[]{sum});
 
             Response response = getServerCommunicator().sendRequest(gameRequest);
+            if (response.getStatusCode() == Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS){
+                errorlabel.setText("You don't have " + sum + " coins to play");
+                setVisibleTimeout(errorlabel);
+                return;
+            }
             errorlabel.setVisible(false);
             back.setVisible(false);
             results.setVisible(true);
