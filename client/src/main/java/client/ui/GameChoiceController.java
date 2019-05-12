@@ -38,7 +38,5 @@ public class GameChoiceController extends UIController implements Initializable 
     public void handleLogout(ActionEvent event) throws IOException{
         sceneTransition("/logInScreen.fxml", logout);
     }
-    public void freeSpin(ActionEvent event) throws IOException{
-        sceneTransition("FreeSpin.fxml",freeSpin);
-    }
+
 }

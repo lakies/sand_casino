@@ -9,7 +9,8 @@ public class Response extends MessageBody{
         ERR_ACCOUNT_EXISTS,
         ERR_FAILED_USER_CREATION,
         ERR_INVALID_REQUEST,
-        ERR_NOT_ENOUGH_FUNDS
+        ERR_NOT_ENOUGH_FUNDS,
+        TIME_ERROR
     }
 
     public Response() {

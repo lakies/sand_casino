@@ -34,17 +34,46 @@ public class WheelUIController extends UIController implements Initializable {
         ensureNumericOnly(txtfield);
         displayCoins(coins);
     }
+    public void freeSpin (ActionEvent event) throws IOException {
+        try {
+            StartGameRequest startGameRequest = new StartGameRequest(GameType.WHEEL);
+            getServerCommunicator().sendRequest(startGameRequest);
+            GameRequest gameRequest = new GameRequest(new int[]{50});
+            gameRequest.setRequestType(GameRequest.GameRequestType.WHEEL_FREE);
+            Response response = getServerCommunicator().sendRequest(gameRequest);
+            //TODO: checking that 30 minutes have passed!
+        }catch (NumberFormatException e ){
+            errorlabel.setVisible(true);
+        }catch (IOException e){
+            sceneTransition("/ConnectionLost.fxml", back);
+        }
 
-    public void handleButtonAction (ActionEvent event) throws IOException {
+
+
+
+
+
+
+    }
+
+        public void handleButtonAction (ActionEvent event) throws IOException {
         try {
             int sum = Integer.parseInt(txtfield.getCharacters().toString());
             StartGameRequest startGameRequest = new StartGameRequest(GameType.WHEEL);
+
             getServerCommunicator().sendRequest(startGameRequest);
             GameRequest gameRequest = new GameRequest(new int[]{sum});
+            gameRequest.setRequestType(GameRequest.GameRequestType.WHEEL_PAID);
+
 
             Response response = getServerCommunicator().sendRequest(gameRequest);
             if (response.getStatusCode() == Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS){
                 errorlabel.setText("You don't have " + sum + " coins to play");
+                setVisibleTimeout(errorlabel);
+                return;
+            }
+            if (response.getStatusCode() == Response.StatusCodes.TIME_ERROR){
+                errorlabel.setText("30 minutes hasn't passed since last free spin");
                 setVisibleTimeout(errorlabel);
                 return;
             }
