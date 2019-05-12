@@ -2,14 +2,13 @@ package server;
 
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
-import de.mkammerer.argon2.Argon2Helper;
 
 import java.sql.*;
 
 public class DatabaseHandler {
 
-    private Connection connection;
     private final Argon2 argon2 = Argon2Factory.create();
+    private Connection connection;
 
     public void setupDatabase() {
 
@@ -79,7 +78,7 @@ public class DatabaseHandler {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 String hash = resultSet.getString("password");
                 return argon2.verify(hash, password);
             }
@@ -91,15 +90,21 @@ public class DatabaseHandler {
 
     public void saveCoins(String username, int coins) {
         String sql = "UPDATE users"
-            + " SET coins = ?"
-            + " WHERE username = ?";
-        executeUpdate(username, coins, sql);
+                + " SET coins = ?"
+                + " WHERE username = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, coins);
+            preparedStatement.setString(2, username);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
     }
 
     public int getCoins(String username) {
         String sql = "SELECT coins"
-            + " FROM users"
-            + " WHERE username = ?";
+                + " FROM users"
+                + " WHERE username = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -112,15 +117,21 @@ public class DatabaseHandler {
 
     public void saveLastFreeSpinTime(String username, long spinTime) {
         String sql = "UPDATE users"
-            + " SET last_free_spin = ?"
-            + " WHERE username = ?";
-        executeUpdate2(username, spinTime, sql);
+                + " SET last_free_spin = ?"
+                + " WHERE username = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setLong(1, spinTime);
+            preparedStatement.setString(2, username);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
     }
 
     public long getLastFreeSpinTime(String username) {
         String sql = "SELECT last_free_spin"
-            + " FROM users"
-            + " WHERE username = ?";
+                + " FROM users"
+                + " WHERE username = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -131,23 +142,5 @@ public class DatabaseHandler {
 
     }
 
-    private void executeUpdate(String username, int newValue, String sql) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, newValue);
-            preparedStatement.setString(2, username);
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            throw new DatabaseException(e);
-        }
-    }
-    private void executeUpdate2(String username, long newValue, String sql) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setLong(1, newValue);
-            preparedStatement.setString(2, username);
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            throw new DatabaseException(e);
-        }
-    }
 
 }
