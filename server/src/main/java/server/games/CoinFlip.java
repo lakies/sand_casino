@@ -73,7 +73,4 @@ public class CoinFlip extends GameInstance {
 
     }
 
-
-
 }
-

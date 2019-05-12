@@ -20,7 +20,6 @@ import server.games.Lottery;
 import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class LotteryUIController extends UIController implements Initializable {
@@ -109,8 +108,8 @@ public class LotteryUIController extends UIController implements Initializable {
                         playerBetAmount.setText(Integer.toString(data[2]));
                         totalBetAmount.setText(Integer.toString(data[3]));
 
-                        Duration remaining = Duration.between(LocalDateTime.now(), response.time.plusSeconds(Lottery.gameLength));
-                        timeLeft.setText(remaining.getSeconds() / 60 + ":" + (remaining.getSeconds() % 60 + 1));
+                        Duration remaining = Duration.ofMillis(response.time + Lottery.gameLength * 1000 - System.currentTimeMillis());
+                        timeLeft.setText(remaining.getSeconds() / 60 + ":" + (remaining.getSeconds() % 60 < 11 ? "0" : "") + (remaining.getSeconds() % 60 + 1));
 
                         gameProgress.setProgress((Lottery.gameLength - remaining.getSeconds() - 1) / (Lottery.gameLength * 1.0));
                     });

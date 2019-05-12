@@ -32,11 +32,20 @@
                   <Font name="Segoe UI Black" size="36.0" />
                </font>
             </TextField>
-                <Button fx:id="play" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="65.0" prefWidth="210.0" style="-fx-background-radius: 100; -fx-background-color: #ffffff;" text="Play" textFill="#653a83">
-                    <font>
+            <HBox prefHeight="37.0" prefWidth="350.0" spacing="10.0">
+               <children>
+                      <Button fx:id="play" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="65.0" prefWidth="210.0" style="-fx-background-radius: 100; -fx-background-color: #ffffff;" text="Normal Spin" textFill="#653a83">
+                          <font>
+                              <Font name="Segoe UI Black" size="18.0" />
+                          </font>
+                      </Button>
+                  <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#freeSpin" prefHeight="65.0" prefWidth="210.0" style="-fx-background-radius: 100; -fx-background-color: #ffffff;" text="Free Spin" textFill="#653a83">
+                     <font>
                         <Font name="Segoe UI Black" size="18.0" />
-                    </font>
-                </Button>
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
             </children>
         </VBox>
         <Button fx:id="back" layoutX="45.0" layoutY="38.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="111.0" style="-fx-background-radius: 100; -fx-background-color: #ffffff;" text="BACK" />

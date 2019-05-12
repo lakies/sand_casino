@@ -29,7 +29,6 @@ public class WheelUIController extends UIController implements Initializable {
     public Label coins;
     public Pane wheel;
 
-    private String coinAmount;
     private boolean startSlowing = false;
     private int stoppingIndex = 0;
     private AnimationTimer wheelAnimation;
@@ -68,17 +67,42 @@ public class WheelUIController extends UIController implements Initializable {
 
         wheelAnimation.start();
     }
+    public void freeSpin (ActionEvent event) throws IOException {
+        try {
+            StartGameRequest startGameRequest = new StartGameRequest(GameType.WHEEL);
+            getServerCommunicator().sendRequest(startGameRequest);
+            GameRequest gameRequest = new GameRequest(new int[]{50});
+            gameRequest.setRequestType(GameRequest.GameRequestType.WHEEL_FREE);
+            Response response = getServerCommunicator().sendRequest(gameRequest);
+            stoppingIndex = response.data[1];
+            startSlowing = true;
+            //TODO: checking that 30 minutes have passed!
+        }catch (NumberFormatException e ){
+            errorlabel.setVisible(true);
+        }catch (IOException e){
+            sceneTransition("/ConnectionLost.fxml", back);
+        }
+    }
 
-    public void handleButtonAction (ActionEvent event) throws IOException {
+        public void handleButtonAction (ActionEvent event) throws IOException {
         try {
             int sum = Integer.parseInt(txtfield.getCharacters().toString());
             StartGameRequest startGameRequest = new StartGameRequest(GameType.WHEEL);
+
             getServerCommunicator().sendRequest(startGameRequest);
             GameRequest gameRequest = new GameRequest(new int[]{sum});
+            gameRequest.setRequestType(GameRequest.GameRequestType.WHEEL_PAID);
+
 
             Response response = getServerCommunicator().sendRequest(gameRequest);
             if (response.getStatusCode() == Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS){
                 errorlabel.setText("You don't have " + sum + " coins to play");
+                setVisibleTimeout(errorlabel);
+                return;
+            }
+
+            if (response.getStatusCode() == Response.StatusCodes.TIME_ERROR){
+                errorlabel.setText("30 minutes hasn't passed since last free spin");
                 setVisibleTimeout(errorlabel);
                 return;
             }
@@ -97,7 +121,6 @@ public class WheelUIController extends UIController implements Initializable {
 //
 //            System.out.println(Arrays.toString(response.data));
 
-            //sceneTransition("/gameChoiceScreen.fxml", back, getServerCommunicator());
         }
         catch (NumberFormatException e ){
             errorlabel.setVisible(true);
@@ -110,7 +133,6 @@ public class WheelUIController extends UIController implements Initializable {
         lab1.setVisible(true);
         back.setVisible(true);
 
-        amount.setText(coinAmount);
         amount.setVisible(true);
         displayCoins(coins);
 

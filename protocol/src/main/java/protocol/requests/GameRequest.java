@@ -6,7 +6,9 @@ import protocol.Request;
 public class GameRequest extends Request {
     public enum GameRequestType {
         LOTTERY_PROGRESS_QUERY,
-        LOTTERY_ADD_BET
+        LOTTERY_ADD_BET,
+        WHEEL_FREE,
+        WHEEL_PAID
     }
 
     private int[] payload;

@@ -1,7 +1,5 @@
 package protocol;
 
-import java.time.LocalDateTime;
-
 public class Response extends MessageBody{
     public enum StatusCodes {
         SUCCESS,
@@ -9,7 +7,8 @@ public class Response extends MessageBody{
         ERR_ACCOUNT_EXISTS,
         ERR_FAILED_USER_CREATION,
         ERR_INVALID_REQUEST,
-        ERR_NOT_ENOUGH_FUNDS
+        ERR_NOT_ENOUGH_FUNDS,
+        TIME_ERROR
     }
 
     public Response() {
@@ -37,7 +36,7 @@ public class Response extends MessageBody{
 
     public String message;
 
-    public LocalDateTime time;
+    public long time;
 
     public int[] data;
 

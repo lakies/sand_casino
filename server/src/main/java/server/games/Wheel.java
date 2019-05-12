@@ -28,14 +28,22 @@ public class Wheel extends GameInstance {
         if (client == null) return;
 
         this.setUserCoins(request.getPayload()[0]);
+        if (request.getRequestType() == GameRequest.GameRequestType.WHEEL_PAID) {
+            if (client.getCoins() < userCoins) {
+                response.setStatusCode(Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS);
+                setFinished(true);
+                return;
+            }
+            updateCoins(client, client.getCoins() - userCoins);
 
-        if (client.getCoins() < userCoins) {
-            response.setStatusCode(Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS);
+        } else{
+            //Timecheck
+            if (1<0){
+            response.setStatusCode(Response.StatusCodes.TIME_ERROR);
             setFinished(true);
-            return;
+            return;}
         }
 
-        updateCoins(client, client.getCoins() - userCoins);
 
         Random generator = new Random();
         int randomIndex = generator.nextInt(winRates.length);
