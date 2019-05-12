@@ -10,9 +10,6 @@ public class DatabaseHandler {
 
     private Connection connection;
     private final Argon2 argon2 = Argon2Factory.create();
-    // Optimal number of iterations on this machine
-    private final int iterations = Argon2Helper.findIterations(argon2, 1000, 65536, 1);
-
 
     public void setupDatabase() {
 
@@ -45,7 +42,7 @@ public class DatabaseHandler {
     }
 
     public void addUserToDatabase(String username, String password) {
-        String hash = argon2.hash(iterations, 65536, 1, password);
+        String hash = argon2.hash(20, 65536, 1, password);
         String sql = "INSERT INTO users\n"
                 + " (username, password, coins, last_free_spin)\n"
                 + " VALUES\n"
