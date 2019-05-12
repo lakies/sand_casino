@@ -59,7 +59,6 @@ public class WheelUIController extends UIController implements Initializable {
 
             System.out.println(Arrays.toString(response.data));
 
-            //sceneTransition("/gameChoiceScreen.fxml", back, getServerCommunicator());
         }
         catch (NumberFormatException e ){
             errorlabel.setVisible(true);
