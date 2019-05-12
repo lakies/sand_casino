@@ -33,29 +33,28 @@ public class CoinflipUIController extends UIController implements Initializable 
 
         StartGameRequest startGameRequest = new StartGameRequest(GameType.COINFLIP);
         try {
-            Response startGameResponse = getServerCommunicator().sendRequest(startGameRequest);
+            getServerCommunicator().sendRequest(startGameRequest);
 
-            if (startGameResponse.getStatusCode().equals(Response.StatusCodes.ERR_INVALID_CREDENTIALS)) {
-                System.out.println("Failed to authenticate");
-                result.setText("Authentication failed, please try again");
-            } else if (startGameResponse.getStatusCode().equals(Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS)) {
-                System.out.println("Insufficient funds");
-                result.setText("You need at least 50 coins to play");
-            } else {
-                int side = ((Button) event.getTarget()).getId().equals("heads") ? CoinFlip.Sides.HEADS.getValue() : CoinFlip.Sides.TAILS.getValue();
+            int side = ((Button) event.getTarget()).getId().equals("heads") ? CoinFlip.Sides.HEADS.getValue() : CoinFlip.Sides.TAILS.getValue();
 
-                GameRequest gameRequest = new GameRequest(new int[]{side});
-                Response response = getServerCommunicator().sendRequest(gameRequest);
+            GameRequest gameRequest = new GameRequest(new int[]{side});
+            Response response = getServerCommunicator().sendRequest(gameRequest);
 
-                System.out.println("Chosen side: " + side + " received data: " + Arrays.toString(response.data));
-
-                if (response.data[0] == 0){
-                    result.setText("YOU LOST -50 coins");
-                } else {
-                    result.setText("YOU WON +50 coins");
-                }
-                displayCoins(coins);
+            if (response.getStatusCode() == Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS){
+                result.setText("Not enough coins");
+                setVisibleTimeout(result);
+                return;
             }
+
+            System.out.println("Chosen side: " + side + " received data: " + Arrays.toString(response.data));
+
+            if (response.data[0] == 0){
+                result.setText("YOU LOST -50 coins");
+            } else {
+                result.setText("YOU WON +50 coins");
+            }
+            displayCoins(coins);
+
             setVisibleTimeout(result);
         } catch (IOException e) {
             sceneTransition("/ConnectionLost.fxml", back);

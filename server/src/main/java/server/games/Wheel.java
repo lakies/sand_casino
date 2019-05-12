@@ -12,17 +12,8 @@ public class Wheel extends GameInstance {
     private int userCoins;
     private double[] winRates = {0, 0, 0.5, 0.75, 1, 1, 1.25, 1.5, 1.5, 2};
 
-    public Wheel(ClientActions clientActions, int buyIn) {
-        super(1, 1, clientActions);
-    }
-
     public Wheel(ClientActions clientActions) {
         super(1, 1, clientActions);
-    }
-
-    @Override
-    public boolean enoughFunds(ClientData client) {
-        return client.getCoins() >= userCoins;
     }
 
     public void setUserCoins(int userCoins) {
@@ -37,7 +28,7 @@ public class Wheel extends GameInstance {
 
         this.setUserCoins(request.getPayload()[0]);
 
-        if (!enoughFunds(client)) {
+        if (client.getCoins() < userCoins) {
             response.setStatusCode(Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS);
             setFinished(true);
             return;
