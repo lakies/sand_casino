@@ -36,7 +36,7 @@ public class Response extends MessageBody{
 
     public String message;
 
-    public long time;
+    public long remainingTime;
 
     public int[] data;
 
