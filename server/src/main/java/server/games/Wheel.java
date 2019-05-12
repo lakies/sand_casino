@@ -37,11 +37,12 @@ public class Wheel extends GameInstance {
             updateCoins(client, client.getCoins() - userCoins);
 
         } else{
-            //Timecheck
-            if (1<0){
+            if ((System.currentTimeMillis() - getTime(client))/1000 < 1800){
             response.setStatusCode(Response.StatusCodes.TIME_ERROR);
             setFinished(true);
             return;}
+
+            setTime(client);
         }
 
 

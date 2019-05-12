@@ -84,6 +84,14 @@ public abstract class GameInstance {
         return minPlayers;
     }
 
+    public long getTime(ClientData clientData){
+        return dbHandler.getLastFreeSpinTime(clientData.getUsername());
+    }
+
+    public void setTime(ClientData clientData) {
+        dbHandler.saveLastFreeSpinTime(clientData.getUsername(), System.currentTimeMillis());
+    }
+
     protected void updateCoins(ClientData clientData, int coins) {
         clientData.setCoins(coins);
         dbHandler.saveCoins(clientData.getUsername(), coins);
