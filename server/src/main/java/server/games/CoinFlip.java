@@ -24,15 +24,6 @@ public class CoinFlip extends GameInstance {
     }
 
     @Override
-    public boolean enoughFunds(ClientData client) {
-        if (client.getCoins() >= 50) {
-            return true;
-        }
-        System.out.println("Insufficient funds");
-        return false;
-    }
-
-    @Override
     public void runGameLogic() {
         System.out.println("Running game");
     }
@@ -59,7 +50,7 @@ public class CoinFlip extends GameInstance {
 
         int won = 0;
 
-        if (!enoughFunds(client)){
+        if (client.getCoins() < 50){
             response.setStatusCode(Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS);
             setFinished(true);
             return;

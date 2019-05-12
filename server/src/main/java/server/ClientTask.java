@@ -90,24 +90,22 @@ public class ClientTask implements Runnable {
                                 break;
                             }
 
-                            try {
-                                switch (startGameRequest.getGameType()) {
-                                    case COINFLIP:
-                                        System.out.println("client started playing coinflip");
-                                        gameControllers.get(GameType.COINFLIP).addPlayer(client);
-                                        break;
-                                    case WHEEL:
-                                        System.out.println("client started playing wheel of fortune");
-                                        gameControllers.get(GameType.WHEEL).addPlayer(client);
-                                        break;
-                                    case LOTTERY:
-                                        System.out.println("client started playing lottery");
-                                        gameControllers.get(GameType.LOTTERY).addPlayer(client);
-                                        break;
-                                }
-                            } catch (NotEnoughFundsException e) {
-                                response.setStatusCode(Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS);
+
+                            switch (startGameRequest.getGameType()) {
+                                case COINFLIP:
+                                    System.out.println("client started playing coinflip");
+                                    gameControllers.get(GameType.COINFLIP).addPlayer(client);
+                                    break;
+                                case WHEEL:
+                                    System.out.println("client started playing wheel of fortune");
+                                    gameControllers.get(GameType.WHEEL).addPlayer(client);
+                                    break;
+                                case LOTTERY:
+                                    System.out.println("client started playing lottery");
+                                    gameControllers.get(GameType.LOTTERY).addPlayer(client);
+                                    break;
                             }
+
                             break;
                         }
 

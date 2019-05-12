@@ -6,7 +6,6 @@ import protocol.requests.GameRequest;
 import server.ClientActions;
 import server.ClientData;
 import server.DatabaseHandler;
-import server.NotEnoughFundsException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -51,7 +50,7 @@ public class GameInstanceController implements Runnable {
         }
     }
 
-    public synchronized void addPlayer(ClientData player) throws NotEnoughFundsException {
+    public synchronized void addPlayer(ClientData player) {
         if (newGame == null) {
             newGame = gameInstanceCreator();
             newGame.addPlayer(player);

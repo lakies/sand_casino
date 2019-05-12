@@ -27,10 +27,6 @@ public class Lottery extends GameInstance {
         endTime = LocalDateTime.now().plusSeconds(gameLength);
         playerBets.put("mock", 0);
     }
-    @Override
-    public boolean enoughFunds(ClientData client) {
-        return true;
-    }
 
     @Override
     public void runGameLogic() {

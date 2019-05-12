@@ -6,7 +6,6 @@ import protocol.requests.GameRequest;
 import server.ClientActions;
 import server.ClientData;
 import server.DatabaseHandler;
-import server.NotEnoughFundsException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,8 +62,6 @@ public abstract class GameInstance {
 
     public abstract void runGameLogic();
 
-    public abstract boolean enoughFunds(ClientData clientData);
-
     public abstract void cleanup();
 
     public abstract boolean isFinished();
@@ -72,14 +69,7 @@ public abstract class GameInstance {
     public abstract void handleRequest(GameRequest request, Response response);
 
     public void addPlayer(ClientData client) {
-        if (players.size() == maxPlayers) {
-            throw new NotEnoughFundsException();
-        }
-        if (enoughFunds(client)) {
-            players.add(client);
-            return;
-        }
-        throw new NotEnoughFundsException();
+        players.add(client);
     }
 
     public List<ClientData> getPlayers() {
