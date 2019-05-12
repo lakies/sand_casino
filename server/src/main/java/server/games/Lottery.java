@@ -5,26 +5,24 @@ import protocol.Response;
 import protocol.requests.GameRequest;
 import server.ClientActions;
 import server.ClientData;
-import server.DatabaseHandler;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 
 public class Lottery extends GameInstance {
-    public static int gameLength = 30;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    public static final int gameLength = 30; // in seconds
+    private long startTime;
+    private long endTime;
     private Map<String, Integer> playerBets = new HashMap<>();
     private int betSum = 0;
     private String winningClient = null;
 
     public Lottery(ClientActions clientActions){
         super(50000, 1, clientActions); //teoorias võib ka max piletihulgata teha
-        startTime = LocalDateTime.now();
-        endTime = LocalDateTime.now().plusSeconds(gameLength);
+        startTime = System.currentTimeMillis();
+        endTime = startTime + gameLength * 1000;
         playerBets.put("mock", 0);
     }
 
@@ -38,7 +36,7 @@ public class Lottery extends GameInstance {
             playerBets.replace("mock", playerBets.get("mock") + fakeBet);
         }
 
-        if (LocalDateTime.now().compareTo(endTime) > 0){
+        if (System.currentTimeMillis() > endTime){
             int bets = 0;
             for (String authToken : playerBets.keySet()) {
                 bets += playerBets.get(authToken);
