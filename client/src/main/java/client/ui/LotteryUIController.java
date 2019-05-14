@@ -3,7 +3,6 @@ package client.ui;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -131,48 +130,7 @@ public class LotteryUIController extends UIController implements Initializable {
         }).start();
     }
 
-    private void moveCoin(){
-        movingCoin.setVisible(true);
-        int betAmount = Integer.parseInt(totalBetAmount.getText());
-        Platform.runLater(() -> {
-            totalBetAmount.setText("0");
-        });
 
-        new Thread(() -> {
-            Bounds moving = movingCoin.localToScene(movingCoin.getBoundsInLocal());
-            Bounds player = playerCoins.localToScene(playerCoins.getBoundsInLocal());
-            double x = 0;
-            double y = 0;
-
-            double dx = player.getCenterX() - moving.getCenterX();
-            double dy = player.getCenterY() - moving.getCenterY();
-
-            double diff = dy / dx;
-
-            double vx = 0;
-
-            while (!isWindowClosed() && x < dx){
-                movingCoin.setX(x);
-                movingCoin.setY(y);
-
-                vx += 0.05;
-                x += vx;
-                y += vx * diff;
-
-                try {
-                    Thread.sleep(1000/60);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new RuntimeException(e);
-                }
-            }
-
-            Platform.runLater(() -> {
-                coins.setText(Integer.toString(Integer.parseInt(coins.getText()) + betAmount));
-                movingCoin.setVisible(false);
-            });
-        }).start();
-    }
 
     public void goBack(ActionEvent event) throws IOException {
         setWindowClosed(null);
@@ -185,7 +143,14 @@ public class LotteryUIController extends UIController implements Initializable {
     }
     private void displayWin(){
         winMessage.setVisible(true);
-        moveCoin();
+        int betAmount = Integer.parseInt(totalBetAmount.getText());
+        Platform.runLater(() -> {
+            totalBetAmount.setText("0");
+        });
+
+        moveCoin(movingCoin, playerCoins, () -> {
+            coins.setText(Integer.toString(Integer.parseInt(coins.getText()) + betAmount));
+        });
     }
 
     public void handleSubmit(ActionEvent event) throws IOException{

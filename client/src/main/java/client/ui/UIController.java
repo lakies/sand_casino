@@ -3,11 +3,13 @@ package client.ui;
 import client.ServerCommunicator;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import protocol.MessageType;
@@ -129,5 +131,46 @@ public class UIController {
         stage.setScene(new Scene(root));
         stage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, controller::setWindowClosed);
         stage.show();
+    }
+
+    public void moveCoin(ImageView movingImage, Node target, Runnable after){
+        movingImage.setVisible(true);
+
+        new Thread(() -> {
+            Bounds moving = movingImage.localToScene(movingImage.getBoundsInLocal());
+            Bounds player = target.localToScene(target.getBoundsInLocal());
+            double x = 0;
+            double y = 0;
+
+            double dx = player.getCenterX() - moving.getCenterX();
+            double dy = player.getCenterY() - moving.getCenterY();
+
+            double diff = dy / dx;
+
+            double vx = 0;
+
+            while (!isWindowClosed() && x < dx){
+                movingImage.setX(x);
+                movingImage.setY(y);
+
+                vx += 0.05;
+                x += vx;
+                y += vx * diff;
+
+                try {
+                    Thread.sleep(1000/60);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(e);
+                }
+            }
+
+            Platform.runLater(() -> {
+                after.run();
+                movingImage.setX(0);
+                movingImage.setY(0);
+                movingImage.setVisible(false);
+            });
+        }).start();
     }
 }

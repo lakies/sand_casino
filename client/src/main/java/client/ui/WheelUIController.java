@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import protocol.Response;
 import protocol.requests.GameRequest;
@@ -27,11 +28,15 @@ public class WheelUIController extends UIController implements Initializable {
     public Button logout;
     public Label amount;
     public Label coins;
+    public Label totalBetAmount;
+    public ImageView playerCoins;
+    public ImageView movingCoin;
     public Pane wheel;
 
     private boolean startSlowing = false;
     private int stoppingIndex = 0;
     private AnimationTimer wheelAnimation;
+    private int wonCoins = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -60,6 +65,9 @@ public class WheelUIController extends UIController implements Initializable {
                 lastTime = l;
 
                 if (speed < 5){
+                    speed = 200;
+                    slowing = false;
+                    slowingFinished();
                     stop();
                 }
             }
@@ -75,8 +83,10 @@ public class WheelUIController extends UIController implements Initializable {
             gameRequest.setRequestType(GameRequest.GameRequestType.WHEEL_FREE);
             Response response = getServerCommunicator().sendRequest(gameRequest);
             stoppingIndex = response.data[1];
+            wonCoins = response.data[0];
             startSlowing = true;
-            //TODO: checking that 30 minutes have passed!
+            displayCoins(coins);
+            coins.setText(Integer.toString(Integer.parseInt(coins.getText()) - wonCoins));
         }catch (NumberFormatException e ){
             errorlabel.setVisible(true);
         }catch (IOException e){
@@ -87,6 +97,8 @@ public class WheelUIController extends UIController implements Initializable {
         public void handleButtonAction (ActionEvent event) throws IOException {
         try {
             int sum = Integer.parseInt(txtfield.getCharacters().toString());
+
+
             StartGameRequest startGameRequest = new StartGameRequest(GameType.WHEEL);
 
             getServerCommunicator().sendRequest(startGameRequest);
@@ -107,7 +119,15 @@ public class WheelUIController extends UIController implements Initializable {
                 return;
             }
 
+            wonCoins = response.data[0];
             stoppingIndex = response.data[1];
+
+            displayCoins(coins);
+            coins.setText(Integer.toString(Integer.parseInt(coins.getText()) - wonCoins));
+
+            totalBetAmount.setText(Integer.toString(sum));
+
+
             startSlowing = true;
 
 //            errorlabel.setVisible(false);
@@ -128,6 +148,17 @@ public class WheelUIController extends UIController implements Initializable {
             sceneTransition("/ConnectionLost.fxml", back);
         }
     }
+
+    private void slowingFinished(){
+        startSlowing = false;
+        int bet = Integer.parseInt(totalBetAmount.getText());
+        totalBetAmount.setText("0");
+        moveCoin(movingCoin, playerCoins, () -> {
+            coins.setText(Integer.toString(Integer.parseInt(coins.getText()) + wonCoins));
+            wheelAnimation.start();
+        });
+    }
+
     public void handleResults(ActionEvent event) throws IOException{
         results.setVisible(false);
         lab1.setVisible(true);
@@ -137,6 +168,7 @@ public class WheelUIController extends UIController implements Initializable {
         displayCoins(coins);
 
     }
+
     public void goBack (ActionEvent event) throws IOException {
         sceneTransition("/gameChoiceScreen.fxml", back, getServerCommunicator());
     }
