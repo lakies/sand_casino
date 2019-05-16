@@ -91,7 +91,7 @@ public class Lottery extends GameInstance {
                 data[2] = playerBets.getOrDefault(client.getAuthToken(), 0);
                 data[3] = betSum;
                 response.data = data;
-                response.time = startTime;
+                response.remainingTime = (endTime - System.currentTimeMillis()) / 1000;
                 break;
             }
             case LOTTERY_ADD_BET:{

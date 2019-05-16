@@ -18,7 +18,6 @@ import server.games.Lottery;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.Duration;
 import java.util.ResourceBundle;
 
 public class LotteryUIController extends UIController implements Initializable {
@@ -107,10 +106,9 @@ public class LotteryUIController extends UIController implements Initializable {
                         playerBetAmount.setText(Integer.toString(data[2]));
                         totalBetAmount.setText(Integer.toString(data[3]));
 
-                        Duration remaining = Duration.ofMillis(response.time + Lottery.gameLength * 1000 - System.currentTimeMillis());
-                        timeLeft.setText(remaining.getSeconds() / 60 + ":" + (remaining.getSeconds() % 60 < 11 ? "0" : "") + (remaining.getSeconds() % 60 + 1));
+                        timeLeft.setText(response.remainingTime / 60 + ":" + (response.remainingTime % 60 < 9 ? "0" : "") + (response.remainingTime % 60 + 1));
 
-                        gameProgress.setProgress((Lottery.gameLength - remaining.getSeconds() - 1) / (Lottery.gameLength * 1.0));
+                        gameProgress.setProgress((Lottery.gameLength - response.remainingTime - 1) / (Lottery.gameLength * 1.0));
                     });
 
                     Thread.sleep(1000);
@@ -154,7 +152,14 @@ public class LotteryUIController extends UIController implements Initializable {
     }
 
     public void handleSubmit(ActionEvent event) throws IOException{
-        GameRequest gameRequest = new GameRequest(new int[]{Integer.parseInt(betAmount.getText())});
+        GameRequest gameRequest;
+        try {
+            gameRequest = new GameRequest(new int[]{Integer.parseInt(betAmount.getText())});
+        } catch (NumberFormatException e){
+            errorlabel.setText("Please enter a value");
+            setVisibleTimeout(errorlabel, 2000, () -> errorlabel.setText("Not enough coins!"));
+            return;
+        }
         gameRequest.setRequestType(GameRequest.GameRequestType.LOTTERY_ADD_BET);
         Response response = getServerCommunicator().sendRequest(gameRequest);
         if (response.getStatusCode() == Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS){

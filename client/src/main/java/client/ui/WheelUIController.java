@@ -8,14 +8,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import protocol.GameType;
 import protocol.Response;
 import protocol.requests.GameRequest;
 import protocol.requests.StartGameRequest;
-import protocol.GameType;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class WheelUIController extends UIController implements Initializable {
@@ -32,6 +31,7 @@ public class WheelUIController extends UIController implements Initializable {
     public ImageView playerCoins;
     public ImageView movingCoin;
     public Pane wheel;
+    public Button freeSpin;
 
     private boolean startSlowing = false;
     private int stoppingIndex = 0;
@@ -48,16 +48,17 @@ public class WheelUIController extends UIController implements Initializable {
             double rotation = 0;
             double lastTime = 0;
             boolean slowing = false;
+
             @Override
             public void handle(long l) {
 
                 rotation = (rotation + (speed * (l - lastTime) / 1000000000.0)) % 360;
 
-                if (startSlowing && !slowing && (int)((rotation + 15) / 30) == (12 + stoppingIndex - 1) % 12){
+                if (startSlowing && !slowing && (int) ((rotation + 15) / 30) == (12 + stoppingIndex - 1) % 12) {
                     slowing = true;
                 }
 
-                if (slowing){
+                if (slowing) {
                     speed -= 5 * (l - lastTime) / 100000000.0;
 //                    System.out.println(speed);
                 }
@@ -75,13 +76,19 @@ public class WheelUIController extends UIController implements Initializable {
 
         wheelAnimation.start();
     }
-    public void freeSpin (ActionEvent event) throws IOException {
+
+    public void freeSpin(ActionEvent event) throws IOException {
         try {
             StartGameRequest startGameRequest = new StartGameRequest(GameType.WHEEL);
             getServerCommunicator().sendRequest(startGameRequest);
             GameRequest gameRequest = new GameRequest(new int[]{50});
             gameRequest.setRequestType(GameRequest.GameRequestType.WHEEL_FREE);
             Response response = getServerCommunicator().sendRequest(gameRequest);
+            if (response.getStatusCode() == Response.StatusCodes.TIME_ERROR) {
+                errorlabel.setText("30 minutes hasn't passed since last free spin");
+                setVisibleTimeout(errorlabel);
+                return;
+            }
             stoppingIndex = response.data[1];
             wonCoins = response.data[0];
             startSlowing = true;
@@ -89,12 +96,12 @@ public class WheelUIController extends UIController implements Initializable {
             coins.setText(Integer.toString(Integer.parseInt(coins.getText()) - wonCoins));
         }catch (NumberFormatException e ){
             errorlabel.setVisible(true);
-        }catch (IOException e){
+        } catch (IOException e) {
             sceneTransition("/ConnectionLost.fxml", back);
         }
     }
 
-        public void handleButtonAction (ActionEvent event) throws IOException {
+    public void handleButtonAction(ActionEvent event) throws IOException {
         try {
             int sum = Integer.parseInt(txtfield.getCharacters().toString());
 
@@ -107,17 +114,12 @@ public class WheelUIController extends UIController implements Initializable {
 
 
             Response response = getServerCommunicator().sendRequest(gameRequest);
-            if (response.getStatusCode() == Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS){
+            if (response.getStatusCode() == Response.StatusCodes.ERR_NOT_ENOUGH_FUNDS) {
                 errorlabel.setText("You don't have " + sum + " coins to play");
                 setVisibleTimeout(errorlabel);
                 return;
             }
 
-            if (response.getStatusCode() == Response.StatusCodes.TIME_ERROR){
-                errorlabel.setText("30 minutes hasn't passed since last free spin");
-                setVisibleTimeout(errorlabel);
-                return;
-            }
 
             wonCoins = response.data[0];
             stoppingIndex = response.data[1];
@@ -130,29 +132,24 @@ public class WheelUIController extends UIController implements Initializable {
 
             startSlowing = true;
 
-//            errorlabel.setVisible(false);
-//            back.setVisible(false);
-//            results.setVisible(true);
-//            play.setVisible(false);
-//            txtfield.setVisible(false);
-//            coinAmount = Integer.toString(response.data[0]);
-//            System.out.println(coins);
-//
-//
-//            System.out.println(Arrays.toString(response.data));
 
-        }
-        catch (NumberFormatException e ){
+        } catch (NumberFormatException e) {
+            errorlabel.setText("Please enter a value");
             errorlabel.setVisible(true);
-        } catch (IOException e){
+        } catch (IOException e) {
             sceneTransition("/ConnectionLost.fxml", back);
         }
     }
 
     private void slowingFinished(){
         startSlowing = false;
-        int bet = Integer.parseInt(totalBetAmount.getText());
         totalBetAmount.setText("0");
+
+        if (wonCoins == 0){
+            wheelAnimation.start();
+            return;
+        }
+
         moveCoin(movingCoin, playerCoins, () -> {
             coins.setText(Integer.toString(Integer.parseInt(coins.getText()) + wonCoins));
             wheelAnimation.start();
@@ -169,11 +166,11 @@ public class WheelUIController extends UIController implements Initializable {
 
     }
 
-    public void goBack (ActionEvent event) throws IOException {
+    public void goBack(ActionEvent event) throws IOException {
         sceneTransition("/gameChoiceScreen.fxml", back, getServerCommunicator());
     }
 
-    public void handleLogout(ActionEvent event) throws IOException{
+    public void handleLogout(ActionEvent event) throws IOException {
         sceneTransition("/logInScreen.fxml", logout);
     }
 }
