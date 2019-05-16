@@ -36,7 +36,7 @@
             </Button>
             </children>
         </VBox>
-      <HBox layoutX="940.0" layoutY="33.0" prefHeight="35.0" prefWidth="110.0">
+      <HBox layoutX="950.0" layoutY="43.0" prefHeight="35.0" prefWidth="110.0">
          <children>
             <ImageView fitHeight="35.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -61,7 +61,7 @@
             </Label>
          </children>
       </HBox>
-          <Button fx:id="logout" layoutX="1056.0" layoutY="32.0" mnemonicParsing="false" onAction="#handleLogout" prefHeight="35.0" prefWidth="110.0" style="-fx-background-radius: 100; -fx-background-color: #ffffff;" text="Logout" textFill="#653a83">
+          <Button fx:id="logout" layoutX="1066.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleLogout" prefHeight="35.0" prefWidth="110.0" style="-fx-background-radius: 100; -fx-background-color: #ffffff;" text="Logout" textFill="#653a83">
               <font>
                   <Font name="Segoe UI Black" size="18.0" />
               </font>

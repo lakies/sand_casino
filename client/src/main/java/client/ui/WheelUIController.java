@@ -124,8 +124,7 @@ public class WheelUIController extends UIController implements Initializable {
             wonCoins = response.data[0];
             stoppingIndex = response.data[1];
 
-            displayCoins(coins);
-            coins.setText(Integer.toString(Integer.parseInt(coins.getText()) - wonCoins));
+            coins.setText(Integer.toString(Integer.parseInt(coins.getText()) - sum));
 
             totalBetAmount.setText(Integer.toString(sum));
 
