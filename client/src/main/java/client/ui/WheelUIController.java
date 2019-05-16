@@ -1,6 +1,7 @@
 package client.ui;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -91,9 +92,8 @@ public class WheelUIController extends UIController implements Initializable {
             }
             stoppingIndex = response.data[1];
             wonCoins = response.data[0];
+            totalBetAmount.setText("50");
             startSlowing = true;
-            displayCoins(coins);
-            coins.setText(Integer.toString(Integer.parseInt(coins.getText()) - wonCoins));
         }catch (NumberFormatException e ){
             errorlabel.setVisible(true);
         } catch (IOException e) {
@@ -145,7 +145,7 @@ public class WheelUIController extends UIController implements Initializable {
         totalBetAmount.setText("0");
 
         if (wonCoins == 0){
-            wheelAnimation.start();
+            Platform.runLater(() -> wheelAnimation.start());
             return;
         }
 
